@@ -1,29 +1,76 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ButtonContainer } from '../button-container/button-container';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { ButtonContainer } from '../button-container/button-container';
 
-interface ButtonProps {
-  text: string;
-  variant: "primary" | "secondary" | "black" | "white" | "primary-full" | "secondary-full" | "black-full";
-}
+type Variant =
+  | 'primary'
+  | 'secondary'
+  | 'black'
+  | 'white'
+  | 'primary-full'
+  | 'secondary-full'
+  | 'black-full';
+
+type Radius =
+  | 'xl'
+  | '2xl'
+  | '3xl'
+  | '4xl'
+  | '5xl'
+  | '6xl'
+  | 'full';
+
 
 @Component({
   selector: 'ui-button',
-  imports: [ButtonContainer, CommonModule],
+  standalone: true,
+  imports: [CommonModule, ButtonContainer],
   templateUrl: './button.html',
-  styleUrl: './button.css',
+  styleUrls: ['./button.css'],
 })
-export class Button implements ButtonProps {
-  @Input() text = "Text Not Initialized";
-  @Input() variant: "primary" | "secondary" | "black" | "white" | "primary-full" | "secondary-full" | "black-full" = "primary";
-  // @Input() onClick: () => void = () => { };
-  @Input() routerLink: string = "";
+export class Button {
+  @Input() text = 'Text Not Initialized';
+  @Input() variant: Variant = 'primary';
+  @Input() radius: Radius = 'full';
+  @Input() routerLink?: string;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {}
 
   handleClick() {
-    this.router.navigate([this.routerLink]);
+    if (this.routerLink) {
+      this.router.navigate([this.routerLink]);
+    }
   }
 
+get buttonClasses() {
+  const base =
+    'px-8 py-3 cursor-pointer font-semibold transition-all hover:px-12';
+
+  const variants: Record<string, string> = {
+    primary: 'bg-primary text-white',
+    secondary: 'bg-secondary text-white',
+    black: 'bg-black text-primary',
+    white: 'bg-white text-black border-2 border-black',
+    'primary-full': 'bg-primary text-white w-full',
+    'secondary-full': 'bg-secondary text-white w-full',
+    'black-full': 'bg-black text-primary w-full',
+  };
+
+  const radiusMap: Record<string, string> = {
+    xl: 'rounded-xl',
+    '2xl': 'rounded-2xl',
+    '3xl': 'rounded-3xl',
+    '4xl': 'rounded-4xl',
+    '5xl': 'rounded-5xl',
+    '6xl': 'rounded-6xl',
+    full: 'rounded-full',
+  };
+
+  return [
+    base,
+    variants[this.variant],
+    radiusMap[this.radius],
+  ];
+}
 }

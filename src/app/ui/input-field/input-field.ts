@@ -1,16 +1,67 @@
-import { Component, Input } from '@angular/core';
+import {
+  Component,
+  Input,
+  forwardRef
+} from '@angular/core';
+import {
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule
+} from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'ui-input-field',
-  imports: [],
+  selector: 'input-field',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './input-field.html',
-  styleUrl: './input-field.css',
+  styleUrls: ['./input-field.css'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => InputField),
+      multi: true,
+    },
+  ],
 })
-export class InputField {
-  @Input() placeholder = "Enter your name";
-  @Input() type = "text";
-  @Input() name = "name";
-  @Input() id = "name";
-  @Input() value = "";
+export class InputField implements ControlValueAccessor {
 
-} 
+  @Input() label = '';
+  @Input() type = 'text';
+  @Input() name = 'name';
+  @Input() id = 'name';
+  @Input() placeholder = 'Enter your name';
+
+  value = '';
+  disabled = false;
+
+  // Angular gives these
+  onChange = (value: string) => {};
+  onTouched = () => {};
+
+  writeValue(value: string): void {
+    this.value = value || '';
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
+  }
+
+  handleInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.value = input.value;
+    this.onChange(this.value);
+  }
+
+  handleBlur() {
+    this.onTouched();
+  }
+}

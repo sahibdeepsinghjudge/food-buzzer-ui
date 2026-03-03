@@ -1,1 +1,70 @@
-<p>register works!</p>
+<accounts-container>
+  <ng-content title>
+    <p class="text-neutral-500 text-lg">start your journey with</p>
+  </ng-content>
+  <ng-container [ngSwitch]="currentStep()">
+    <!-- STEP 1 -->
+    <ng-content step>
+      <h2 class="text-neutral-700 text-xl font-semibold mt-6">Step {{ currentStep() }}</h2>
+    </ng-content>
+    <form
+      *ngSwitchCase="1"
+      [formGroup]="step1form"
+      (ngSubmit)="validateFirstStep()"
+      class="space-y-3 mt-2"
+    >
+      <div>
+        <input-field label="Name" type="text" formControlName="name"> </input-field>
+
+        <p
+          *ngIf="step1form.get('name')?.touched && step1form.get('name')?.invalid"
+          class="text-red-500 text-sm mt-1"
+        >
+          Name is required
+        </p>
+      </div>
+
+      <div>
+        <input-field label="Email" type="email" formControlName="email"> </input-field>
+
+        <p
+          *ngIf="step1form.get('email')?.touched && step1form.get('email')?.invalid"
+          class="text-red-500 text-sm mt-1"
+        >
+          Enter a valid email address
+        </p>
+      </div>
+
+      <div>
+        <input-field label="Password" type="password" formControlName="password"> </input-field>
+
+        <p
+          *ngIf="step1form.get('password')?.touched && step1form.get('password')?.invalid"
+          class="text-red-500 text-sm mt-1"
+        >
+          Password must be at least 6 characters
+        </p>
+      </div>
+
+      <ui-button text="Continue" variant="primary-full" radius="xl"> </ui-button>
+    </form>
+
+    <!-- STEP 2 -->
+    <div *ngSwitchCase="2" class="text-center space-y-4">
+      <h2 class="text-xl font-semibold">Step 2</h2>
+      <p>OTP or additional details go here.</p>
+    </div>
+  </ng-container>
+
+  <!-- MESSAGE FEEDBACK -->
+  <div *ngIf="message() as msg" class="mt-4 text-center">
+    <p
+      [ngClass]="{
+        'text-green-500': msg.code === 200,
+        'text-red-500': msg.code !== 200,
+      }"
+    >
+      {{ msg.message }}
+    </p>
+  </div>
+</accounts-container>

@@ -1,8 +1,11 @@
 <input
-  type="{{ type }}"
-  placeholder="{{ placeholder }}"
-  name="{{ name }}"
-  id="{{ id }}"
-  value="{{ value }}"
+  [type]="type"
+  [value]="value"
+  [disabled]="disabled"
+  (input)="handleInput($event)"
+  (blur)="handleBlur()"
+  [placeholder]="placeholder"
+  [name]="name"
+  [id]="id"
   class="bg-bg-tert p-2 py-3 rounded-lg w-full"
 />
