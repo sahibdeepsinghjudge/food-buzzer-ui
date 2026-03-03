@@ -1,0 +1,27 @@
+<accounts-container>
+  <ng-content title>
+    <p class="text-neutral-500 text-lg">continue with</p>
+  </ng-content>
+  <form action="" class="w-full flex flex-col gap-2 mt-8">
+    <ui-input-field
+      placeholder="Email"
+      type="email"
+      name="email"
+      id="email"
+      value=""
+    ></ui-input-field>
+    <ui-input-field
+      placeholder="Password"
+      type="password"
+      name="password"
+      id="password"
+      value=""
+    ></ui-input-field>
+    <p class="text-right text-sm text-primary"></p>
+    <ui-button text="Login" variant="primary-full"> </ui-button>
+    <p class="text-center text-sm text-primary">Forgot Password?</p>
+    <p class="text-center text-sm text-neutral-500">
+      Don't have an account? <span class="text-primary">Register</span>
+    </p>
+  </form>
+</accounts-container>
