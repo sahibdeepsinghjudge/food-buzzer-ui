@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { Button } from '../../../ui/button/button';
 import { InputField } from '../../../ui/input-field/input-field';
 import { AccountsContainer } from '../accounts-container/accounts-container';
+import { MatIconModule } from '@angular/material/icon';
 
 interface Error {
   code: 403 | 404 | 500 | 422;
@@ -30,14 +31,16 @@ interface Success {
     Button,
     InputField,
     AccountsContainer,
+    MatIconModule,
   ],
   templateUrl: './register.html',
   styleUrls: ['./register.css'],
 })
 export class Register {
-  currentStep = signal<1 | 2>(1);
+  currentStep = signal<1 | 2 | 3>(1);
   message = signal<Error | Success | null>(null);
   step1form;
+  step2form;
 
   constructor(private fb: FormBuilder) {
     this.step1form = this.fb.nonNullable.group({
@@ -45,6 +48,24 @@ export class Register {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
+
+    this.step2form = this.fb.nonNullable.group({
+      rest_name: ['', Validators.required],
+      rest_address: ['', Validators.required],
+      gst_number: ['', Validators.required],
+      phone_number: ['', Validators.required],
+    });
+  }
+
+
+  goBack() {
+    if (this.currentStep() == 1) {
+      this.currentStep.set(1);
+    } else {
+      const x = this.currentStep() - 1;
+      this.currentStep.set(x as 1 | 2);
+    }
+    return;
   }
 
   validateFirstStep() {
@@ -67,4 +88,27 @@ export class Register {
 
     console.log('Form Data:', this.step1form.getRawValue());
   }
+
+  validateSecondStep() {
+    if (this.step2form.invalid) {
+      this.step2form.markAllAsTouched();
+      this.message.set({
+        code: 422,
+        message: 'Unprocessable entity',
+      });
+
+      return;
+    }
+
+    this.message.set({
+      code: 200,
+      message: 'Details are valid',
+    });
+
+    this.currentStep.set(3);
+
+    console.log('Form Data:', this.step2form.getRawValue());
+  }
+
+ 
 }

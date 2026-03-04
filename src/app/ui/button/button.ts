@@ -34,12 +34,17 @@ export class Button {
   @Input() variant: Variant = 'primary';
   @Input() radius: Radius = 'full';
   @Input() routerLink?: string;
+  @Input() onClick?: any;
+
 
   constructor(private router: Router) {}
 
   handleClick() {
     if (this.routerLink) {
       this.router.navigate([this.routerLink]);
+    }
+    if (this.onClick) {
+      this.onClick();
     }
   }
 
@@ -49,12 +54,12 @@ get buttonClasses() {
 
   const variants: Record<string, string> = {
     primary: 'bg-primary text-white',
-    secondary: 'bg-secondary text-white',
-    black: 'bg-black text-primary',
+    secondary: 'bg-bg-sec text-neutral-500 border-2 border-neutral-200',
+    black: 'bg-black text-white',
     white: 'bg-white text-black border-2 border-black',
     'primary-full': 'bg-primary text-white w-full',
-    'secondary-full': 'bg-secondary text-white w-full',
-    'black-full': 'bg-black text-primary w-full',
+    'secondary-full': 'bg-bg-sec text-neutral-500 border-2 border-neutral-200 w-full',
+    'black-full': 'bg-black text-white w-full',
   };
 
   const radiusMap: Record<string, string> = {

@@ -1,0 +1,10 @@
+<nav class="bg-white h-screen border-r border-neutral-200">
+  <ul class="p-4">
+    <app-sidebar-item
+      *ngFor="let item of navItems"
+      [text]="item.text"
+      [link]="item.link"
+      [currentTab]="currentTab"
+    ></app-sidebar-item>
+  </ul>
+</nav>

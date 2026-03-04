@@ -1,8 +1,9 @@
 <accounts-container>
   <ng-content title>
     <p class="text-neutral-500 text-lg">continue with</p>
+    <h1 class="text-4xl my-1 font-bold text-primary">foodBuzzer</h1>
   </ng-content>
-  <form action="" class="w-full flex flex-col gap-2 mt-8">
+  <form action="" class="w-full flex flex-col mt-8">
     <input-field placeholder="Email" type="email" name="email" id="email" value=""></input-field>
     <input-field
       placeholder="Password"
@@ -11,12 +12,16 @@
       id="password"
       value=""
     ></input-field>
-    <p class="text-right text-sm text-primary"></p>
-    <ui-button text="login" variant="primary-full" radius="2xl"> </ui-button>
-    <p class="text-center text-sm text-primary">Forgot Password?</p>
-    <p class="text-center text-sm text-neutral-500">
+    <p class="text-right text-sm text-primary my-2"></p>
+    <ui-button text="Login" variant="primary-full" radius="2xl"> </ui-button>
+    <p class="text-center text-sm text-neutral-500 mt-2">
       Don't have an account?
       <a routerLink="/accounts/register" class="text-primary cursor-pointer">Register</a>
+    </p>
+    <p class="text-center text-sm text-primary mt-2">
+      <a routerLink="/accounts/forgot-password" class="text-primary cursor-pointer"
+        >Forgot Password?</a
+      >
     </p>
   </form>
 </accounts-container>

@@ -1,20 +1,26 @@
 <accounts-container>
-  <ng-content title>
-    <p class="text-neutral-500 text-lg">start your journey with</p>
-  </ng-content>
+  @if (currentStep() != 3) {
+    <ng-content title>
+      <p class="text-neutral-500 text-lg">start your journey with</p>
+      <h1 class="text-4xl my-1 font-bold text-primary">foodBuzzer</h1>
+    </ng-content>
+  }
   <ng-container [ngSwitch]="currentStep()">
     <!-- STEP 1 -->
-    <ng-content step>
-      <h2 class="text-neutral-700 text-xl font-semibold mt-6">Step {{ currentStep() }}</h2>
-    </ng-content>
-    <form
-      *ngSwitchCase="1"
-      [formGroup]="step1form"
-      (ngSubmit)="validateFirstStep()"
-      class="space-y-3 mt-2"
-    >
+    @if (currentStep() != 3) {
+      <ng-content step>
+        <h2 class="text-neutral-700 text-xl font-semibold mt-6">Step {{ currentStep() }}</h2>
+      </ng-content>
+    }
+    <form *ngSwitchCase="1" [formGroup]="step1form" (ngSubmit)="validateFirstStep()" class="mt-2">
       <div>
-        <input-field label="Name" type="text" formControlName="name"> </input-field>
+        <input-field
+          label="Name"
+          type="text"
+          formControlName="name"
+          placeholder="Enter your full name"
+        >
+        </input-field>
 
         <p
           *ngIf="step1form.get('name')?.touched && step1form.get('name')?.invalid"
@@ -25,7 +31,13 @@
       </div>
 
       <div>
-        <input-field label="Email" type="email" formControlName="email"> </input-field>
+        <input-field
+          label="Email"
+          type="email"
+          formControlName="email"
+          placeholder="Enter your email"
+        >
+        </input-field>
 
         <p
           *ngIf="step1form.get('email')?.touched && step1form.get('email')?.invalid"
@@ -36,7 +48,13 @@
       </div>
 
       <div>
-        <input-field label="Password" type="password" formControlName="password"> </input-field>
+        <input-field
+          label="Password"
+          type="password"
+          formControlName="password"
+          placeholder="Enter password (min 6 characters)"
+        >
+        </input-field>
 
         <p
           *ngIf="step1form.get('password')?.touched && step1form.get('password')?.invalid"
@@ -47,12 +65,72 @@
       </div>
 
       <ui-button text="Continue" variant="primary-full" radius="xl"> </ui-button>
+      <div class="text-center mt-4">
+        <p class="text-neutral-500">
+          Already have an account? <a routerLink="/accounts/login" class="text-primary">Login</a>
+        </p>
+      </div>
     </form>
 
     <!-- STEP 2 -->
     <div *ngSwitchCase="2" class="text-center space-y-4">
-      <h2 class="text-xl font-semibold">Step 2</h2>
-      <p>OTP or additional details go here.</p>
+      <form [formGroup]="step2form" (ngSubmit)="validateSecondStep()" class="mt-2">
+        <input-field
+          label="Restaurant Name"
+          type="text"
+          formControlName="rest_name"
+          placeholder="Enter restaurant name"
+        ></input-field>
+        <input-field
+          label="Restaurant Address"
+          type="text"
+          formControlName="rest_address"
+          placeholder="Enter restaurant address"
+        ></input-field>
+        <input-field
+          label="GST Number"
+          type="text"
+          formControlName="gst_number"
+          placeholder="Enter GST number"
+        ></input-field>
+        <input-field
+          label="Phone Number"
+          type="text"
+          formControlName="phone_number"
+          placeholder="Enter phone number"
+        ></input-field>
+        <ui-button text="Apply for verification" variant="primary-full" radius="xl"></ui-button>
+        <p class="my-2"></p>
+        <ui-button
+          text="Back"
+          type="button"
+          variant="secondary-full"
+          (click)="goBack()"
+          radius="xl"
+        ></ui-button>
+      </form>
+    </div>
+    <div *ngSwitchCase="3" class="text-center space-y-4">
+      <h2 class="text-center">
+        <mat-icon style="font-size: 120px; width: 120px; height: 120px; color: rgb(0, 201, 80)">
+          check_circle
+        </mat-icon>
+      </h2>
+      <div class="w-lg mx-auto my-4">
+        <p class="font-bold text-xl">Your request has been sent for verification.</p>
+        <p class="text-neutral-500">
+          Your request has been sent to the Admin. Once approved you can start accepting orders from
+          customers.
+        </p>
+      </div>
+      <p class="my-2"></p>
+      <ui-button
+        text="Finsih Setup"
+        type="button"
+        variant="primary-full"
+        (click)="goBack()"
+        radius="xl"
+      ></ui-button>
     </div>
   </ng-container>
 
