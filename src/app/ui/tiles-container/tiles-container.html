@@ -1,0 +1,9 @@
+<div class="flex gap-4">
+  <app-data-tiles
+    *ngFor="let tile of dataTiles"
+    [number]="tile.number"
+    [label]="tile.label"
+    [comparison_number_percentage]="tile.comparison_number_percentage"
+    [comparison_parameter]="tile.comparison_parameter"
+  ></app-data-tiles>
+</div>

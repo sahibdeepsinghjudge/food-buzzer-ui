@@ -10,5 +10,24 @@ import { Sidebar } from '../../../ui/sidebar/sidebar';
   styleUrl: './dashboard-layout.css',
 })
 export class DashboardLayout {
+    currentTab = '/dashboard';
+    navItems = [
+        { text: 'Home', link: '/dashboard' },
+        // { text: 'POS', link: '/pos' },
+        { text: 'Orders', link: '/orders' },
+        { text: 'Products', link: '/products' },
+        { text: 'Inventory', link: '/inventory' },
+        { text: 'Recipies', link: '/recepies' },
+        { text: 'Team', link: '/team' },
+        { text: 'Analytics', link: '/analytics' },
+        { text: 'Digital Menu', link: '/digital-menu' },
+        { text: 'Customers', link: '/customers' },
+        { text: 'Settings', link: '/settings' },
+    ]
+  headerNavItems = [
+    { text: 'POS', link: '/pos' },
+    { text: 'Table Manager', link: '/table-manager' },
 
+    // { text: 'Accounts', link: '/accounts' },
+  ]
 }

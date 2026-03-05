@@ -2,8 +2,10 @@
   <app-logo></app-logo>
   <nav>
     <ul class="flex items-center gap-4">
-      <li><app-nav-item text="Dashboard" link="/dashboard"></app-nav-item></li>
-      <li><app-nav-item text="Accounts" link="/accounts"></app-nav-item></li>
+      <li *ngFor="let item of navItems">
+        <app-nav-item [text]="item.text" [link]="item.link"></app-nav-item>
+      </li>
+      <ui-button text="Logout" variant="logout" link="/login"></ui-button>
     </ul>
   </nav>
 </header>

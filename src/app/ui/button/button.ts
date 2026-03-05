@@ -10,7 +10,8 @@ type Variant =
   | 'white'
   | 'primary-full'
   | 'secondary-full'
-  | 'black-full';
+  | 'black-full'
+  | 'logout';
 
 type Radius =
   | 'xl'
@@ -50,16 +51,17 @@ export class Button {
 
 get buttonClasses() {
   const base =
-    'px-8 py-3 cursor-pointer font-semibold transition-all hover:px-12';
+    'px-8 py-3 cursor-pointer font-semibold ';
 
   const variants: Record<string, string> = {
-    primary: 'bg-primary text-white',
-    secondary: 'bg-bg-sec text-neutral-500 border-2 border-neutral-200',
-    black: 'bg-black text-white',
-    white: 'bg-white text-black border-2 border-black',
+    primary: 'bg-primary text-white transition-all hover:px-12',
+    secondary: 'bg-bg-sec text-neutral-500 border-2 border-neutral-200 transition-all hover:px-12',
+    black: 'bg-black text-white transition-all hover:px-12',
+    white: 'bg-white text-black border-2 border-black transition-all hover:px-12',
     'primary-full': 'bg-primary text-white w-full',
     'secondary-full': 'bg-bg-sec text-neutral-500 border-2 border-neutral-200 w-full',
     'black-full': 'bg-black text-white w-full',
+    'logout': 'bg-white text-red-500 border-2 border-red-500 hover:bg-red-500 hover:text-white transition-all',
   };
 
   const radiusMap: Record<string, string> = {

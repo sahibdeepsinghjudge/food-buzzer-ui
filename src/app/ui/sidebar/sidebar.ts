@@ -9,18 +9,6 @@ import { CommonModule } from '@angular/common';
   styleUrl: './sidebar.css',
 })
 export class Sidebar {
-  @Input() currentTab: string = '/orders';
-  navItems = [
-        { text: 'Home', link: '/dashboard' },
-        { text: 'POS', link: '/pos' },
-        { text: 'Orders', link: '/orders' },
-        { text: 'Products', link: '/products' },
-        { text: 'Inventory', link: '/inventory' },
-        { text: 'Recipies', link: '/recepies' },
-        { text: 'KDS', link: '/kds' },
-        { text: 'Analytics', link: '/analytics' },
-        { text: 'Digital Menu', link: '/digital-menu' },
-        { text: 'Customers', link: '/customers' },
-        { text: 'Settings', link: '/settings' },
-    ]
+  @Input() currentTab: string = '/home';
+  @Input() navItems: any[] = [];
 }

@@ -1,0 +1,43 @@
+<div class="w-full max-w-6xl overflow-x-auto mt-4 shadow-xs rounded-xl">
+  <table class="w-full text-sm border border-neutral-200 rounded-xl overflow-hidden">
+    <thead class="bg-white text-primary uppercase text-xs tracking-wider">
+      <tr>
+        <th *ngFor="let column of columns" class="px-6 py-4 text-left border-b border-neutral-200">
+          {{ column.label }}
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr
+        *ngFor="let row of data"
+        class="bg-white cursor-pointer hover:bg-neutral-50 transition-colors"
+      >
+        <td *ngFor="let column of columns" class="px-6 py-4 border-b border-neutral-100">
+          <!-- TEXT -->
+          <ng-container *ngIf="!column.type || column.type === 'text'">
+            {{ row[column.key] }}
+          </ng-container>
+
+          <!-- BUTTON -->
+          <button
+            *ngIf="column.type === 'button'"
+            (click)="handleClick(column, row)"
+            class="bg-primary text-white px-4 py-2 rounded-lg text-sm"
+          >
+            {{ column.buttonText || 'Action' }}
+          </button>
+
+          <!-- ROUTER LINK -->
+          <a
+            *ngIf="column.type === 'link'"
+            [routerLink]="[column.routerLink, row[column.key]]"
+            class="text-primary hover:underline"
+          >
+            {{ row[column.key] }}
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
