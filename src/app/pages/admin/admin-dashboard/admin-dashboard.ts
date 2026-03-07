@@ -5,7 +5,7 @@ import { TableComponent } from '../../../ui/table/table';
 
 @Component({
   selector: 'app-admin-dashboard',
-  imports: [DashboardLayout, TilesContainer,TableComponent],
+  imports: [TilesContainer,TableComponent],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.css',
 })

@@ -8,7 +8,7 @@ import { Router} from '@angular/router';
 @Component({
   selector: 'app-restaurant-details',
   standalone: true,
-  imports: [DashboardLayout, CommonModule],
+  imports: [CommonModule],
   templateUrl: './restaurant-details.html',
   styleUrl: './restaurant-details.css',
 })

@@ -10,7 +10,6 @@ import { Sidebar } from '../../../ui/sidebar/sidebar';
   styleUrl: './dashboard-layout.css',
 })
 export class DashboardLayout {
-    currentTab = '/admin-dashboard';
     navItems = [
         { text: 'Dashboard', link: '/admin-dashboard' },
         { text: 'Pending requests', link: '/pending-requests' },

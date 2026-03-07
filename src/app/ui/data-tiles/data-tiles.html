@@ -3,10 +3,15 @@
     <div class="text-sm text-neutral-500">{{ label }}</div>
   </div>
   <p class="text-3xl text-primary font-bold px-4 py-4">{{ number }}</p>
-  <div class="px-4 py-3 border-t-2 border-neutral-200">
+  <div
+    class="px-4 py-3 border-t-2 border-neutral-200"
+    *ngIf="comparison_number_percentage !== null"
+  >
     <p class="text-sm" [class.text-green-500]="isPositive" [class.text-red-500]="!isPositive">
       {{ comparison_number_percentage }}%
-      <span class="text-neutral-500">vs {{ comparison_parameter }}</span>
+      <span class="text-neutral-500" *ngIf="comparison_parameter !== null"
+        >vs {{ comparison_parameter }}</span
+      >
     </p>
   </div>
 </div>

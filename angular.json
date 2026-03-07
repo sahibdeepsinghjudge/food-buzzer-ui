@@ -22,6 +22,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/app/pages/inventory/assets",
+                "output": "/src/app/pages/inventory/assets"
               }
             ],
             "styles": [

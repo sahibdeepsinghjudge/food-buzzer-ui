@@ -4,10 +4,17 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminDashboard } from '../admin-dashboard/admin-dashboard';
 import { RestaurantDetails } from '../restaurant-details/restaurant-details';
 
-const routes: Routes = [
-  { path: '', component: AdminDashboard },
-   { path: 'restaurant-details/:id', component: RestaurantDetails},
+import { DashboardLayout as AdminDashboardLayout } from '../dashboard-layout/dashboard-layout';
 
+const routes: Routes = [
+  {
+    path: '',
+    component: AdminDashboardLayout,
+    children: [
+      { path: '', component: AdminDashboard },
+      { path: 'restaurant-details/:id', component: RestaurantDetails},
+    ]
+  }
 ];
 
 @NgModule({

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ButtonContainer } from '../button-container/button-container';
@@ -35,18 +35,18 @@ export class Button {
   @Input() variant: Variant = 'primary';
   @Input() radius: Radius = 'full';
   @Input() routerLink?: string;
-  @Input() onClick?: any;
 
 
   constructor(private router: Router) {}
+
+  @Output() clicked = new EventEmitter<void>();
 
   handleClick() {
     if (this.routerLink) {
       this.router.navigate([this.routerLink]);
     }
-    if (this.onClick) {
-      this.onClick();
-    }
+
+    this.clicked.emit();
   }
 
 get buttonClasses() {

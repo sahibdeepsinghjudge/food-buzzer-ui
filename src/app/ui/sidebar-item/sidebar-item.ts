@@ -12,10 +12,5 @@ export class SidebarItem  {
   @Input() text: string = '';
   @Input() link: string = '';
   @Input() icon: string = '';
-  @Input() currentTab: string = '';
-
-  isActive() {
-    return this.currentTab === this.link;
-  }
 
 }

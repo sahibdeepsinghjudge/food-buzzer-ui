@@ -1,8 +1,8 @@
-<a routerLink="{{ link }}">
+<a [routerLink]="link" routerLinkActive="isActive" #rla="routerLinkActive">
   <li
     class="bg-bg-sec my-2 px-2 rounded-xl py-3 w-full cursor-pointer group hover:bg-primary hover:text-orange-500"
-    [class.bg-primary]="isActive()"
-    [class.text-orange-500]="isActive()"
+    [class.bg-primary]="rla.isActive"
+    [class.text-orange-500]="rla.isActive"
   >
     <span class="font-medium text-base">{{ text }}</span>
   </li>

@@ -1,56 +1,54 @@
-<admin-dashboard-layout>
-  <div class="px-6">
-    <p class="text-2xl mb-6">Restaurant Details</p>
+<div class="px-6">
+  <p class="text-2xl mb-6">Restaurant Details</p>
 
-    <div class="bg-white shadow-xs rounded-xl p-6 max-w-3xl">
-      <div class="grid grid-cols-2 gap-6">
-        <div>
-          <p class="text-neutral-500 text-sm">Restaurant Name</p>
-          <p class="text-lg">{{ restaurant?.name }}</p>
-        </div>
+  <div class="bg-white shadow-xs rounded-xl p-6 max-w-3xl">
+    <div class="grid grid-cols-2 gap-6">
+      <div>
+        <p class="text-neutral-500 text-sm">Restaurant Name</p>
+        <p class="text-lg">{{ restaurant?.name }}</p>
+      </div>
 
-        <div>
-          <p class="text-neutral-500 text-sm">Email</p>
-          <p class="text-lg">{{ restaurant?.email }}</p>
-        </div>
+      <div>
+        <p class="text-neutral-500 text-sm">Email</p>
+        <p class="text-lg">{{ restaurant?.email }}</p>
+      </div>
 
-        <div>
-          <p class="text-neutral-500 text-sm">Owner</p>
-          <p class="text-lg">{{ restaurant?.owner }}</p>
-        </div>
+      <div>
+        <p class="text-neutral-500 text-sm">Owner</p>
+        <p class="text-lg">{{ restaurant?.owner }}</p>
+      </div>
 
-        <div>
-          <p class="text-neutral-500 text-sm">Phone</p>
-          <p class="text-lg">{{ restaurant?.phone }}</p>
-        </div>
+      <div>
+        <p class="text-neutral-500 text-sm">Phone</p>
+        <p class="text-lg">{{ restaurant?.phone }}</p>
+      </div>
 
-        <div>
-          <p class="text-neutral-500 text-sm">
-            <span *ngIf="restaurant?.status === 'Approved'" class="text-green-500">✔</span>
-            <span *ngIf="restaurant?.status === 'Declined'" class="text-red-500">✖</span>
-            Status
-          </p>
-          <p class="text-lg">{{ restaurant?.status }}</p>
-        </div>
+      <div>
+        <p class="text-neutral-500 text-sm">
+          <span *ngIf="restaurant?.status === 'Approved'" class="text-green-500">✔</span>
+          <span *ngIf="restaurant?.status === 'Declined'" class="text-red-500">✖</span>
+          Status
+        </p>
+        <p class="text-lg">{{ restaurant?.status }}</p>
+      </div>
 
-        <div>
-          <p class="text-neutral-500 text-sm">Address</p>
-          <p class="text-lg">{{ restaurant?.address }}</p>
-        </div>
+      <div>
+        <p class="text-neutral-500 text-sm">Address</p>
+        <p class="text-lg">{{ restaurant?.address }}</p>
       </div>
     </div>
-    <br />
-    <button
-      class="bg-primary text-white transition-all hover:px-12 m-2 rounded-full px-14 py-2 text-lg"
-      (click)="updateStatus(restaurant.id, 'Approved')"
-    >
-      Approve
-    </button>
-    <button
-      class="bg-white text-black border-2 border-black transition-all hover:px-12 m-2 rounded-full px-14 py-2 text-lg"
-      (click)="updateStatus(restaurant.id, 'Declined')"
-    >
-      Decline
-    </button>
   </div>
-</admin-dashboard-layout>
+  <br />
+  <button
+    class="bg-primary text-white transition-all hover:px-12 m-2 rounded-full px-14 py-2 text-lg"
+    (click)="updateStatus(restaurant.id, 'Approved')"
+  >
+    Approve
+  </button>
+  <button
+    class="bg-white text-black border-2 border-black transition-all hover:px-12 m-2 rounded-full px-14 py-2 text-lg"
+    (click)="updateStatus(restaurant.id, 'Declined')"
+  >
+    Decline
+  </button>
+</div>
