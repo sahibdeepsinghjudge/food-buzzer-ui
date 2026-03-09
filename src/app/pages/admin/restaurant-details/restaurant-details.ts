@@ -25,7 +25,7 @@ export class RestaurantDetails {
 
   ngOnInit() {
     this.restaurantId = Number(this.route.snapshot.paramMap.get('id'));
-    this.restaurant = this.restaurants.find(r => r.id === this.restaurantId);
+    this.restaurant = this.getRestaurantById(this.restaurantId);
   }
 
   approveRequest() {
@@ -46,7 +46,7 @@ export class RestaurantDetails {
   }
 
   updateStatus(id: number, status: string) {
-    const restaurant = this.restaurants.find(r => r.id === id);
+    const restaurant = this.getRestaurantById(id);
     if (restaurant) {
       restaurant.status = status;
     }

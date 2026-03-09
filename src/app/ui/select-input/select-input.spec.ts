@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ViewProducts } from './view-products';
+import { SelectInput } from './select-input';
 
-describe('ViewProducts', () => {
-  let component: ViewProducts;
-  let fixture: ComponentFixture<ViewProducts>;
+describe('SelectInput', () => {
+  let component: SelectInput;
+  let fixture: ComponentFixture<SelectInput>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ViewProducts]
+      imports: [SelectInput]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ViewProducts);
+    fixture = TestBed.createComponent(SelectInput);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

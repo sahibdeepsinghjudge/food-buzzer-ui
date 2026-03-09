@@ -1,7 +1,12 @@
 <h1 class="text-2xl mb-6">Inventory Dashboard</h1>
 <app-tiles-container [dataTiles]="dataTiles()"> </app-tiles-container>
 <div class="flex items-center gap-2 my-4">
-  <ui-button text="Add Product" radius="xl" variant="black"></ui-button>
+  <ui-button
+    text="Add Product"
+    radius="xl"
+    variant="black"
+    routerLink="/inventory/create-products"
+  ></ui-button>
 </div>
 <div class="flex items-center gap-2 my-4">
   <ui-button

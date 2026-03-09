@@ -16,7 +16,7 @@ export class DashboardLayout {
         { text: 'Orders', link: '/orders' },
         { text: 'Products', link: '/products' },
         { text: 'Inventory', link: '/inventory' },
-        { text: 'Recipies', link: '/recepies' },
+        { text: 'Recipes', link: '/recipes' },
         { text: 'Team', link: '/team' },
         { text: 'Analytics', link: '/analytics' },
         { text: 'Digital Menu', link: '/digital-menu' },

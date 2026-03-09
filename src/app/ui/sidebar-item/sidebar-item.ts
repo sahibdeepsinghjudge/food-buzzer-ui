@@ -8,9 +8,8 @@ import { RouterModule } from '@angular/router';
   styleUrl: './sidebar-item.css',
   standalone: true,
 })
-export class SidebarItem  {
+export class SidebarItem {
   @Input() text: string = '';
   @Input() link: string = '';
   @Input() icon: string = '';
-
 }

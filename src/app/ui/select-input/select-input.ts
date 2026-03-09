@@ -11,28 +11,30 @@ import {
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'input-field',
+  selector: 'select-input',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './input-field.html',
-  styleUrls: ['./input-field.css'],
+  templateUrl: './select-input.html',
+  styleUrls: ['./select-input.css'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => InputField),
+      useExisting: forwardRef(() => SelectInput),
       multi: true,
     },
   ],
 })
-export class InputField implements ControlValueAccessor {
+export class SelectInput implements ControlValueAccessor {
 
   @Input() label = '';
   @Input() type = 'text';
   @Input() name = 'name';
   @Input() id = 'name';
   @Input() placeholder = 'Enter your name';
-  @Input() value = '';
-  disabled = false;
+  @Input() options: string[] = [];
+  @Input() value: string = '';
+  @Input() disabled = false;
+
 
   // Angular gives these
   onChange = (value: string) => {};

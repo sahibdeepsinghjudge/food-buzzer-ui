@@ -10,7 +10,8 @@ export const routes: Routes = [
         component: DashboardLayout,
         children: [
             { path: 'dashboard', loadChildren: () => import('./pages/dashboard/dashboard/dashboard-module').then(m => m.DashboardModule) },
-            { path: 'inventory', loadChildren: () => import('./pages/inventory/inventory/inventory-module').then(m => m.InventoryModule) }
+            { path: 'inventory', loadChildren: () => import('./pages/inventory/inventory/inventory-module').then(m => m.InventoryModule) },
+            { path: 'recipes', loadChildren: () => import('./pages/recipes/recipe/recipe-module').then(m => m.RecipeModule) }
         ]
     },
     { path: 'admin', loadChildren: () => import('./pages/admin/admin/admin-module').then(m => m.AdminModule) },

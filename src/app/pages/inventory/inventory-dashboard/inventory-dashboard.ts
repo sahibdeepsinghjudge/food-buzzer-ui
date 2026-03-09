@@ -32,15 +32,13 @@ export class InventoryDashboard {
   }
 
   columns: TableColumn[] = [
-    {key: 'id', label: 'ID',type: 'link', routerLink: '/inventory'},
+    {key: 'id', label: 'ID',type: 'link', routerLink: '/inventory/product'},
     { key: 'name', label: 'Product Name'  },
-    { key: 'sku', label: 'SKU' },
-    { key: 'category', label: 'Category' },
     { key: 'unit', label: 'Unit' },
     { key: 'current_stock', label: 'Current Stock' },
     { key: 'reorder_level', label: 'Reorder Level' },
-    { key: 'cost_per_unit', label: 'Cost Per Unit' },
-    { key: 'is_active', label: 'Active' },
+    { key: 'cost_per_unit', label: 'Cost Per Unit (Rs.)' },
+    // { key: 'is_active', label: 'Active' },
   ];
 
    
