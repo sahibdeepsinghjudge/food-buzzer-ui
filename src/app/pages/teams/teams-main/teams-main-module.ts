@@ -7,6 +7,10 @@ const routes: Routes = [
     loadComponent: () => import('./teams-main').then(m => m.TeamsMain)
   },
   {
+    path: 'new',
+    loadComponent: () => import('../add-team-member/add-team-member').then(m => m.AddTeamMember)
+  },
+  {
     path: ':id',
     loadComponent: () => import('../team-member-details/team-member-details').then(m => m.TeamMemberDetails)
   }

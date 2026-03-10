@@ -24,6 +24,13 @@ export class TeamsService {
 
   constructor() {}
 
+  addMember(member: Omit<TeamMember, 'id'>): Observable<TeamMember> {
+    const newId = this.members.length > 0 ? Math.max(...this.members.map(m => m.id)) + 1 : 1;
+    const newMember: TeamMember = { ...member, id: newId };
+    this.members.unshift(newMember);
+    return of({ ...newMember }).pipe(delay(400));
+  }
+
   getMembers(): Observable<TeamMember[]> {
     return of([...this.members]).pipe(delay(300));
   }
