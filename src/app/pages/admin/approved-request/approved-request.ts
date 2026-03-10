@@ -1,5 +1,4 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { DashboardLayout } from '../dashboard-layout/dashboard-layout';
 import { TableComponent } from '../../../ui/table/table';
 import { TilesContainer } from '../../../ui/tiles-container/tiles-container';
 import { Dataservice } from '../../../dataservice';
@@ -9,7 +8,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-approved-request',
-  imports: [DashboardLayout, TableComponent, TilesContainer, CommonModule],
+  imports: [TableComponent, TilesContainer, CommonModule],
   templateUrl: './approved-request.html',
   styleUrl: './approved-request.css',
 })

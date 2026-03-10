@@ -1,19 +1,17 @@
-<admin-dashboard-layout>
-  <div class="px-6">
-    <p class="text-2xl mb-6">Restaurant Details</p>
+<div class="px-6">
+  <p class="text-2xl mb-6">Restaurant Details</p>
 
-    <div class="bg-white shadow-xs rounded-xl p-6 max-w-3xl">
-      <div class="grid grid-cols-2 gap-6">
-        <div>
-          <p class="text-neutral-500 text-sm">Restaurant Name</p>
-          <p class="text-lg">{{ restaurant?.name }}</p>
-        </div>
+  <div class="bg-white shadow-xs rounded-xl p-6 max-w-3xl">
+    <div class="grid grid-cols-2 gap-6">
+      <div>
+        <p class="text-neutral-500 text-sm">Restaurant Name</p>
+        <p class="text-lg">{{ restaurant?.name }}</p>
+      </div>
 
-        <div>
-          <p class="text-neutral-500 text-sm">Email</p>
-          <p class="text-lg">{{ restaurant?.email }}</p>
-        </div>
-
+      <div>
+        <p class="text-neutral-500 text-sm">Email</p>
+        <p class="text-lg">{{ restaurant?.email }}</p>
+      </div>
         <div>
           <p class="text-neutral-500 text-sm">Phone</p>
           <p class="text-lg">{{ restaurant?.phone }}</p>
@@ -24,21 +22,20 @@
           <p class="text-lg">{{ restaurant?.gstNumber }}</p>
         </div>
 
-        <div>
-          <p class="text-neutral-500 text-sm">
-            <span *ngIf="restaurant?.status === 'Approved'" class="text-green-500">✔</span>
-            <span *ngIf="restaurant?.status === 'Declined'" class="text-red-500">✖</span>
-            Status
-          </p>
-          <p class="text-lg">{{ restaurant?.status }}</p>
-        </div>
-
+      <div>
+        <p class="text-neutral-500 text-sm">
+          <span *ngIf="restaurant?.status === 'Approved'" class="text-green-500">✔</span>
+          <span *ngIf="restaurant?.status === 'Declined'" class="text-red-500">✖</span>
+          Status
+        </p>
+        <p class="text-lg">{{ restaurant?.status }}</p>
+      </div>
         
         <div>
           <p class="text-neutral-500 text-sm">Address</p>
           <p class="text-lg">{{ restaurant?.address }}</p>
         </div>
-      </div>
+    </div>
     </div>
 
     <br>
@@ -76,6 +73,7 @@
     <br>
     <input *ngIf="restaurant.status==='Declined'" [(ngModel)]="declineReason" type="text" placeholder="Reason*" class="m-2 bg-white border border-black w-160 h-10 px-2 rounded">
     <ui-button *ngIf="restaurant.status==='Declined' && declineReason?.trim()!==''" text="Submit" variant="primary" routerLink="admin" ></ui-button>
-    <br>
-  </div>
-</admin-dashboard-layout>
+    <br>    <br>
+  <br>
+  
+</div>

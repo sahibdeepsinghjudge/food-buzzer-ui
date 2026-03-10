@@ -1,0 +1,37 @@
+<h1 class="text-2xl mb-6">Inventory Dashboard</h1>
+<app-tiles-container [dataTiles]="dataTiles()"> </app-tiles-container>
+<div class="flex items-center gap-2 my-4">
+  <ui-button
+    text="Add Product"
+    radius="xl"
+    variant="black"
+    routerLink="/inventory/create-products"
+  ></ui-button>
+</div>
+<div class="flex items-center gap-2 my-4">
+  <ui-button
+    text="All Products"
+    radius="xl"
+    variant="primary"
+    (clicked)="getFilteredMaterials('all')"
+  ></ui-button>
+  <ui-button
+    text="Active Products"
+    radius="xl"
+    variant="primary"
+    (clicked)="getFilteredMaterials('active')"
+  ></ui-button>
+  <ui-button
+    text="Low on Stock"
+    radius="xl"
+    variant="primary"
+    (clicked)="getFilteredMaterials('low_on_stock')"
+  ></ui-button>
+  <ui-button
+    text="Out of Stock"
+    radius="xl"
+    variant="primary"
+    (clicked)="getFilteredMaterials('out_of_stock')"
+  ></ui-button>
+</div>
+<app-table [columns]="columns" [data]="tableData()"></app-table>

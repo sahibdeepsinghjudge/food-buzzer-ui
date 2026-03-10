@@ -1,6 +1,5 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { Dataservice } from '../../../dataservice';
-import { DashboardLayout } from '../dashboard-layout/dashboard-layout';
 import { TableComponent } from '../../../ui/table/table';
 import { TilesContainer } from '../../../ui/tiles-container/tiles-container';
 import { Restaurant } from '../../interface/restaurant';
@@ -9,7 +8,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-rejected-requests',
-  imports: [DashboardLayout, TableComponent, TilesContainer, CommonModule],
+  imports: [TableComponent, TilesContainer, CommonModule],
   templateUrl: './rejected-requests.html',
   styleUrl: './rejected-requests.css',
 })

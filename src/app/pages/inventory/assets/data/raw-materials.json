@@ -1,0 +1,72 @@
+[
+    {
+        "id": 1,
+        "restaurant_id": 101,
+        "name": "Tomatoes",
+        "sku": "VEG-TOM-001",
+        "category": "VEGETABLE",
+        "unit": "kg",
+        "current_stock": 25.5,
+        "reorder_level": 10,
+        "cost_per_unit": 30,
+        "is_active": true,
+        "created_at": "2026-03-01T10:00:00",
+        "updated_at": "2026-03-05T12:00:00"
+    },
+    {
+        "id": 2,
+        "restaurant_id": 101,
+        "name": "Chicken Breast",
+        "sku": "MEA-CHK-002",
+        "category": "MEAT",
+        "unit": "kg",
+        "current_stock": 5,
+        "reorder_level": 8,
+        "cost_per_unit": 220,
+        "is_active": true,
+        "created_at": "2026-03-01T10:00:00",
+        "updated_at": "2026-03-05T12:00:00"
+    },
+    {
+        "id": 3,
+        "restaurant_id": 101,
+        "name": "Olive Oil",
+        "sku": "OIL-OLV-003",
+        "category": "OIL",
+        "unit": "litre",
+        "current_stock": 0,
+        "reorder_level": 5,
+        "cost_per_unit": 450,
+        "is_active": true,
+        "created_at": "2026-03-01T10:00:00",
+        "updated_at": "2026-03-05T12:00:00"
+    },
+    {
+        "id": 4,
+        "restaurant_id": 101,
+        "name": "Onions",
+        "sku": "VEG-ONI-004",
+        "category": "VEGETABLE",
+        "unit": "kg",
+        "current_stock": 40,
+        "reorder_level": 15,
+        "cost_per_unit": 20,
+        "is_active": true,
+        "created_at": "2026-03-01T10:00:00",
+        "updated_at": "2026-03-05T12:00:00"
+    },
+    {
+        "id": 5,
+        "restaurant_id": 101,
+        "name": "Paneer",
+        "sku": "DAI-PAN-005",
+        "category": "DAIRY",
+        "unit": "kg",
+        "current_stock": 3,
+        "reorder_level": 5,
+        "cost_per_unit": 320,
+        "is_active": false,
+        "created_at": "2026-03-01T10:00:00",
+        "updated_at": "2026-03-05T12:00:00"
+    }
+]

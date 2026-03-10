@@ -1,5 +1,4 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { DashboardLayout } from '../dashboard-layout/dashboard-layout';
 import { TilesContainer } from '../../../ui/tiles-container/tiles-container';
 import { TableComponent } from '../../../ui/table/table';
 import { Dataservice } from '../../../dataservice';
@@ -9,7 +8,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-admin-dashboard',
-  imports: [DashboardLayout, TilesContainer,TableComponent, CommonModule],
+  imports: [ TilesContainer,TableComponent, CommonModule],
   templateUrl: './admin-dashboard.html',
   styleUrls: ['./admin-dashboard.css'],
 })

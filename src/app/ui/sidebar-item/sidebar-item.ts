@@ -8,14 +8,8 @@ import { RouterModule } from '@angular/router';
   styleUrl: './sidebar-item.css',
   standalone: true,
 })
-export class SidebarItem  {
+export class SidebarItem {
   @Input() text: string = '';
   @Input() link: string = '';
   @Input() icon: string = '';
-  @Input() currentTab: string = '';
-
-  isActive() {
-    return this.currentTab === this.link;
-  }
-
 }

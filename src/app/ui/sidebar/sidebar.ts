@@ -9,6 +9,5 @@ import { CommonModule } from '@angular/common';
   styleUrl: './sidebar.css',
 })
 export class Sidebar {
-  @Input() currentTab: string = '/home';
   @Input() navItems: any[] = [];
 }

@@ -1,0 +1,59 @@
+<div class="bg-white rounded-xl shadow-2xs p-6">
+  <h1 class="text-2xl mb-6">Add Product</h1>
+  <form>
+    <div class="grid grid-cols-2 gap-4">
+      <div class="flex flex-col gap-2">
+        <label for="name">Product Name</label>
+        <input-field type="text" placeholder="Enter product name" name="product_name"></input-field>
+      </div>
+      <div class="flex flex-col gap-2">
+        <label for="unit">Unit</label>
+        <select-input [options]="units" placeholder="Select unit" name="unit"></select-input>
+      </div>
+      <div class="flex flex-col gap-2">
+        <label for="current_stock">Current Stock</label>
+        <input-field
+          type="number"
+          placeholder="Enter current stock"
+          name="current_stock"
+        ></input-field>
+      </div>
+      <div class="flex flex-col gap-2">
+        <label for="reorder_level">Reorder Level</label>
+        <input-field
+          type="number"
+          placeholder="Enter reorder level"
+          name="reorder_level"
+        ></input-field>
+      </div>
+      <div class="flex flex-col gap-2">
+        <label for="cost_per_unit">Cost Per Unit</label>
+        <input-field
+          type="number"
+          placeholder="Enter cost per unit"
+          name="cost_per_unit"
+        ></input-field>
+      </div>
+    </div>
+    <div class="flex items-center gap-2 my-4">
+      <ui-button text="Add To Inventory" radius="xl" variant="black"></ui-button>
+    </div>
+  </form>
+</div>
+
+<!-- 
+
+name (varchar)
+
+sku (varchar, nullable, unique per restaurant)
+
+category (varchar) – e.g. 'VEGETABLE', 'MEAT'
+
+unit (varchar) – e.g. 'kg', 'g', 'litre', 'piece'
+
+current_stock (decimal(12,3)) – in unit
+
+reorder_level (decimal(12,3), nullable)
+
+cost_per_unit (decimal(12,2), nullable)
+-->

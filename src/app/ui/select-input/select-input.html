@@ -1,0 +1,14 @@
+<select
+  [value]="value"
+  [disabled]="disabled"
+  (change)="handleInput($event)"
+  (blur)="handleBlur()"
+  [name]="name"
+  [id]="id"
+  class="bg-bg-sec border border-slate-200 p-2 py-3 my-2 rounded-lg w-full"
+>
+  <option value="" [selected]="!value">{{ placeholder }}</option>
+  <option *ngFor="let option of options" [value]="option" [selected]="option === value">
+    {{ option }}
+  </option>
+</select>

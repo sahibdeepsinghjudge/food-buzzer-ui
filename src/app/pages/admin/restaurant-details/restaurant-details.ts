@@ -1,19 +1,18 @@
 
 import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
 import { ActivatedRoute, Data } from '@angular/router';
-import { DashboardLayout } from '../dashboard-layout/dashboard-layout';
 import { CommonModule } from '@angular/common';
 import { Router} from '@angular/router';
 import { Dataservice } from '../../../dataservice';
 import { Restaurant } from '../../interface/restaurant';
 import { Owner } from '../../interface/owner';
-import { Button } from '../../../ui/button/button';
 import { FormsModule } from '@angular/forms';
+import { Button } from '../../../ui/button/button';
 
 @Component({
   selector: 'app-restaurant-details',
   standalone: true,
-  imports: [DashboardLayout, CommonModule, Button, FormsModule],
+  imports: [CommonModule, Button, FormsModule],
   templateUrl: './restaurant-details.html',
   styleUrl: './restaurant-details.css',
 })
@@ -44,6 +43,7 @@ export class RestaurantDetails implements OnInit{
     console.log(this.restaurant);
     this.cdr.detectChanges();
  });
+    //this.restaurant = this.getRestaurantById(this.restaurantId);
   }
 
   
@@ -63,6 +63,7 @@ export class RestaurantDetails implements OnInit{
 
     }
     /*const restaurant = this.restaurants.find(r => r.id === id);
+    //const restaurant = this.getRestaurantById(id);
     if (restaurant) {
       restaurant.status = status;
     }*/

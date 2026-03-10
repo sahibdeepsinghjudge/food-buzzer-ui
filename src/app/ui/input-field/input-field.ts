@@ -31,8 +31,7 @@ export class InputField implements ControlValueAccessor {
   @Input() name = 'name';
   @Input() id = 'name';
   @Input() placeholder = 'Enter your name';
-
-  value = '';
+  @Input() value = '';
   disabled = false;
 
   // Angular gives these

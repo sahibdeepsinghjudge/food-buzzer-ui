@@ -1,10 +1,10 @@
 <div class="bg-bg-sec w-screen h-screen">
   <app-header [navItems]="headerNavItems"></app-header>
   <div class="pt-16 w-[280px] fixed">
-    <app-sidebar [navItems]="navItems" [currentTab]="currentTab"></app-sidebar>
+    <app-sidebar [navItems]="navItems"></app-sidebar>
   </div>
 
-  <div class="pt-22 ml-[280px]">
-    <ng-content></ng-content>
+  <div class="pt-22 ml-[280px] px-6 pb-6">
+    <router-outlet></router-outlet>
   </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Header } from '../../../ui/header/header';
 import { Sidebar } from '../../../ui/sidebar/sidebar';
@@ -10,14 +10,13 @@ import { Sidebar } from '../../../ui/sidebar/sidebar';
   styleUrl: './dashboard-layout.css',
 })
 export class DashboardLayout {
-    currentTab = '/dashboard';
     navItems = [
         { text: 'Home', link: '/dashboard' },
         // { text: 'POS', link: '/pos' },
         { text: 'Orders', link: '/orders' },
         { text: 'Products', link: '/products' },
         { text: 'Inventory', link: '/inventory' },
-        { text: 'Recipies', link: '/recepies' },
+        { text: 'Recipes', link: '/recipes' },
         { text: 'Team', link: '/team' },
         { text: 'Analytics', link: '/analytics' },
         { text: 'Digital Menu', link: '/digital-menu' },
