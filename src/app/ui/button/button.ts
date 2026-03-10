@@ -35,13 +35,25 @@ export class Button {
   @Input() variant: Variant = 'primary';
   @Input() radius: Radius = 'full';
   @Input() routerLink?: string;
+  @Input() type: 'button' | 'submit' | 'reset' = 'button';
+  @Input() isLoading: boolean = false;
 
 
   constructor(private router: Router) {}
 
   @Output() clicked = new EventEmitter<void>();
 
-  handleClick() {
+  handleClick(event: Event) {
+    if (this.isLoading) {
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+
+    if (this.type === 'button') {
+        event.preventDefault();
+    }
+
     if (this.routerLink) {
       this.router.navigate([this.routerLink]);
     }
@@ -78,6 +90,7 @@ get buttonClasses() {
     base,
     variants[this.variant],
     radiusMap[this.radius],
+    this.isLoading ? 'opacity-70 cursor-not-allowed pointer-events-none' : ''
   ];
 }
 }

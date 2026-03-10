@@ -1,11 +1,12 @@
 import { Component, signal } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Button } from '../../../ui/button/button';
 import { InputField } from '../../../ui/input-field/input-field';
 import { AccountsContainer } from '../accounts-container/accounts-container';
 import { MatIconModule } from '@angular/material/icon';
+import { AuthService } from '../../../services/auth.service';
 
 interface Error {
   code: 403 | 404 | 500 | 422;
@@ -18,7 +19,7 @@ interface Error {
 
 interface Success {
   code: 200;
-  message: 'User registered successfully' | 'Details are valid';
+  message: 'User registered successfully' | 'Details are valid' | 'Redirecting to onboarding...';
 }
 
 @Component({
@@ -41,8 +42,9 @@ export class Register {
   message = signal<Error | Success | null>(null);
   step1form;
   step2form;
+  isSubmitting = signal(false);
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.step1form = this.fb.nonNullable.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -100,14 +102,29 @@ export class Register {
       return;
     }
 
-    this.message.set({
-      code: 200,
-      message: 'Details are valid',
+    this.isSubmitting.set(true);
+    const step1Data = this.step1form.getRawValue();
+    const step2Data = this.step2form.getRawValue();
+
+    this.authService.register(step1Data, step2Data).subscribe({
+      next: (response) => {
+        this.isSubmitting.set(false);
+        this.message.set({
+          code: 200,
+          message: 'Redirecting to onboarding...',
+        });
+        this.router.navigate(['/onboarding']);
+        console.log('Registration successful:', response);
+      },
+      error: (err) => {
+        this.isSubmitting.set(false);
+        this.message.set({
+          code: 500,
+          message: 'Internal server error',
+        });
+        console.error('Registration error:', err);
+      }
     });
-
-    this.currentStep.set(3);
-
-    console.log('Form Data:', this.step2form.getRawValue());
   }
 
  

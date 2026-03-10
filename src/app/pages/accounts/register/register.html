@@ -64,7 +64,7 @@
         </p>
       </div>
 
-      <ui-button text="Continue" variant="primary-full" radius="xl"> </ui-button>
+      <ui-button text="Continue" type="submit" variant="primary-full" radius="xl"> </ui-button>
       <div class="text-center mt-4">
         <p class="text-neutral-500">
           Already have an account? <a routerLink="/accounts/login" class="text-primary">Login</a>
@@ -99,7 +99,13 @@
           formControlName="phone_number"
           placeholder="Enter phone number"
         ></input-field>
-        <ui-button text="Apply for verification" variant="primary-full" radius="xl"></ui-button>
+        <ui-button
+          text="Apply for verification"
+          type="submit"
+          [isLoading]="isSubmitting()"
+          variant="primary-full"
+          radius="xl"
+        ></ui-button>
         <p class="my-2"></p>
         <ui-button
           text="Back"

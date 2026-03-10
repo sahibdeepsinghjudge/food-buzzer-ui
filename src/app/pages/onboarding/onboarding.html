@@ -1,0 +1,41 @@
+<div class="min-h-screen bg-bg-sec flex items-center justify-center p-6">
+  <div class="bg-white rounded-[32px] shadow-sm max-w-4xl w-full p-10 md:p-14 text-center">
+    <!-- Header Section -->
+    <div class="mb-12">
+      <h1 class="text-4xl md:text-5xl font-bold text-neutral-900 mb-4 tracking-tight">
+        Welcome to <span class="text-primary">foodBuzzer</span>
+      </h1>
+      <p class="text-lg text-neutral-500 max-w-2xl mx-auto">
+        Your verification request is currently with the admin team. While you wait for approval, you
+        can start setting things up!
+      </p>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 text-left">
+      <div
+        *ngFor="let feature of features"
+        class="bg-bg-sec rounded-3xl p-8 hover:-translate-y-1 transition-transform duration-300"
+      >
+        <div class="bg-white w-14 h-14 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
+          <mat-icon class="text-primary">{{ feature.icon }}</mat-icon>
+        </div>
+        <h3 class="text-xl font-bold text-neutral-800 mb-3">{{ feature.title }}</h3>
+        <p class="text-neutral-500 leading-relaxed">{{ feature.description }}</p>
+      </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="flex flex-col items-center gap-4 border-t border-neutral-100 pt-10">
+      <ui-button
+        text="Go to Dashboard"
+        routerLink="/dashboard"
+        variant="primary"
+        radius="full"
+      ></ui-button>
+      <p class="text-sm text-neutral-400">
+        We'll notify you via email once your account is fully activated.
+      </p>
+    </div>
+  </div>
+</div>

@@ -3,17 +3,38 @@
     <p class="text-neutral-500 text-lg">continue with</p>
     <h1 class="text-4xl my-1 font-bold text-primary">foodBuzzer</h1>
   </ng-content>
-  <form action="" class="w-full flex flex-col mt-8">
-    <input-field placeholder="Email" type="email" name="email" id="email" value=""></input-field>
-    <input-field
-      placeholder="Password"
-      type="password"
-      name="password"
-      id="password"
-      value=""
-    ></input-field>
+  <form [formGroup]="loginForm" (ngSubmit)="login()" class="w-full flex flex-col mt-8">
+    <div>
+      <input-field placeholder="Email" type="email" formControlName="email"></input-field>
+      <p
+        *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid"
+        class="text-red-500 text-sm mt-1"
+      >
+        Enter a valid email address
+      </p>
+    </div>
+
+    <div class="mt-4">
+      <input-field placeholder="Password" type="password" formControlName="password"></input-field>
+      <p
+        *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid"
+        class="text-red-500 text-sm mt-1"
+      >
+        Password is required
+      </p>
+    </div>
+
+    <p *ngIf="errorMessage" class="text-red-500 text-sm mt-2 text-center">{{ errorMessage }}</p>
+
     <p class="text-right text-sm text-primary my-2"></p>
-    <ui-button text="Login" variant="primary-full" radius="2xl"> </ui-button>
+    <ui-button
+      text="Login"
+      type="submit"
+      variant="primary-full"
+      [isLoading]="isSubmitting()"
+      radius="2xl"
+    >
+    </ui-button>
     <p class="text-center text-sm text-neutral-500 mt-2">
       Don't have an account?
       <a routerLink="/accounts/register" class="text-primary cursor-pointer">Register</a>
