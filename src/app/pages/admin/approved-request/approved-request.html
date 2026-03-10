@@ -1,0 +1,10 @@
+<admin-dashboard-layout  [currentTab]="'/admin/approved-requests'">
+      <div class="px-4">
+    <p class="text-2xl">Approved Requests</p>
+    <app-tiles-container [dataTiles]="dataTiles"></app-tiles-container>
+    <app-table *ngIf="tableColumns.length!==0 && tableData.length!==0"
+        [columns]="tableColumns"
+        [data]="tableData">
+    </app-table>  
+  </div>
+</admin-dashboard-layout>

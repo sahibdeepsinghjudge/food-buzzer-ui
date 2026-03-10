@@ -16,10 +16,10 @@ export interface TableColumn {
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './table.html',
-  styleUrl: './table.css',
+  styleUrls: ['./table.css'],
 })
 export class TableComponent {
-  @Input() columns: TableColumn[] = [{
+  @Input() columns: TableColumn[] = [/*{
     key: 'name',
     label: 'Restaurant Name',
     type: 'link',
@@ -41,9 +41,9 @@ export class TableComponent {
     onClick: (row: any) => {
       console.log(row);
     }
-    }];
-  
-  @Input() data: any[] = [{
+    }*/];
+  @Input() restaurantDetails: boolean=false;
+  @Input() data: any[] = [/*{
     id: 1,
     name: 'Spice Garden',
     email: 'spice@test.com',
@@ -54,8 +54,7 @@ export class TableComponent {
     name: 'Pizza House',
     email: 'pizza@test.com',
     status: 'Pending'
-  }];
-
+  }*/];
   handleClick(column: TableColumn, row: any) {
     if (column.onClick) {
       column.onClick(row);
