@@ -17,7 +17,7 @@ import { Button } from '../../../ui/button/button';
   styleUrl: './restaurant-details.css',
 })
 export class RestaurantDetails implements OnInit{
-  //@Input() checkDetails:number = 0;
+  @Input() checkRequestStatus:string = '';
   declineReason='';
   restaurantId!: number;
   restaurantData: Restaurant[]=[];

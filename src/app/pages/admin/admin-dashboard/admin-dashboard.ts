@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, signal } from '@angular/core';
 import { TilesContainer } from '../../../ui/tiles-container/tiles-container';
 import { TableComponent } from '../../../ui/table/table';
 import { Dataservice } from '../../../dataservice';
@@ -12,6 +12,11 @@ import { CommonModule } from '@angular/common';
   templateUrl: './admin-dashboard.html',
   styleUrls: ['./admin-dashboard.css'],
 })
+
+//export interface RequestResponseData{
+
+//}
+
 export class AdminDashboard implements OnInit{
   checkDetails:number = 0; //0 means pending request
   index: number=0;
@@ -21,13 +26,17 @@ export class AdminDashboard implements OnInit{
   owner: Owner[]=[];
   restaurant: Restaurant[]=[];
   constructor(private dataService: Dataservice, private cdr: ChangeDetectorRef){}
+  //data = signal<RequestResponseData|null>(null);
+  //dataTiles = signal<any>([]);
   ngOnInit(){
    this.dataService.getData().subscribe(data => {
-
+   /* next: (resp)=>
+      console.log(resp)
+    this.data.set(resp)*/
     this.owner = data.owners.data;
     this.restaurant = data.restaurants.data;
 
-    this.tableData = this.restaurant.filter(r=> r.status==='pending').map((r, index) => {
+    this.tableData = this.restaurant.map((r, index) => {
       const owner = this.owner.find(o => o.id === r.ownerId);
 
       return {
@@ -55,4 +64,7 @@ export class AdminDashboard implements OnInit{
     { number: 10, label: 'Restaurants', comparison_parameter: 'last month', comparison_number_percentage: 3 },
     { number: 10, label: 'Password Requests', comparison_parameter: 'last month', comparison_number_percentage: -1 },
   ];
+  //});}
+
+  
 }
