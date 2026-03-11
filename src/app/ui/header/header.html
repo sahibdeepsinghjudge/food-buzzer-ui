@@ -5,7 +5,12 @@
       <li *ngFor="let item of navItems">
         <app-nav-item [text]="item.text" [link]="item.link"></app-nav-item>
       </li>
-      <ui-button text="Logout" variant="logout" link="/login"></ui-button>
+      <ui-button
+        text="Logout"
+        variant="logout"
+        (clicked)="logout()"
+        [isLoading]="isSubmitting()"
+      ></ui-button>
     </ul>
   </nav>
 </header>

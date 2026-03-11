@@ -1,4 +1,4 @@
-<nav class="bg-white h-screen border-r border-neutral-200">
+<nav class="bg-white h-screen border-r border-neutral-200 flex flex-col justify-between">
   <ul class="p-4">
     <app-sidebar-item
       *ngFor="let item of navItems"
@@ -6,4 +6,8 @@
       [link]="item.link"
     ></app-sidebar-item>
   </ul>
+
+  <div class="p-4">
+    <ui-button variant="logout" text="Logout" (clicked)="logout()"></ui-button>
+  </div>
 </nav>
