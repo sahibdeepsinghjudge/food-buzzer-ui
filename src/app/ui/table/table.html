@@ -31,7 +31,7 @@
           <!-- ROUTER LINK -->
           <a
             *ngIf="column.type === 'link'"
-            [routerLink]="[column.routerLink, row[column.key]]"
+            [routerLink]="[column.routerLink, row.id]"
             class="text-primary hover:underline"
           >
             {{ row[column.key] }}

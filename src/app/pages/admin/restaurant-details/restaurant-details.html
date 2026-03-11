@@ -12,16 +12,15 @@
         <p class="text-neutral-500 text-sm">Email</p>
         <p class="text-lg">{{ restaurant?.email }}</p>
       </div>
+        <div>
+          <p class="text-neutral-500 text-sm">Phone</p>
+          <p class="text-lg">{{ restaurant?.phone }}</p>
+        </div>
 
-      <div>
-        <p class="text-neutral-500 text-sm">Owner</p>
-        <p class="text-lg">{{ restaurant?.owner }}</p>
-      </div>
-
-      <div>
-        <p class="text-neutral-500 text-sm">Phone</p>
-        <p class="text-lg">{{ restaurant?.phone }}</p>
-      </div>
+        <div>
+          <p class="text-neutral-500 text-sm">GST Number</p>
+          <p class="text-lg">{{ restaurant?.gstNumber }}</p>
+        </div>
 
       <div>
         <p class="text-neutral-500 text-sm">
@@ -31,24 +30,50 @@
         </p>
         <p class="text-lg">{{ restaurant?.status }}</p>
       </div>
+        
+        <div>
+          <p class="text-neutral-500 text-sm">Address</p>
+          <p class="text-lg">{{ restaurant?.address }}</p>
+        </div>
+    </div>
+    </div>
 
-      <div>
-        <p class="text-neutral-500 text-sm">Address</p>
-        <p class="text-lg">{{ restaurant?.address }}</p>
+    <br>
+    <p class="text-2xl mb-6">Owner Details</p>
+    <div class="bg-white shadow-xs rounded-xl p-6 max-w-3xl">
+      <div class="grid grid-cols-2 gap-6">
+        <div>
+          <p class="text-neutral-500 text-sm">Name</p>
+          <p class="text-lg">{{owner?.name}}</p>
+        </div>
+
+        <div>
+          <p class="text-neutral-500 text-sm">Phone Number</p>
+          <p class="text-lg">{{owner?.mobile}}</p>
+        </div>
+
+        <div>
+          <p class="text-neutral-500 text-sm">Email</p>
+          <p class="text-lg">{{owner?.email}}</p>
+        </div>
       </div>
     </div>
-  </div>
-  <br />
-  <button
-    class="bg-primary text-white transition-all hover:px-12 m-2 rounded-full px-14 py-2 text-lg"
-    (click)="updateStatus(restaurant.id, 'Approved')"
-  >
-    Approve
-  </button>
-  <button
-    class="bg-white text-black border-2 border-black transition-all hover:px-12 m-2 rounded-full px-14 py-2 text-lg"
-    (click)="updateStatus(restaurant.id, 'Declined')"
-  >
-    Decline
-  </button>
+    <br />
+    <br>
+  <button *ngIf="checkRequestStatus==='pending'"
+      class="bg-primary text-white transition-all hover:px-12 m-2 rounded-full px-14 py-2 text-lg" 
+      (click)="updateStatus(owner.id,'Approved')">
+      Approve
+    </button>
+    <button *ngIf="checkRequestStatus==='pending'"
+      class="bg-white text-black border-2 border-black transition-all hover:px-12 m-2 rounded-full px-14 py-2 text-lg"
+      (click)="updateStatus(owner.id,'Declined')">
+      Decline
+    </button>
+    <br>
+    <input *ngIf="checkRequestStatus==='pending' && restaurant.status==='Declined'" [(ngModel)]="declineReason" type="text" placeholder="Reason*" class="m-2 bg-white border border-black w-160 h-10 px-2 rounded">
+    <ui-button *ngIf="restaurant.status==='Declined' && declineReason?.trim()!==''" text="Submit" variant="primary" routerLink="admin" ></ui-button>
+    <br>
+  <br>
+  
 </div>

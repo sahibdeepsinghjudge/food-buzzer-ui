@@ -1,0 +1,46 @@
+{
+  "owners": {
+    "columns": ["id", "name", "email", "mobile"],
+    "data": [
+      { "id": 1, "name": "Rahul Sharma", "email": "rahul@gmail.com", "mobile": "9304827162"},
+      { "id": 2, "name": "Priya Mehta", "email": "priya@gmail.com", "mobile": "9475858585" },
+      { "id": 3, "name": "Amit Verma", "email": "amit@gmail.com", "mobile": "9384758459" }
+    ]
+  },
+
+  "restaurants": {
+    "columns": ["id", "name", "location", "phone", "gstNumber", "ownerId"],
+    "data": [
+      {
+        "id": 1,
+        "name": "Spicy Hub",
+        "phone": "9876543210",
+        "gstNumber": "07ABCDE1234F1Z5",
+        "email": "spicy@gmail.com",
+        "status": "Approved",
+        "ownerId": 1,
+        "address": "MG Road, Delhi"
+      },
+      {
+        "id": 2,
+        "name": "Pizza Town",
+        "phone": "9123456780",
+        "gstNumber": "27PQRSX5678L1Z2",
+        "email": "pizzatown@gmail.com",
+        "status": "Declined",
+        "ownerId": 2,
+        "address": "Andheri West, Mumbai"
+      },
+      {
+        "id": 3,
+        "name": "Dragon Bowl",
+        "phone": "9988776655",
+        "gstNumber": "29LMNOP4321K1Z9",
+        "email": "dragonbowl@gmail.com",
+        "status": "pending",
+        "ownerId": 3,
+        "address": "Koramangala, Bangalore"
+      }
+    ]
+  }
+}
