@@ -17,7 +17,7 @@ import { Button } from '../../../ui/button/button';
   styleUrl: './restaurant-details.css',
 })
 export class RestaurantDetails implements OnInit{
-  @Input() checkRequestStatus:string = '';
+  checkRequestStatus:string = '';
   declineReason='';
   restaurantId!: number;
   restaurantData: Restaurant[]=[];
@@ -37,12 +37,13 @@ export class RestaurantDetails implements OnInit{
     this.ownerData = data.owners.data;
     this.owner = this.ownerData.find(r => r.id===this.ownerid);
    
-    console.log("Hello Owner");
-    console.log(this.owner);
-    console.log("Hello Restaurant");
-    console.log(this.restaurant);
+    if(this.restaurant.status==="pending")
+    {
+      this.checkRequestStatus="pending";
+    }
     this.cdr.detectChanges();
- });
+  });
+    
     //this.restaurant = this.getRestaurantById(this.restaurantId);
   }
 
@@ -54,7 +55,11 @@ export class RestaurantDetails implements OnInit{
   updateStatus(id: number, status: string) {
     if(this.restaurant)
     {
+      console.log("Status is: "+this.restaurant.status);
+      console.log("Request status is: "+this.checkRequestStatus);
       this.restaurant.status=status;
+      console.log("Status is: "+this.restaurant.status);
+      console.log("Request status is: "+this.checkRequestStatus);
       /*this.dataService.updateRestaurantStatus(this.restaurant.id, 'Approved')
       .subscribe(() => {
         console.log('Status updated in backend');

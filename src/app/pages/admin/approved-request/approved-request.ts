@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './approved-request.css',
 })
 export class ApprovedRequest implements OnInit{
-  //checkDetail:number = 1; //1 means request not pending
+  checkRequestStatus = "Approved"; //1 means request not pending
   index: number=0;
   serialNo:number=0;
   tableData: any[]=[]
