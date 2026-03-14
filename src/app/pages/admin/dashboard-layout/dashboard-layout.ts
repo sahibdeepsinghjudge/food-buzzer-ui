@@ -13,10 +13,10 @@ export class DashboardLayout {
     @Input() currentTab = '/admin';
     navItems = [
         { text: 'Dashboard', link: '/admin' },
-        { text: 'Pending requests', link: '/pending-requests' },
+        { text: 'Pending requests', link: '/admin/pending-request' },
         { text: 'Approved Requests', link: '/admin/approved-requests' },
         { text: 'Rejected Requests', link: '/admin/rejected-requests' },
-        { text: 'Restaurants', link: '/restaurants' },
+        //{ text: 'Restaurants', link: '/restaurants' },
         { text: 'Password Requests', link: '/password-requests' },
     ]
 }

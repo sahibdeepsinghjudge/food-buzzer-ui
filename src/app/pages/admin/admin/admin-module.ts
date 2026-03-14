@@ -5,6 +5,8 @@ import { AdminDashboard } from '../admin-dashboard/admin-dashboard';
 import { RestaurantDetails } from '../restaurant-details/restaurant-details';
 import { ApprovedRequest } from '../approved-request/approved-request';
 import { RejectedRequests } from '../rejected-requests/rejected-requests';
+import { DashboardLayout as AdminDashboardLayout } from '../dashboard-layout/dashboard-layout';
+import { PendingRequest } from '../pending-request/pending-request';
 
 /*
 const routes: Routes = [
@@ -14,7 +16,6 @@ const routes: Routes = [
   { path: 'rejected-requests', component: RejectedRequests}
 */
 
-import { DashboardLayout as AdminDashboardLayout } from '../dashboard-layout/dashboard-layout';
 
 const routes: Routes = [
   {
@@ -24,7 +25,8 @@ const routes: Routes = [
       { path: '', component: AdminDashboard },
       { path: 'restaurant-details/:id', component: RestaurantDetails},
       { path: 'approved-requests', component: ApprovedRequest},
-      { path: 'rejected-requests', component: RejectedRequests}
+      { path: 'rejected-requests', component: RejectedRequests},
+      { path: 'pending-request', component: PendingRequest}
     ]
   }
 ];

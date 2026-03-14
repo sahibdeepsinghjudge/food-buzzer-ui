@@ -60,20 +60,20 @@
     </div>
     <br />
     <br>
-  <button 
+  <button *ngIf="restaurant?.status==='pending' || checkRequestStatus==='pending'"
       class="bg-primary text-white transition-all hover:px-12 m-2 rounded-full px-14 py-2 text-lg" 
       (click)="updateStatus(owner.id,'Approved')">
       Approve
     </button>
-    <button 
+    <button *ngIf="restaurant?.status==='pending' || checkRequestStatus==='pending'"
       class="bg-white text-black border-2 border-black transition-all hover:px-12 m-2 rounded-full px-14 py-2 text-lg"
       (click)="updateStatus(owner.id,'Declined')">
       Decline
     </button>
     <br>
-    <input *ngIf="restaurant.status==='Declined'" [(ngModel)]="declineReason" type="text" placeholder="Reason*" class="m-2 bg-white border border-black w-160 h-10 px-2 rounded">
+    <input *ngIf="checkRequestStatus==='pending' && restaurant.status==='Declined'" [(ngModel)]="declineReason" type="text" placeholder="Reason*" class="m-2 bg-white border border-black w-160 h-10 px-2 rounded">
     <ui-button *ngIf="restaurant.status==='Declined' && declineReason?.trim()!==''" text="Submit" variant="primary" routerLink="admin" ></ui-button>
-    <br>    <br>
+    <br>
   <br>
   
 </div>

@@ -3,8 +3,15 @@
     "columns": ["id", "name", "email", "mobile"],
     "data": [
       { "id": 1, "name": "Rahul Sharma", "email": "rahul@gmail.com", "mobile": "9304827162"},
-      { "id": 2, "name": "Priya Mehta", "email": "priya@gmail.com", "mobile": "9475858585" },
-      { "id": 3, "name": "Amit Verma", "email": "amit@gmail.com", "mobile": "9384758459" }
+      { "id": 2, "name": "Priya Mehta", "email": "priya@gmail.com", "mobile": "9475858585"},
+      { "id": 3, "name": "Amit Verma", "email": "amit@gmail.com", "mobile": "9384758459"},
+      { "id": 4, "name": "Neha Kapoor", "email": "neha@gmail.com", "mobile": "9123456789"},
+      { "id": 5, "name": "Rohit Singh", "email": "rohit@gmail.com", "mobile": "9898989898"},
+      { "id": 6, "name": "Karan Malhotra", "email": "karan@gmail.com", "mobile": "9765432101"},
+      { "id": 7, "name": "Sneha Joshi", "email": "sneha@gmail.com", "mobile": "9345678901"},
+      { "id": 8, "name": "Vikas Gupta", "email": "vikas@gmail.com", "mobile": "9234567890"},
+      { "id": 9, "name": "Anjali Desai", "email": "anjali@gmail.com", "mobile": "9876501234"},
+      { "id": 10, "name": "Arjun Nair", "email": "arjun@gmail.com", "mobile": "9123409876"}
     ]
   },
 
@@ -40,6 +47,126 @@
         "status": "pending",
         "ownerId": 3,
         "address": "Koramangala, Bangalore"
+      },
+      {
+        "id": 4,
+        "name": "Tandoori Nights",
+        "phone": "9876500001",
+        "gstNumber": "08ABCDE5678F1Z1",
+        "email": "tandoori@gmail.com",
+        "status": "Approved",
+        "ownerId": 4,
+        "address": "Sector 18, Noida"
+      },
+      {
+        "id": 5,
+        "name": "Burger Factory",
+        "phone": "9876500002",
+        "gstNumber": "09ABCDE5678F1Z2",
+        "email": "burger@gmail.com",
+        "status": "pending",
+        "ownerId": 5,
+        "address": "Connaught Place, Delhi"
+      },
+      {
+        "id": 6,
+        "name": "Curry Palace",
+        "phone": "9876500003",
+        "gstNumber": "10ABCDE5678F1Z3",
+        "email": "curry@gmail.com",
+        "status": "Approved",
+        "ownerId": 6,
+        "address": "Banjara Hills, Hyderabad"
+      },
+      {
+        "id": 7,
+        "name": "Sushi World",
+        "phone": "9876500004",
+        "gstNumber": "11ABCDE5678F1Z4",
+        "email": "sushi@gmail.com",
+        "status": "Declined",
+        "ownerId": 7,
+        "address": "Indiranagar, Bangalore"
+      },
+      {
+        "id": 8,
+        "name": "Green Garden",
+        "phone": "9876500005",
+        "gstNumber": "12ABCDE5678F1Z5",
+        "email": "green@gmail.com",
+        "status": "Approved",
+        "ownerId": 8,
+        "address": "Viman Nagar, Pune"
+      },
+      {
+        "id": 9,
+        "name": "Food Fiesta",
+        "phone": "9876500006",
+        "gstNumber": "13ABCDE5678F1Z6",
+        "email": "fiesta@gmail.com",
+        "status": "pending",
+        "ownerId": 9,
+        "address": "Salt Lake, Kolkata"
+      },
+      {
+        "id": 10,
+        "name": "Royal Biryani",
+        "phone": "9876500007",
+        "gstNumber": "14ABCDE5678F1Z7",
+        "email": "biryani@gmail.com",
+        "status": "Approved",
+        "ownerId": 10,
+        "address": "Charminar, Hyderabad"
+      },
+      {
+        "id": 11,
+        "name": "Taste of Punjab",
+        "phone": "9876500008",
+        "gstNumber": "15ABCDE5678F1Z8",
+        "email": "punjab@gmail.com",
+        "status": "pending",
+        "ownerId": 1,
+        "address": "Ludhiana, Punjab"
+      },
+      {
+        "id": 12,
+        "name": "Italian Delight",
+        "phone": "9876500009",
+        "gstNumber": "16ABCDE5678F1Z9",
+        "email": "italian@gmail.com",
+        "status": "Approved",
+        "ownerId": 2,
+        "address": "Bandra, Mumbai"
+      },
+      {
+        "id": 13,
+        "name": "Street Food Adda",
+        "phone": "9876500010",
+        "gstNumber": "17ABCDE5678F1Z0",
+        "email": "adda@gmail.com",
+        "status": "Declined",
+        "ownerId": 3,
+        "address": "Chandni Chowk, Delhi"
+      },
+      {
+        "id": 14,
+        "name": "Ocean Grill",
+        "phone": "9876500011",
+        "gstNumber": "18ABCDE5678F1Z1",
+        "email": "ocean@gmail.com",
+        "status": "Approved",
+        "ownerId": 4,
+        "address": "Panaji, Goa"
+      },
+      {
+        "id": 15,
+        "name": "Veggie Delight",
+        "phone": "9876500012",
+        "gstNumber": "19ABCDE5678F1Z2",
+        "email": "veggie@gmail.com",
+        "status": "pending",
+        "ownerId": 5,
+        "address": "Ahmedabad, Gujarat"
       }
     ]
   }

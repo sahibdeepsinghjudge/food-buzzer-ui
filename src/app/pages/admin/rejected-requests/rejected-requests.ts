@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './rejected-requests.css',
 })
 export class RejectedRequests {
+  checkRequestStatus="Declined";
   index: number=0;
   serialNo:number=0;
   tableColumns: any[]=[];
