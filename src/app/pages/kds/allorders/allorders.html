@@ -1,0 +1,49 @@
+<app-kdsscreen [activeText]="'View All'" [activeLink]="'/kds/view-all'" [orderLength]="orderLength">
+  <h1 class="m-5 text-2xl font-semibold">Orders List</h1>
+<div class="grid grid-cols-[repeat(auto-fit,minmax(20rem,1fr))] gap-6 m-5">
+    <div *ngFor="let item of orderedData"
+    class="bg-white rounded-xl shadow py-5 flex flex-col border border-black">
+      <div class="px-8">
+        <div class="flex justify-between">
+          <p>Table no. {{item.table}}</p>
+          <p>Time: {{item.time}}</p>
+        </div>
+        <p class="pb-2">Order No. #{{item.orderId}}</p>
+      </div>
+        <hr>
+      <div class="px-8">
+        <p class="pt-2">Customer Name- {{item.customer.name}}</p>
+        <p class="pb-2">Number- {{item.customer.mobile}}</p>
+      </div>
+      <hr>
+      <div *ngFor="let i of item.items" class="flex flex-col px-8">
+      <p class="font-medium py-2 text-base">{{i.quantity}} {{i.name}}</p>
+      <ul class="ml-4 list-none">
+        <li *ngFor="let ingredient of i.recipe">{{ingredient}}</li>
+      </ul>
+    </div>
+    <div class="px-4 pr-4 pt-2 mt-auto flex gap-1 relative">
+      <button *ngIf="item.status==='Pending'" (click)="toggleDropDown(item.orderId)" class="bg-yellow-500 text-white flex-1 py-3 rounded-lg hover:bg-yellow-600 cursor-pointer">{{item.status}}</button>
+        <div *ngIf="activeDropDown===item.orderId" 
+          class="absolute right-0 top-0 h-full w-1/2 bg-white border border-black rounded-lg flex flex-col shadow-md">
+          <button class="flex-1 text-green-600 hover:bg-gray-100 cursor-pointer"
+          (click)="updateStatus(item.orderId, 'Accepted')">
+            Accept
+          </button>
+          <button class="flex-1 text-red-600 border-t border-gray-300 hover:bg-gray-100 cursor-pointer" 
+          (click)="updateStatus(item.orderId, 'Declined')">
+            Decline
+          </button>
+        </div>
+      <button *ngIf="item.status==='Accepted'" class="bg-green-500 text-white flex-1 py-3 rounded-lg hover:bg-green-700 cursor-pointer" (click)="updateStatus(item.orderId, 'Cooking')">{{item.status}}<span class="text-xs"> (Start Cooking)</span></button>
+      <button *ngIf="item.status==='Cooking'" class="bg-orange-400 text-white flex-1 py-3 rounded-lg hover:bg-orange-700 cursor-pointer" (click)="updateStatus(item.orderId, 'Prepared')">{{item.status}}</button>
+      <button *ngIf="item.status==='Prepared'" class="bg-blue-500 text-white flex-1 py-3 rounded-lg hover:bg-blue-800 cursor-pointer" (click)="updateStatus(item.orderId, 'Completed')">{{item.status}}</button>
+      <p *ngIf="item.status==='Declined'" class="text-red-500 flex-1 py-3 text-center text-xl">{{item.status}}</p>
+      <p *ngIf="item.status==='Completed'" class="text-green-500 flex-1 py-3 text-center text-xl">{{item.status}}</p>
+      <button *ngIf="item.status!=='Declined'" class="bg-white border border-black px-3 py-3 rounded-lg flex justify-center items-center hover:bg-gray-200 cursor-pointer" (click)="printPage()">
+        <span class="material-icons text-3xl">print</span>
+      </button>
+    </div>
+  </div>
+  </div>
+</app-kdsscreen>
