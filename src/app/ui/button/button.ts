@@ -37,6 +37,7 @@ export class Button {
   @Input() routerLink?: string;
   @Input() type: 'button' | 'submit' | 'reset' = 'button';
   @Input() isLoading: boolean = false;
+  @Input() disabled: boolean = false;
 
 
   constructor(private router: Router) {}
@@ -44,7 +45,7 @@ export class Button {
   @Output() clicked = new EventEmitter<void>();
 
   handleClick(event: Event) {
-    if (this.isLoading) {
+    if (this.isLoading || this.disabled) {
       event.preventDefault();
       event.stopPropagation();
       return;
@@ -90,7 +91,7 @@ get buttonClasses() {
     base,
     variants[this.variant],
     radiusMap[this.radius],
-    this.isLoading ? 'opacity-70 cursor-not-allowed pointer-events-none' : ''
+    this.isLoading || this.disabled ? 'opacity-70 cursor-not-allowed pointer-events-none' : ''
   ];
 }
 }

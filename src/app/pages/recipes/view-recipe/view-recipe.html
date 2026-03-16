@@ -1,1 +1,77 @@
-<p>view-recipe works!</p>
+<div class="mx-auto pb-20 px-8 mt-10 max-w-5xl">
+  <!-- Loading State -->
+  <div *ngIf="isLoading()" class="flex justify-center items-center py-32">
+    <mat-icon class="animate-spin text-primary text-4xl w-10 h-10">autorenew</mat-icon>
+  </div>
+
+  <div *ngIf="!isLoading() && recipe() as r">
+    <!-- Header/Actions -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+      <div>
+        <a
+          routerLink="/recipes"
+          class="inline-flex items-center text-neutral-500 hover:text-primary transition-colors text-sm font-medium mb-4"
+        >
+          <mat-icon class="mr-1 text-sm w-4 h-4">arrow_back</mat-icon>
+          Back to Recipes
+        </a>
+        <h2 class="text-3xl font-bold text-neutral-800">{{ r.name }}</h2>
+        <p class="text-neutral-500 mt-2">Added on: {{ r.createdAt | date: 'mediumDate' }}</p>
+      </div>
+
+      <div class="flex gap-3">
+        <ui-button text="Edit Recipe" variant="secondary" (clicked)="editRecipe()"></ui-button>
+        <ui-button
+          text="Delete"
+          variant="black"
+          (clicked)="deleteRecipe()"
+          [isLoading]="isDeleting()"
+        ></ui-button>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Recipe Details -->
+      <div class="md:col-span-1 space-y-6">
+        <div class="bg-white rounded-[32px] p-8 shadow-sm border border-neutral-100 h-full">
+          <h3 class="text-xl font-semibold text-neutral-800 mb-4 border-b border-neutral-100 pb-4">
+            Description
+          </h3>
+          <p class="text-neutral-600 leading-relaxed">{{ r.description }}</p>
+        </div>
+      </div>
+
+      <!-- Ingredients List -->
+      <div class="md:col-span-2">
+        <div class="bg-neutral-50 rounded-[32px] p-8 border border-neutral-100">
+          <h3 class="text-xl font-semibold text-neutral-800 mb-6 flex items-center justify-between">
+            Ingredients Recipe
+            <span class="bg-primary/10 text-primary text-sm font-bold px-3 py-1 rounded-full"
+              >{{ enrichedIngredients().length }} Items</span
+            >
+          </h3>
+
+          <ul class="space-y-3">
+            <li
+              *ngFor="let ing of enrichedIngredients()"
+              class="flex items-center justify-between bg-white p-5 rounded-2xl shadow-sm border border-neutral-100"
+            >
+              <div class="flex items-center gap-4">
+                <div
+                  class="w-10 h-10 rounded-full bg-neutral-50 flex items-center justify-center text-neutral-400"
+                >
+                  <mat-icon class="text-sm">restaurant</mat-icon>
+                </div>
+                <span class="font-semibold text-neutral-800 text-lg">{{ ing.materialName }}</span>
+              </div>
+              <span class="text-neutral-500 font-medium bg-neutral-50 px-4 py-2 rounded-xl"
+                >{{ ing.portionSize }} {{ ing.unit }}</span
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

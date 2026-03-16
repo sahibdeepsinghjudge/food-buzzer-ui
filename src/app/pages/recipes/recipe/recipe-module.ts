@@ -9,6 +9,7 @@ import { ViewRecipe } from '../view-recipe/view-recipe';
 const routes: Routes = [
   { path: '', component: RecipeDashboard },
   { path: 'create-recipe', component: CreateRecipe },
+  { path: 'edit-recipe/:id', component: CreateRecipe },
   { path: 'recipe/:id', component: ViewRecipe }
 ]
 

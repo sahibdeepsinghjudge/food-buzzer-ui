@@ -1,5 +1,47 @@
-<h1 class="text-2xl">Recipe Dashboard</h1>
+<div class="px-8 mt-10">
+  <div class="flex justify-between items-center mb-8">
+    <!-- Header Texts -->
+    <div class="space-y-1">
+      <h2 class="text-3xl font-bold text-neutral-800">Recipes</h2>
+      <p class="text-neutral-500">Manage your culinary creations and build new recipes.</p>
+    </div>
 
-<!-- Tiles -->
+    <!-- Actions Area -->
+    <div class="flex items-center gap-4">
+      <div class="w-72 mt-2">
+        <input-field
+          placeholder="Search recipes..."
+          (ngModelChange)="onSearch($event)"
+          [ngModel]="searchQuery()"
+          id="search"
+          name="search"
+        >
+        </input-field>
+      </div>
+      <div class="mt-2">
+        <ui-button text="Create Recipe" variant="black" routerLink="/recipes/create-recipe">
+        </ui-button>
+      </div>
+    </div>
+  </div>
 
-<!-- Table for all the recipes -->
+  <!-- Loading State -->
+  <div *ngIf="isLoading()" class="flex justify-center items-center py-20">
+    <mat-icon class="animate-spin text-primary text-4xl w-10 h-10">autorenew</mat-icon>
+  </div>
+
+  <!-- Data Table -->
+  <div *ngIf="!isLoading()">
+    <app-table [columns]="columns" [data]="filteredRecipes()"></app-table>
+
+    <!-- Empty State -->
+    <div
+      *ngIf="filteredRecipes().length === 0"
+      class="text-center py-12 bg-white rounded-xl border border-neutral-200 mt-4"
+    >
+      <mat-icon class="text-neutral-300 w-16 h-16 text-6xl mb-4">restaurant_menu</mat-icon>
+      <h3 class="text-lg font-medium text-neutral-700">No recipes found</h3>
+      <p class="text-neutral-500 mt-1">Try to create a new one to get started.</p>
+    </div>
+  </div>
+</div>

@@ -2,7 +2,7 @@
   <button
     [ngClass]="buttonClasses"
     [type]="type"
-    [disabled]="isLoading"
+    [disabled]="isLoading || disabled"
     (click)="handleClick($event)"
     class="flex items-center justify-center gap-2"
   >
