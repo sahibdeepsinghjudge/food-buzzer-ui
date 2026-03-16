@@ -33,4 +33,9 @@ export const routes: Routes = [
         loadChildren: () => import('./pages/admin/admin/admin-module').then(m => m.AdminModule),
         canActivate: [authGuard]
     },
+    {
+        path: 'kds',
+        loadChildren:() => import('./pages/kds/kds/kds-module').then(m=>m.KdsModule),
+        canActivate: [authGuard]
+    },
 ];

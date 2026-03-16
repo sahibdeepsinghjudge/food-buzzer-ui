@@ -11,8 +11,8 @@ import { ApiResponse } from './pages/interface/apiresponse';
 export class Dataservice {
   private url="assets/demodata.json";
   constructor(private http: HttpClient){}
-  getData(): Observable<ApiResponse>{
-    return this.http.get<ApiResponse>(this.url);
+  getData(): Observable<any>{
+    return this.http.get<any>(this.url);
   }
   updateRestaurantStatus(id: number, status: string) {
   //return this.http.put(`http://localhost:8080/restaurants/${id}/status`, { status });

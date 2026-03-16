@@ -1,0 +1,44 @@
+<app-kdsscreen [activeText]="'Pending'" [activeLink]="'/kds/pending-orders'" [orderLength]="orderLength">
+  <h1 class="m-5 text-2xl font-semibold">Pending Orders</h1>
+  <div class="grid grid-cols-[repeat(auto-fit,minmax(20rem,1fr))] justify-items-center gap-6 m-5">
+    <div *ngFor="let item of orderedData"
+    class="bg-white rounded-xl shadow py-5 flex flex-col border borer-black">
+      <div class="px-8">
+        <div class="flex justify-between">
+          <p class="mr-10">Table No. {{item.table}}</p>
+          <p>Time: {{item.time}}</p>
+        </div>
+        <p class="pb-2">Order No. #{{item.orderId}}</p>
+      </div>
+      <hr>
+      <div class="px-8">
+        <p class="pt-2">Customer Name- {{item.customer.name}}</p>
+        <p class="pb-2">Number- {{item.customer.mobile}}</p>
+      </div>
+      <hr>
+      <div *ngFor="let i of item.items" class="flex flex-col px-8">
+        <p class="font-medium py-2 text-base">{{i.quantity}} {{i.name}}</p>
+        <ul class="ml-4 list-none">
+          <li *ngFor="let ingredient of i.recipe">{{ingredient}}</li>
+        </ul>
+      </div>
+      <div class="px-4 pr-4 pt-2 mt-auto flex gap-1 relative">
+      <button *ngIf="item.status==='Pending'" (click)="toggleDropDown(item.orderId)" class="bg-yellow-500 text-white flex-1 py-3 rounded-lg hover:bg-yellow-600 cursor-pointer">{{item.status}}</button>
+        <div *ngIf="activeDropDown===item.orderId" 
+          class="absolute right-0 top-0 h-full w-1/2 bg-white border border-black rounded-lg flex flex-col shadow-md">
+          <button class="flex-1 text-green-600 hover:bg-gray-100 cursor-pointer"
+          (click)="updateStatus(item.orderId, 'Accepted')">
+            Accept
+          </button>
+          <button class="flex-1 text-red-600 border-t border-gray-300 hover:bg-gray-100 cursor-pointer" 
+          (click)="updateStatus(item.orderId, 'Declined')">
+            Decline
+          </button>
+        </div>
+        <button *ngIf="item.status!=='Declined'" class="bg-white border border-black px-3 py-3 rounded-lg flex justify-center items-center hover:bg-gray-200 cursor-pointer" (click)="printPage()">
+          <span class="material-icons text-3xl">print</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</app-kdsscreen>
