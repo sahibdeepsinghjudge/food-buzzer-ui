@@ -46,17 +46,17 @@ export class Register {
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.step1form = this.fb.nonNullable.group({
-      name: ['', Validators.required, Validators.pattern('^[A-Za-z]+$')],
+      name: ['', [Validators.required, Validators.pattern(/^[A-Za-z\s]+$/)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
 
     this.step2form = this.fb.nonNullable.group({
-      rest_name: ['', Validators.required,],
+      rest_name: ['', Validators.required],
       rest_address: ['', Validators.required],
       gst_number: ['', Validators.required],
-      phone_number: ['', Validators.required],
-      zip_code: ['', Validators.required],
+      phone_number: ['', [Validators.required, Validators.pattern(/^[0-9+\-\s]+$/)]],
+      zip_code: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
     });
   }
 

@@ -3,63 +3,87 @@
   class="text-sm text-slate-500 cursor-pointer underline flex items-center gap-2 mb-4"
   ><mat-icon class="text-sm">arrow_back</mat-icon> Back</a
 >
-<div class="bg-white rounded-xl shadow-2xs p-6">
-  <h1 class="text-sm text-slate-500">Product Details</h1>
-  <h1 class="text-2xl text-primary">{{ product()?.name }}</h1>
-  <form class="mt-4">
-    <div class="grid grid-cols-2 gap-4">
-      <div class="flex flex-col gap-2">
-        <label for="name">Product Name</label>
-        <input-field
-          type="text"
-          [value]="product()?.name || ''"
-          placeholder="Enter product name"
-          name="product_name"
-        ></input-field>
-      </div>
-      <div class="flex flex-col gap-2">
-        <label for="unit">Unit</label>
-        <select-input
-          [options]="units"
-          [value]="product()?.unit || ''"
-          placeholder="Select unit"
-          name="unit"
-        ></select-input>
-      </div>
-      <div class="flex flex-col gap-2">
-        <label for="current_stock">Current Stock</label>
-        <input-field
-          type="number"
-          [value]="product()?.current_stock?.toString() || ''"
-          placeholder="Enter current stock"
-          name="current_stock"
-        ></input-field>
-      </div>
-      <div class="flex flex-col gap-2">
-        <label for="reorder_level">Reorder Level</label>
-        <input-field
-          type="number"
-          [value]="product()?.reorder_level?.toString() || ''"
-          placeholder="Enter reorder level"
-          name="reorder_level"
-        ></input-field>
-      </div>
-      <div class="flex flex-col gap-2">
-        <label for="cost_per_unit">Cost Per Unit</label>
-        <input-field
-          type="number"
-          [value]="product()?.cost_per_unit?.toString() || ''"
-          placeholder="Enter cost per unit"
-          name="cost_per_unit"
-        ></input-field>
-      </div>
+<div class="w-full">
+  <div class="bg-white rounded-2xl shadow-2xs p-6 border border-neutral-100">
+    <div class="flex items-center justify-between mb-2">
+      <h1 class="text-sm text-slate-500">Product Details</h1>
+      <!-- Active Toggle -->
+      @if (productForm) {
+        <label class="relative inline-flex items-center cursor-pointer" [formGroup]="productForm">
+          <input type="checkbox" formControlName="isActive" class="sr-only peer" />
+          <div
+            class="w-11 h-6 bg-neutral-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-500/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-neutral-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"
+          ></div>
+          <span class="ml-3 text-sm font-medium text-neutral-700">Active</span>
+        </label>
+      }
     </div>
-    <div class="flex items-center gap-2 my-4">
-      <ui-button text="Update Product" radius="xl" variant="black"></ui-button>
-    </div>
-  </form>
-  <div class="flex items-center gap-2 my-4 border-t border-slate-200 pt-4">
-    <ui-button text="Inactive Product" radius="xl" variant="secondary"></ui-button>
-    <ui-button text="Delete Product" radius="xl" variant="black"></ui-button>
+
+    <h1 class="text-2xl text-primary font-bold mb-6">{{ product()?.name }}</h1>
+
+    <form class="mt-4" [formGroup]="productForm" (ngSubmit)="updateProduct()">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="flex flex-col gap-2">
+          <label for="name" class="font-medium text-neutral-700">Product Name</label>
+          <input-field
+            type="text"
+            placeholder="Enter product name"
+            formControlName="name"
+          ></input-field>
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="unit" class="font-medium text-neutral-700">Unit</label>
+          <select-input
+            [options]="units"
+            placeholder="Select unit"
+            formControlName="unit"
+          ></select-input>
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="currentStock" class="font-medium text-neutral-700">Current Stock</label>
+          <input-field
+            type="number"
+            placeholder="Enter current stock"
+            formControlName="currentStock"
+          ></input-field>
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="reorderLevel" class="font-medium text-neutral-700">Reorder Level</label>
+          <input-field
+            type="number"
+            placeholder="Enter reorder level"
+            formControlName="reorderLevel"
+          ></input-field>
+        </div>
+        <div class="flex flex-col gap-2">
+          <label for="costPerUnit" class="font-medium text-neutral-700">Cost Per Unit (₹)</label>
+          <input-field
+            type="number"
+            placeholder="Enter cost per unit"
+            formControlName="costPerUnit"
+          ></input-field>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 mt-8 pt-6 border-t border-slate-200 justify-end">
+        <ui-button
+          text="Delete Product"
+          radius="xl"
+          variant="secondary"
+          type="button"
+          (clicked)="deleteProduct()"
+        >
+        </ui-button>
+        <ui-button
+          text="Update Product"
+          radius="xl"
+          variant="primary"
+          type="submit"
+          [disabled]="productForm.invalid"
+          [isLoading]="isSaving()"
+        >
+        </ui-button>
+      </div>
+    </form>
   </div>
 </div>

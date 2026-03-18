@@ -20,8 +20,7 @@ export class TeamMemberDetails implements OnInit {
   memberForm!: FormGroup;
   isLoading = signal<boolean>(true);
   isSaving = signal<boolean>(false);
-  
-  accessLevelOptions = ['0', '1', '2', '3', '4', '5'];
+  roleOptions = ['staff', 'cashier', 'manager'];
 
   constructor(
     private route: ActivatedRoute,
@@ -56,21 +55,21 @@ export class TeamMemberDetails implements OnInit {
 
   initForm(member: TeamMember) {
     this.memberForm = this.fb.group({
-      accessLevel: [member.accessLevel.toString(), Validators.required]
+      role: [member.role || 'staff', Validators.required]
     });
   }
 
-  toggleStatus() {
+  deleteMember() {
     const currentMember = this.member();
     if (!currentMember) return;
     
-    this.isSaving.set(true);
-    const newStatus = currentMember.status === 'Active' ? 'Inactive' : 'Active';
-    
-    this.teamsService.updateMember(currentMember.id, { status: newStatus }).subscribe(updatedMember => {
-      this.member.set(updatedMember);
-      this.isSaving.set(false);
-    });
+    if (confirm(`Are you sure you want to completely remove ${currentMember.name} from the team?`)) {
+      this.isSaving.set(true);
+      this.teamsService.deleteMember(currentMember.id).subscribe(() => {
+        this.isSaving.set(false);
+        this.router.navigate(['/team']);
+      });
+    }
   }
 
   saveChanges() {
@@ -81,7 +80,7 @@ export class TeamMemberDetails implements OnInit {
     const formValues = this.memberForm.value;
     
     const updates: Partial<TeamMember> = {
-      accessLevel: parseInt(formValues.accessLevel, 10)
+      role: formValues.role
     };
 
     this.teamsService.updateMember(currentMember.id, updates).subscribe(updatedMember => {

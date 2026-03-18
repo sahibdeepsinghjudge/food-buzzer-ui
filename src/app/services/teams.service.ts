@@ -1,51 +1,99 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { baseUrl } from './constants';
 
 export interface TeamMember {
   id: number;
   name: string;
   email: string;
-  accessLevel: number;
-  status: 'Active' | 'Inactive';
+  phone?: string;
+  accessLevel: number; // For backward compatibility with the UI. Role string -> number.
+  role?: string; 
+  status?: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class TeamsService {
-  private members: TeamMember[] = [
-    { id: 1, name: 'Sahib Singh', email: 'sahib@foodbuzzer.com', accessLevel: 5, status: 'Active' },
-    { id: 2, name: 'Alice Smith', email: 'alice@foodbuzzer.com', accessLevel: 3, status: 'Active' },
-    { id: 3, name: 'Bob Johnson', email: 'bob@foodbuzzer.com', accessLevel: 1, status: 'Inactive' },
-    { id: 4, name: 'Charlie Brown', email: 'charlie@foodbuzzer.com', accessLevel: 2, status: 'Active' },
-    { id: 5, name: 'Diana Prince', email: 'diana@foodbuzzer.com', accessLevel: 4, status: 'Active' }
-  ];
+  constructor(private http: HttpClient) {}
 
-  constructor() {}
+  private getHeaders(): HttpHeaders {
+    let headers = new HttpHeaders();
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      headers = headers.append("X-User-Id", userId);
+      headers = headers.append('ngrok-skip-browser-warning', 'true');
+    }
+    return headers;
+  }
 
-  addMember(member: Omit<TeamMember, 'id'>): Observable<TeamMember> {
-    const newId = this.members.length > 0 ? Math.max(...this.members.map(m => m.id)) + 1 : 1;
-    const newMember: TeamMember = { ...member, id: newId };
-    this.members.unshift(newMember);
-    return of({ ...newMember }).pipe(delay(400));
+  // Maps backend user to UI TeamMember interface.
+  // Assumes backend User object has { id, fullName, email, phone, role }
+  private mapToTeamMember(user: any): TeamMember {
+    // Attempt parse role numbering or fallback.
+    let parsedAccessLevel = 1;
+    if (user.role && !isNaN(parseInt(user.role, 10))) {
+      parsedAccessLevel = parseInt(user.role, 10);
+    }
+
+    return {
+      id: user.id || user.userId,
+      name: user.fullName || user.userName || '',
+      email: user.email || '',
+      phone: user.phone || '',
+      accessLevel: parsedAccessLevel,
+      role: user.role || '1',
+      status: user.status || 'Active'
+    };
   }
 
   getMembers(): Observable<TeamMember[]> {
-    return of([...this.members]).pipe(delay(300));
+    return this.http.get<any[]>(baseUrl + '/team/team-list', { headers: this.getHeaders() }).pipe(
+      map(res => {
+        // Handle if response is wrapped in { data: [...] } or just an array list
+        const list = res || [];
+        return (Array.isArray(list) ? list : (list as any).data || []).map((u: any) => this.mapToTeamMember(u));
+      })
+    );
   }
 
   getMemberById(id: number): Observable<TeamMember | undefined> {
-    const member = this.members.find(m => m.id === id);
-    return of(member ? { ...member } : undefined).pipe(delay(200));
+    // No explicit getById backend endpoint defined, so we filter from list
+    return this.getMembers().pipe(
+      map(members => members.find(m => m.id === id))
+    );
+  }
+
+  addMember(payload: any): Observable<TeamMember> {
+    // Expects payload properly formatted TeamAddRequestDTO
+    return this.http.post<any>(baseUrl + '/team/team-add', payload, { headers: this.getHeaders() }).pipe(
+      map((res: any) => {
+        const data = res.data || res;
+        if (!data.userId && !data.id && data.message) {
+          throw new Error(data.message);
+        }
+        return this.mapToTeamMember(data);
+      })
+    );
   }
 
   updateMember(id: number, updates: Partial<TeamMember>): Observable<TeamMember> {
-    const index = this.members.findIndex(m => m.id === id);
-    if (index !== -1) {
-      this.members[index] = { ...this.members[index], ...updates };
-      return of({ ...this.members[index] }).pipe(delay(400));
-    }
-    throw new Error('Member not found');
+    // updates from the UI generally only pass accessLevel -> newRole
+    const newRole = updates.accessLevel !== undefined ? updates.accessLevel.toString() : updates.role;
+    const updatePayload = {
+      id,
+      newRole: newRole || '1'
+    };
+    return this.http.put<any>(baseUrl + '/team/team-update', updatePayload, { headers: this.getHeaders() }).pipe(
+      map(res => this.mapToTeamMember(res.data || res))
+    );
+  }
+
+  deleteMember(id: number): Observable<any> {
+    const deletePayload = { id };
+    return this.http.put<any>(baseUrl + '/team/team-delete', deletePayload, { headers: this.getHeaders() });
   }
 }

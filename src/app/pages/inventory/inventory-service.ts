@@ -1,59 +1,55 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http'
-import { Observable, map } from 'rxjs'
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
 import { DataTile } from '../../ui/data-tiles/data-tiles';
+import { baseUrl } from '../../services/constants';
 
 export interface RawMaterial {
-  id: number
-  restaurant_id: number
-  name: string
-  sku?: string
-  category: string
-  unit: string
-  current_stock: number
-  reorder_level?: number
-  cost_per_unit?: number
-  is_active: boolean
-  created_at: string
-  updated_at: string
+  id: number;
+  restaurantId: number;
+  name: string;
+  sku?: string;
+  category: string;
+  unit: string;
+  currentStock: number;
+  reorderLevel?: number;
+  costPerUnit?: number;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
-
 
 @Injectable({
   providedIn: 'root'
 })
 export class InventoryService {
 
-
-  private dataUrl = '/src/app/pages/inventory/assets/data/raw-materials.json'
-  
   constructor(private http: HttpClient) {}
 
+  private getHeaders(): HttpHeaders {
+    let headers = new HttpHeaders();
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      headers = headers.append("X-User-Id", userId);
+      headers = headers.append('ngrok-skip-browser-warning', 'true');
+    }
+    return headers;
+  }
+
   getRawMaterials(): Observable<RawMaterial[]> {
-    return this.http.get<RawMaterial[]>(this.dataUrl)
+    return this.http.get<{data: RawMaterial[]}>(baseUrl + '/inventory/all', { "headers": this.getHeaders() })
+      .pipe(map(res => res.data || []));
   }
 
   getInventoryStats(): Observable<DataTile[]> {
-    // pipe() here will allow us to use the map function which will help in transforming the data to a usable data meaning the business logic is present here only and not in the component.
-    // also the get will return an observable and not the data directly.
-    // pipe is used to chain observables together.
     return this.getRawMaterials().pipe(
       map(materials => {
-        const total = materials.length
-        const outOfStock = materials.filter(
-          m => m.current_stock === 0
-        ).length
-
+        const total = materials.length;
+        const outOfStock = materials.filter(m => m.currentStock === 0).length;
         const lowStock = materials.filter(
-          m =>
-            m.reorder_level !== null &&
-            m.current_stock > 0 &&
-            m.current_stock <= (m.reorder_level ?? 0)
-        ).length
-
-        const active = materials.filter(
-          m => m.is_active
-        ).length
+          m => m.reorderLevel !== null && m.reorderLevel !== undefined && m.currentStock > 0 && m.currentStock <= m.reorderLevel
+        ).length;
+        const active = materials.filter(m => m.isActive).length;
 
         return [{
           label: 'Total Products',
@@ -75,40 +71,47 @@ export class InventoryService {
           number: outOfStock.toString(),
           comparison_number_percentage: null,
           comparison_parameter: null
-        }]
+        }];
       })
-    )
+    );
   }
 
-  getFilteredMaterials(f:string) { 
+  getFilteredMaterials(f: string): Observable<RawMaterial[]> { 
     switch (f) { 
       case "low_on_stock":
-          return this.getRawMaterials().pipe(map(p=> p.filter(m =>
-            m.reorder_level !== null &&
-            m.current_stock > 0 &&
-            m.current_stock <= (m.reorder_level ?? 0)
-          )))
+          return this.http.get<{data: RawMaterial[]}>(baseUrl + '/inventory/low-stock', { "headers": this.getHeaders() })
+            .pipe(map(res => res.data || []));
       case "out_of_stock":
-          return this.getRawMaterials().pipe(map(p=> p.filter(m =>
-            m.current_stock === 0
-          )))
+          return this.getRawMaterials().pipe(map(p => p.filter(m => m.currentStock === 0)));
       case "active":
-          return this.getRawMaterials().pipe(map(p=> p.filter(m =>
-            m.is_active
-          )))
+          return this.getRawMaterials().pipe(map(p => p.filter(m => m.isActive)));
       case "inactive":
-          return this.getRawMaterials().pipe(map(p=> p.filter(m =>
-            !m.is_active
-          )))
+          return this.getRawMaterials().pipe(map(p => p.filter(m => !m.isActive)));
       default:
-        return this.getRawMaterials()
+        return this.getRawMaterials();
     }
   }
 
-  getMaterialById(id: number) {
+  getMaterialById(id: number): Observable<RawMaterial | undefined> {
     return this.getRawMaterials().pipe(
       map(items => items.find(i => i.id === id))
-    )
+    );
   }
 
+  addMaterial(data: Partial<RawMaterial>): Observable<any> {
+    return this.http.post(baseUrl + '/inventory/add', data, { "headers": this.getHeaders() });
+  }
+
+  updateStock(id: number, data: Partial<RawMaterial>): Observable<any> {
+    return this.http.put(baseUrl + `/inventory/update-stock/${id}`, data, { "headers": this.getHeaders() });
+  }
+
+  deleteMaterial(id: number): Observable<any> {
+    return this.http.delete(baseUrl + `/inventory/delete/${id}`, { "headers": this.getHeaders() });
+  }
+
+  searchMaterials(name: string): Observable<RawMaterial[]> {
+    return this.http.get<{data: RawMaterial[]}>(baseUrl + `/inventory/search?name=${encodeURIComponent(name)}`, { "headers": this.getHeaders() })
+      .pipe(map(res => res.data || []));
+  }
 }

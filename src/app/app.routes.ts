@@ -3,6 +3,7 @@ import { Welcome } from './pages/welcome/welcome';
 import { DashboardLayout } from './pages/dashboard/dashboard-layout/dashboard-layout';
 import { authGuard } from './guards/auth.guard';
 import { guestGuard } from './guards/guest.guard';
+import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
     { path: '', component: Welcome, pathMatch: 'full' },
@@ -31,7 +32,7 @@ export const routes: Routes = [
     { 
         path: 'admin', 
         loadChildren: () => import('./pages/admin/admin/admin-module').then(m => m.AdminModule),
-        canActivate: [authGuard]
+        canActivate: [adminGuard]
     },
     {
         path: 'kds',

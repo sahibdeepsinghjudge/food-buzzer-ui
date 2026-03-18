@@ -2,13 +2,20 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
+export interface TableAction {
+  label: string;
+  onClick: (row: any) => void;
+  variant?: 'primary' | 'secondary' | 'danger';
+}
+
 export interface TableColumn {
   key: string;
   label: string;
-  type?: 'text' | 'button' | 'link';
+  type?: 'text' | 'button' | 'link' | 'actions';
   routerLink?: string;
   onClick?: (row: any) => void;
   buttonText?: string;
+  actions?: TableAction[];
 }
 
 @Component({

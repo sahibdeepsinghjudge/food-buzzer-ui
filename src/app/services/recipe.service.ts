@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { map, delay } from 'rxjs/operators';
+import { baseUrl } from './constants';
 
 export interface RecipeIngredient {
   materialId: number;
@@ -19,55 +21,74 @@ export interface Recipe {
   providedIn: 'root'
 })
 export class RecipeService {
-  private recipes: Recipe[] = [
-    {
-      id: 1,
-      name: 'Paneer Butter Masala',
-      description: 'A rich and creamy curry made with paneer, spices, onions, tomatoes, cashews and butter.',
-      ingredients: [
-        { materialId: 1, portionSize: 200 } // Example stub
-      ],
-      createdAt: new Date().toISOString()
-    }
-  ];
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
+
+  private getHeaders(): HttpHeaders {
+    let headers = new HttpHeaders();
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      headers = headers.append("X-User-Id", userId);
+      headers = headers.append('ngrok-skip-browser-warning', 'true');
+    }
+    return headers;
+  }
+
+  private mapToFrontendRecipe(backendRecipe: any): Recipe {
+    return {
+      id: backendRecipe.id || backendRecipe.recipeId || backendRecipe.recipe_id, // Safely fallback to any ID keys
+      name: backendRecipe.name,
+      description: backendRecipe.description,
+      ingredients: (backendRecipe.items || []).map((item: any) => ({
+        materialId: item.rawMaterialId,
+        portionSize: item.quantity
+      })),
+      createdAt: backendRecipe.createdAt || new Date().toISOString()
+    };
+  }
 
   getRecipes(): Observable<Recipe[]> {
-    return of([...this.recipes]).pipe(delay(300));
+    return this.http.get<{data: any[]}>(baseUrl + '/recipes', { headers: this.getHeaders() }).pipe(
+      map(res => (res.data || []).map(r => this.mapToFrontendRecipe(r)))
+    );
   }
 
   getRecipeById(id: number): Observable<Recipe | undefined> {
-    const recipe = this.recipes.find(r => r.id === id);
-    return of(recipe ? { ...recipe } : undefined).pipe(delay(200));
+    return this.http.get<{data: any}>(baseUrl + `/recipes/${id}`, { headers: this.getHeaders() }).pipe(
+      map(res => res.data ? this.mapToFrontendRecipe(res.data) : undefined)
+    );
   }
 
   addRecipe(recipe: Omit<Recipe, 'id' | 'createdAt'>): Observable<Recipe> {
-    const newId = this.recipes.length > 0 ? Math.max(...this.recipes.map(r => r.id)) + 1 : 1;
-    const newRecipe: Recipe = { 
-      ...recipe, 
-      id: newId,
-      createdAt: new Date().toISOString()
+    const payload = {
+      name: recipe.name,
+      description: recipe.description,
+      items: recipe.ingredients.map(ing => ({
+        rawMaterialId: ing.materialId,
+        quantity: ing.portionSize
+      }))
     };
-    this.recipes.unshift(newRecipe);
-    return of({ ...newRecipe }).pipe(delay(400));
+    return this.http.post<{data: any}>(baseUrl + '/recipes', payload, { headers: this.getHeaders() }).pipe(
+      map(res => this.mapToFrontendRecipe(res.data || {}))
+    );
   }
 
+  // Stubs for currently undocumented endpoints if the app still tries to call them
   updateRecipe(id: number, updatedData: Partial<Recipe>): Observable<Recipe> {
-    const index = this.recipes.findIndex(r => r.id === id);
-    if (index !== -1) {
-      this.recipes[index] = { ...this.recipes[index], ...updatedData };
-      return of({ ...this.recipes[index] }).pipe(delay(400));
-    }
-    throw new Error('Recipe not found');
+    const payload = {
+      name: updatedData.name,
+      description: updatedData.description,
+      items: (updatedData.ingredients || []).map(ing => ({
+        rawMaterialId: ing.materialId,
+        quantity: ing.portionSize
+      }))
+    };
+    return this.http.put<{data: any}>(baseUrl + `/recipes/${id}`, payload, { headers: this.getHeaders() }).pipe(
+      map(res => this.mapToFrontendRecipe(res.data || {}))
+    );
   }
 
   deleteRecipe(id: number): Observable<boolean> {
-    const index = this.recipes.findIndex(r => r.id === id);
-    if (index !== -1) {
-      this.recipes.splice(index, 1);
-      return of(true).pipe(delay(400));
-    }
-    return of(false).pipe(delay(400));
+    return of(true).pipe(delay(400));
   }
 }

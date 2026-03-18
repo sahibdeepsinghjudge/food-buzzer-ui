@@ -23,10 +23,16 @@
         </input-field>
 
         <p
-          *ngIf="step1form.get('name')?.touched && step1form.get('name')?.invalid"
+          *ngIf="step1form.get('name')?.touched && step1form.get('name')?.errors?.['required']"
           class="text-red-500 text-sm mt-1"
         >
           Name is required
+        </p>
+        <p
+          *ngIf="step1form.get('name')?.touched && step1form.get('name')?.errors?.['pattern']"
+          class="text-red-500 text-sm mt-1"
+        >
+          Name must contain only letters and spaces
         </p>
       </div>
 
@@ -64,7 +70,14 @@
         </p>
       </div>
 
-      <ui-button text="Continue" type="submit" variant="primary-full" radius="xl"> </ui-button>
+      <ui-button
+        text="Continue"
+        type="submit"
+        variant="primary-full"
+        [disabled]="step1form.invalid"
+        radius="xl"
+      >
+      </ui-button>
       <div class="text-center mt-4">
         <p class="text-neutral-500">
           Already have an account? <a routerLink="/accounts/login" class="text-primary">Login</a>
@@ -93,27 +106,50 @@
           formControlName="gst_number"
           placeholder="Enter GST number"
         ></input-field>
-        <input-field
-          label="Phone Number"
-          type="text"
-          formControlName="phone_number"
-          placeholder="Enter phone number"
-        ></input-field>
-        <input-field
-          label="Zip Code"
-          type="text"
-          formControlName="zip_code"
-          placeholder="Enter Zip Code"
-        ></input-field>
+        <div class="mb-4">
+          <input-field
+            label="Phone Number"
+            type="text"
+            formControlName="phone_number"
+            placeholder="Enter phone number"
+          ></input-field>
+          <p
+            *ngIf="
+              step2form.get('phone_number')?.touched &&
+              step2form.get('phone_number')?.errors?.['pattern']
+            "
+            class="text-red-500 text-sm mt-1 text-left"
+          >
+            Please enter a valid phone number (digits only)
+          </p>
+        </div>
+
+        <div class="mb-4">
+          <input-field
+            label="Zip Code"
+            type="text"
+            formControlName="zip_code"
+            placeholder="Enter Zip Code"
+          ></input-field>
+          <p
+            *ngIf="
+              step2form.get('zip_code')?.touched && step2form.get('zip_code')?.errors?.['pattern']
+            "
+            class="text-red-500 text-sm mt-1 text-left"
+          >
+            Zip code must contain only numbers
+          </p>
+        </div>
+
         <ui-button
           text="Apply for verification"
           type="submit"
           [isLoading]="isSubmitting()"
+          [disabled]="step2form.invalid"
           variant="primary-full"
           radius="xl"
         ></ui-button>
         <p class="my-2"></p>
-        
       </form>
     </div>
     <div *ngSwitchCase="3" class="text-center space-y-4">
@@ -130,7 +166,6 @@
         </p>
       </div>
       <p class="my-2"></p>
-      
     </div>
   </ng-container>
 
