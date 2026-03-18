@@ -1,10 +1,8 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
-import { Dataservice } from '../../../dataservice';
-import { Restaurant } from '../../interface/restaurant';
-import { Owner } from '../../interface/owner';
+import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { TilesContainer } from '../../../ui/tiles-container/tiles-container';
 import { TableComponent } from '../../../ui/table/table';
 import { CommonModule } from '@angular/common';
+import { AdminService } from '../../../services/admin.service';
 
 @Component({
   selector: 'app-pending-request',
@@ -12,28 +10,24 @@ import { CommonModule } from '@angular/common';
   templateUrl: './pending-request.html',
   styleUrl: './pending-request.css',
 })
-export class PendingRequest {
+export class PendingRequest implements OnInit {
   checkRequestStatus: string='pending';//for pending request
   index: number=0;
   serialNo:number=0;
-  restaurants: Restaurant[]=[];
-  owners: Owner[]=[];
   tableData: any[]=[];
   tableColumns: any[]=[];
-  constructor(private dataService: Dataservice, private cdr: ChangeDetectorRef){}
-  ngOnInit(){
-    this.dataService.getData().subscribe(data=>{
-      this.restaurants = data.restaurants.data;
-      this.owners = data.owners.data;
-      this.tableData = this.restaurants.filter(r=> r.status=='pending').map((r,index)=>{
-        const owner = this.owners.find(o=> o.id==r.ownerId);
 
-        return{
+  constructor(private adminService: AdminService, private cdr: ChangeDetectorRef){}
+  ngOnInit(){
+    this.adminService.getRequestsByStatus('pending').subscribe((data: any) => {
+      const requestArray = data.requests || [];
+      this.tableData = requestArray.map((r: any, index: number) => {
+        return {
           serialNo: index+1,
-          id: r.id,
+          id: r.restaurantId,
           name: r.name,
-          ownerName: owner?.name,
-          status: r.status
+          ownerName: r.ownerFullName || 'N/A',
+          status: r.approvalStatus || 'pending'
         }
       });
       this.tableColumns=[
@@ -42,10 +36,11 @@ export class PendingRequest {
         { key: 'ownerName', label: 'Owner Name' },
         { key: 'status', label: 'Status'}
       ];
+      this.dataTiles = [
+        { number: data.pendingRequestsCount || requestArray.length, label: 'Pending Requests' },
+      ];
       this.cdr.detectChanges();
-    })
+    });
   }
-  dataTiles: any[]=[
-    { number: 10, label: 'Approved Requests', comparison_parameter: 'last month', comparison_number_percentage: 4 },
-  ]
+  dataTiles: any[] = [];
 }

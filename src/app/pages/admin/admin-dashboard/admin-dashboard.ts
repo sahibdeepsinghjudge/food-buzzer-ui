@@ -1,10 +1,10 @@
 import { Component, OnInit, ChangeDetectorRef, signal } from '@angular/core';
 import { TilesContainer } from '../../../ui/tiles-container/tiles-container';
 import { TableComponent } from '../../../ui/table/table';
-import { Dataservice } from '../../../dataservice';
+import { CommonModule } from '@angular/common';
+import { AdminService } from '../../../services/admin.service';
 import { Restaurant } from '../../interface/restaurant';
 import { Owner } from '../../interface/owner';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -23,28 +23,21 @@ export class AdminDashboard implements OnInit{
   serialNo:number=0;
   tableColumns: any[]=[];
   tableData: any[]=[];
-  owner: Owner[]=[];
   restaurant: Restaurant[]=[];
-  constructor(private dataService: Dataservice, private cdr: ChangeDetectorRef){}
-  //data = signal<RequestResponseData|null>(null);
-  //dataTiles = signal<any>([]);
+  dataTiles: any[] = [];
+
+  constructor(private adminService: AdminService, private cdr: ChangeDetectorRef){}
+
   ngOnInit(){
-   this.dataService.getData().subscribe(data => {
-   /* next: (resp)=>
-      console.log(resp)
-    this.data.set(resp)*/
-    this.owner = data.owners.data;
-    this.restaurant = data.restaurants.data;
-
-    this.tableData = this.restaurant.map((r, index) => {
-      const owner = this.owner.find(o => o.id === r.ownerId);
-
+   this.adminService.getRequestsByStatus().subscribe((data: any) => {
+    const requestArray = data.requests || [];
+    this.tableData = requestArray.map((r: any, index: number) => {
       return {
         serialNo: index+1,
-        id: r.id,
+        id: r.restaurantId,
         name: r.name,
-        ownerName: owner?.name,
-        status: r.status
+        ownerName: r.ownerFullName || 'N/A',
+        status: r.approvalStatus || 'pending'
       };
     });
 
@@ -54,17 +47,16 @@ export class AdminDashboard implements OnInit{
       { key: 'ownerName', label: 'Owner Name' },
       { key: 'status', label: 'Status'}
     ];
+
+    this.dataTiles = [
+      { number: data.pendingRequestsCount || 0, label: 'Pending requests', comparison_parameter: 'total', comparison_number_percentage: null },
+      { number: data.approvedRequestsCount || 0, label: 'Approved Requests', comparison_parameter: 'total', comparison_number_percentage: null },
+      { number: data.declinedRequestsCount || 0, label: 'Rejected Requests', comparison_parameter: 'total', comparison_number_percentage: null },
+      { number: data.requestsCount || 0, label: 'Restaurants', comparison_parameter: 'total', comparison_number_percentage: null },
+    ];
     this.cdr.detectChanges();
   });
   }
-  dataTiles: any[] = [
-    { number: 10, label: 'Pending requests', comparison_parameter: 'last month', comparison_number_percentage: 2 },
-    { number: 10, label: 'Approved Requests', comparison_parameter: 'last month', comparison_number_percentage: 4 },
-    { number: 10, label: 'Rejected Requests', comparison_parameter: 'last month', comparison_number_percentage: -2 },
-    { number: 10, label: 'Restaurants', comparison_parameter: 'last month', comparison_number_percentage: 3 },
-    { number: 10, label: 'Password Requests', comparison_parameter: 'last month', comparison_number_percentage: -1 },
-  ];
-  //});}
 
   
 }

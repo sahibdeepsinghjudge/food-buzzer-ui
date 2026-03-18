@@ -3,6 +3,7 @@ import { Component, OnInit, ChangeDetectorRef, Input } from '@angular/core';
 import { ActivatedRoute, Data } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Router} from '@angular/router';
+import { AdminService } from '../../../services/admin.service';
 import { Dataservice } from '../../../dataservice';
 import { Restaurant } from '../../interface/restaurant';
 import { Owner } from '../../interface/owner';
@@ -18,33 +19,46 @@ import { Button } from '../../../ui/button/button';
 })
 export class RestaurantDetails implements OnInit{
   checkRequestStatus:string = '';
-  declineReason='';
+  approvalNotes = '';
   restaurantId!: number;
-  restaurantData: Restaurant[]=[];
+  restaurantData: any[]=[];
   restaurant: any;
   owner!: any;
-  ownerData: Owner[]=[];
-  ownerid:number=0;
-  constructor(private route: ActivatedRoute, private router: Router, private dataService: Dataservice, private cdr: ChangeDetectorRef) {}
+  ownerDetails: any = null;
+  
+  constructor(
+    private route: ActivatedRoute, 
+    private router: Router, 
+    private dataService: Dataservice, 
+    private adminService: AdminService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.restaurantId = Number(this.route.snapshot.paramMap.get('id'));
-    ///this.restaurant = this.restaurants.find(r => r.id === this.restaurantId);
-    this.dataService.getData().subscribe(data=>{
-    this.restaurantData = data.restaurants.data;
-    this.restaurant = this.restaurantData.find( r => r.id===this.restaurantId);
-    this.ownerid=this.restaurant.ownerId;
-    this.ownerData = data.owners.data;
-    this.owner = this.ownerData.find(r => r.id===this.ownerid);
-   
-    if(this.restaurant.status==="pending")
-    {
-      this.checkRequestStatus="pending";
-    }
-    this.cdr.detectChanges();
-  });
-    
-    //this.restaurant = this.getRestaurantById(this.restaurantId);
+
+    this.adminService.getRequestsByStatus().subscribe((data: any) => {
+      this.restaurantData = data.requests || [];
+      const found = this.restaurantData.find((r: any) => r.restaurantId === this.restaurantId);
+      if (found) {
+        this.restaurant = found;
+        this.owner = { name: found.ownerFullName || 'N/A' };
+        
+        if(this.restaurant.approvalStatus === "PENDING" || this.restaurant.approvalStatus === "pending")
+        {
+          this.checkRequestStatus = "pending";
+        }
+
+        // Fetch richer owner/user details
+        if (found.ownerUserId) {
+          this.adminService.getRestaurantByUserId(found.ownerUserId).subscribe((ownerData: any) => {
+            this.ownerDetails = ownerData;
+            this.cdr.detectChanges();
+          });
+        }
+      }
+      this.cdr.detectChanges();
+    });
   }
 
   
@@ -55,22 +69,19 @@ export class RestaurantDetails implements OnInit{
   updateStatus(id: number, status: string) {
     if(this.restaurant)
     {
-      console.log("Status is: "+this.restaurant.status);
-      console.log("Request status is: "+this.checkRequestStatus);
-      this.restaurant.status=status;
-      console.log("Status is: "+this.restaurant.status);
-      console.log("Request status is: "+this.checkRequestStatus);
-      /*this.dataService.updateRestaurantStatus(this.restaurant.id, 'Approved')
-      .subscribe(() => {
-        console.log('Status updated in backend');
-        this.router.navigate(['/admin']);
-      });*/
-
+      const isApproved = status.toLowerCase() === 'approved';
+      this.adminService.updateApproval({
+        restaurantId: id,
+        isApproved: isApproved,
+        approvalNotes: this.approvalNotes || (isApproved ? 'Approved' : 'Declined')
+      }).subscribe({
+        next: () => {
+          this.router.navigate(['/admin']);
+        },
+        error: (err) => {
+          console.error('Approval update failed:', err);
+        }
+      });
     }
-    /*const restaurant = this.restaurants.find(r => r.id === id);
-    //const restaurant = this.getRestaurantById(id);
-    if (restaurant) {
-      restaurant.status = status;
-    }*/
   }
 }
