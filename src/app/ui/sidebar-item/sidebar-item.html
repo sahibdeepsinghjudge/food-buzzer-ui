@@ -1,4 +1,9 @@
-<a [routerLink]="link" routerLinkActive="isActive" #rla="routerLinkActive">
+<a
+  [routerLink]="link"
+  routerLinkActive="isActive"
+  [routerLinkActiveOptions]="{ exact: true }"
+  #rla="routerLinkActive"
+>
   <li
     class="bg-bg-sec my-2 px-2 rounded-xl py-3 w-full cursor-pointer group hover:bg-primary hover:text-orange-500"
     [class.bg-primary]="rla.isActive"

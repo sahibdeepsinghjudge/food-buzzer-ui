@@ -1,10 +1,8 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
-import { Dataservice } from '../../../dataservice';
+import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { TableComponent } from '../../../ui/table/table';
 import { TilesContainer } from '../../../ui/tiles-container/tiles-container';
-import { Restaurant } from '../../interface/restaurant';
-import { Owner } from '../../interface/owner';
 import { CommonModule } from '@angular/common';
+import { AdminService } from '../../../services/admin.service';
 
 @Component({
   selector: 'app-rejected-requests',
@@ -12,28 +10,23 @@ import { CommonModule } from '@angular/common';
   templateUrl: './rejected-requests.html',
   styleUrl: './rejected-requests.css',
 })
-export class RejectedRequests {
+export class RejectedRequests implements OnInit {
   checkRequestStatus="Declined";
   index: number=0;
   serialNo:number=0;
   tableColumns: any[]=[];
   tableData: any[]=[];
-  restaurantData: Restaurant[]=[];
-  ownerData: Owner[]=[];
-  constructor(private dataService: Dataservice, private cdr: ChangeDetectorRef){}
+  constructor(private adminService: AdminService, private cdr: ChangeDetectorRef){}
   ngOnInit(){
-    this.dataService.getData().subscribe(data=> {
-      this.restaurantData = data.restaurants.data;
-      this.ownerData = data.owners.data
-      this.tableData = this.restaurantData.filter(r=> r.status==='Declined').map((r,index)=> {
-        const owner = this.ownerData.find(o=> o.id===r.ownerId);
+    this.adminService.getRequestsByStatus('declined').subscribe((data: any) => {
+      const requestArray = data.requests || [];
+      this.tableData = requestArray.map((r: any, index: number) => {
         return {
           serialNo: index+1,
-          id: r.id,
+          id: r.restaurantId,
           name: r.name,
-          ownerName: owner?.name,
-          status: r.status
-
+          ownerName: r.ownerFullName || 'N/A',
+          status: r.approvalStatus || 'Declined'
         }
       });
       this.tableColumns = [
@@ -42,10 +35,11 @@ export class RejectedRequests {
         {key: 'ownerName', label: 'Owner Name'},
         {key: 'status', label: 'Status'}
       ]
+      this.dataTiles = [
+        { number: data.declinedRequestsCount || requestArray.length, label: 'Rejected Requests' },
+      ];
       this.cdr.detectChanges();
     });
   }
-  dataTiles: any[]=[
-    { number: 10, label: 'Rejected Requests', comparison_parameter: 'last month', comparison_number_percentage: -2 },
-  ]
+  dataTiles: any[] = [];
 }

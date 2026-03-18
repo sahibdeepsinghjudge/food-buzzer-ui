@@ -1,10 +1,8 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { TableComponent } from '../../../ui/table/table';
 import { TilesContainer } from '../../../ui/tiles-container/tiles-container';
-import { Dataservice } from '../../../dataservice';
-import { Restaurant } from '../../interface/restaurant';
-import { Owner } from '../../interface/owner';
 import { CommonModule } from '@angular/common';
+import { AdminService } from '../../../services/admin.service';
 
 @Component({
   selector: 'app-approved-request',
@@ -17,27 +15,19 @@ export class ApprovedRequest implements OnInit{
   index: number=0;
   serialNo:number=0;
   tableData: any[]=[]
-  restaurantdata: Restaurant[]=[]
-  owner: Owner[]=[]
   tableColumns: any[]=[]
-  constructor(private dataService: Dataservice, private cdr: ChangeDetectorRef){}
+
+  constructor(private adminService: AdminService, private cdr: ChangeDetectorRef){}
   ngOnInit(){
-    this.dataService.getData().subscribe(data=>{
-      this.restaurantdata=data.restaurants.data;
-      this.owner=data.owners.data;
-
-      this.tableData=this.restaurantdata.filter(r => r.status==='Approved').map((r,index)=>{
-        const owner=this.owner.find(o=> o.id===r.ownerId);
-              console.log("Data is");
-
-              console.log(this.tableData);
-
+    this.adminService.getRequestsByStatus('approved').subscribe((data: any) => {
+      const requestArray = data.requests || [];
+      this.tableData = requestArray.map((r: any, index: number) => {
         return {
           serialNo: index+1,
-          id: r.id,
+          id: r.restaurantId,
           name: r.name,
-          ownerName: owner?.name,
-          status: r.status
+          ownerName: r.ownerFullName || 'N/A',
+          status: r.approvalStatus || 'Approved'
         }
       });
       this.tableColumns = [
@@ -46,10 +36,11 @@ export class ApprovedRequest implements OnInit{
       { key: 'ownerName', label: 'Owner Name' },
       { key: 'status', label: 'Status'}
     ];
+    this.dataTiles = [
+      { number: data.approvedRequestsCount || requestArray.length, label: 'Approved Requests' },
+    ];
     this.cdr.detectChanges();
-  });
+   });
   }
-  dataTiles: any[]=[
-    { number: 10, label: 'Approved Requests', comparison_parameter: 'last month', comparison_number_percentage: 4 },
-  ]
+  dataTiles: any[] = [];
 }
