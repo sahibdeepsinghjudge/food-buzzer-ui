@@ -11,15 +11,15 @@ import { AuthService } from '../../../services/auth.service';
 interface Error {
   code: 403 | 404 | 500 | 422;
   message:
-    | 'Invalid credentials'
-    | 'User not found'
-    | 'Internal server error'
-    | 'Unprocessable entity';
+  | 'Invalid credentials'
+  | 'User not found'
+  | 'Internal server error'
+  | 'Unprocessable entity';
 }
 
 interface Success {
   code: 200;
-  message: 'User registered successfully' | 'Details are valid' | 'Redirecting to onboarding...';
+  message: 'User registered successfully' | 'Details are valid' | 'Redirecting to onboarding...' | 'Account created';
 }
 
 @Component({
@@ -39,36 +39,37 @@ interface Success {
 })
 export class Register {
   currentStep = signal<1 | 2 | 3>(1);
-  message = signal<Error | Success | null>(null);
+  message = signal<Error | Success | any>(null);
   step1form;
   step2form;
   isSubmitting = signal(false);
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.step1form = this.fb.nonNullable.group({
-      name: ['', Validators.required],
+      name: ['', Validators.required, Validators.pattern('^[A-Za-z]+$')],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
 
     this.step2form = this.fb.nonNullable.group({
-      rest_name: ['', Validators.required],
+      rest_name: ['', Validators.required,],
       rest_address: ['', Validators.required],
       gst_number: ['', Validators.required],
       phone_number: ['', Validators.required],
+      zip_code: ['', Validators.required],
     });
   }
 
 
-  goBack() {
-    if (this.currentStep() == 1) {
-      this.currentStep.set(1);
-    } else {
-      const x = this.currentStep() - 1;
-      this.currentStep.set(x as 1 | 2);
-    }
-    return;
-  }
+  // goBack() {
+  //   if (this.currentStep() == 1) {
+  //     this.currentStep.set(1);
+  //   } else {
+  //     const x = this.currentStep() - 1;
+  //     this.currentStep.set(x as 1 | 2);
+  //   }
+  //   return;
+  // }
 
   validateFirstStep() {
     if (this.step1form.invalid) {
@@ -78,17 +79,14 @@ export class Register {
         message: 'Unprocessable entity',
       });
 
-      return;
+      return false;
     }
-
-    this.currentStep.set(2);
-
     this.message.set({
       code: 200,
       message: 'Details are valid',
     });
-
-    console.log('Form Data:', this.step1form.getRawValue());
+    return true;
+    // console.log('Form Data:', this.step1form.getRawValue());
   }
 
   validateSecondStep() {
@@ -99,22 +97,37 @@ export class Register {
         message: 'Unprocessable entity',
       });
 
-      return;
+      return false;
     }
+    return true;
+  }
+
+  submitForm1() {
 
     this.isSubmitting.set(true);
     const step1Data = this.step1form.getRawValue();
-    const step2Data = this.step2form.getRawValue();
 
-    this.authService.register(step1Data, step2Data).subscribe({
+    this.authService.registerStepData1(step1Data).subscribe({
       next: (response) => {
-        this.isSubmitting.set(false);
-        this.message.set({
-          code: 200,
-          message: 'Redirecting to onboarding...',
-        });
-        this.router.navigate(['/onboarding']);
-        console.log('Registration successful:', response);
+        if (response.userId != null) {
+          this.isSubmitting.set(false);
+          this.message.set({
+            code: 200,
+            message: 'Account created',
+          });
+          localStorage.setItem("userId",response.userId)
+        localStorage.setItem("role",response.role)
+        localStorage.setItem("access_level",response.accessLevel+"")
+          this.currentStep.set(2);
+          console.log('Registration successful:', response);
+        } else {
+          this.isSubmitting.set(false);
+          this.message.set({
+            code: 401,
+            message: response.message,
+          });
+        }
+
       },
       error: (err) => {
         this.isSubmitting.set(false);
@@ -127,5 +140,43 @@ export class Register {
     });
   }
 
- 
+  submitForm2() {
+    if (this.validateSecondStep()) {
+      this.isSubmitting.set(true);
+
+      const step2Data = this.step2form.getRawValue();
+
+      this.authService.registerStepData2(step2Data).subscribe({
+        next: (response) => {
+          if (response.restaurantId != null) {
+            this.isSubmitting.set(false);
+            this.message.set({
+              code: 200,
+              message: 'Redirecting to onboarding...',
+            });
+            this.router.navigate(["/onboarding"]);
+            console.log('Registration successful:', response);
+          } else {
+            this.isSubmitting.set(false);
+            this.message.set({
+              code: 500,
+              message: 'Internal server error',
+            });
+          }
+
+        },
+        error: (err) => {
+          this.isSubmitting.set(false);
+          this.message.set({
+            code: 500,
+            message: 'Internal server error',
+          });
+          console.error('Registration error:', err);
+        }
+      });
+    }
+    this.isSubmitting.set(false);
+  }
+
+
 }

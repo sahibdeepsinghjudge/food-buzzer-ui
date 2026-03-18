@@ -12,7 +12,7 @@
         <h2 class="text-neutral-700 text-xl font-semibold mt-6">Step {{ currentStep() }}</h2>
       </ng-content>
     }
-    <form *ngSwitchCase="1" [formGroup]="step1form" (ngSubmit)="validateFirstStep()" class="mt-2">
+    <form *ngSwitchCase="1" [formGroup]="step1form" (ngSubmit)="submitForm1()" class="mt-2">
       <div>
         <input-field
           label="Name"
@@ -74,7 +74,7 @@
 
     <!-- STEP 2 -->
     <div *ngSwitchCase="2" class="text-center space-y-4">
-      <form [formGroup]="step2form" (ngSubmit)="validateSecondStep()" class="mt-2">
+      <form [formGroup]="step2form" (ngSubmit)="submitForm2()" class="mt-2">
         <input-field
           label="Restaurant Name"
           type="text"
@@ -99,6 +99,12 @@
           formControlName="phone_number"
           placeholder="Enter phone number"
         ></input-field>
+        <input-field
+          label="Zip Code"
+          type="text"
+          formControlName="zip_code"
+          placeholder="Enter Zip Code"
+        ></input-field>
         <ui-button
           text="Apply for verification"
           type="submit"
@@ -107,13 +113,7 @@
           radius="xl"
         ></ui-button>
         <p class="my-2"></p>
-        <ui-button
-          text="Back"
-          type="button"
-          variant="secondary-full"
-          (click)="goBack()"
-          radius="xl"
-        ></ui-button>
+        
       </form>
     </div>
     <div *ngSwitchCase="3" class="text-center space-y-4">
@@ -130,13 +130,7 @@
         </p>
       </div>
       <p class="my-2"></p>
-      <ui-button
-        text="Finsih Setup"
-        type="button"
-        variant="primary-full"
-        (click)="goBack()"
-        radius="xl"
-      ></ui-button>
+      
     </div>
   </ng-container>
 

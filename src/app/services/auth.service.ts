@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Observable, delay, of, throwError, tap } from 'rxjs';
 import { Router } from '@angular/router';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { baseUrl } from './constants';
 
 export interface LoginResponse {
-  token: string;
-  user: {
-    id: number;
-    email: string;
-    name: string;
-  };
+  userId: string,
+  role: string,
+  accessLevel: number,
+  message: string
 }
 
 export interface RegisterResponse {
-  success: boolean;
+  restaurantId: string;
   message: string;
 }
 
@@ -21,55 +21,86 @@ export interface RegisterResponse {
 })
 export class AuthService {
 
-  private readonly TOKEN_KEY = 'auth_token';
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private http: HttpClient) { }
 
   login(email: string, password: string): Observable<LoginResponse> {
+
     // Mock API call for login
-    if (email === 'admin@foodbuzzer.com' && password === 'admin123') {
-      return of({
-        token: 'mock-jwt-token-12345',
-        user: {
-          id: 1,
-          email: 'admin@foodbuzzer.com',
-          name: 'Admin User'
-        }
-      }).pipe(
-        delay(1000),
-        tap(response => {
-          localStorage.setItem(this.TOKEN_KEY, response.token);
-        })
-      ); // Simulate network delay
+    const resp = this.http.post<LoginResponse>(baseUrl + "/auth/login", {
+      "email": email,
+      "password": password
+    })
+
+    if (resp) {
+      return resp;
     } else {
       return throwError(() => new Error('Invalid credentials')).pipe(delay(1000));
     }
   }
 
-  register(step1Data: any, step2Data: any): Observable<RegisterResponse> {
-    // Mock API call for registration
-    console.log('Registering user with data:', { step1Data, step2Data });
-    return of({
-      success: true,
-      message: 'Registration successful'
-    }).pipe(
-      delay(1500),
-      tap(response => {
-        if (response.success) {
-          // Auto-login newly registered users with a mock token
-          localStorage.setItem(this.TOKEN_KEY, 'mock-jwt-token-registered-456');
-        }
-      })
-    ); // Simulate network delay
+
+  registerStepData1(data: {
+    name: string,
+    email: string,
+    password: string
+  }): Observable<LoginResponse> {
+    const resp = this.http.post<LoginResponse>(baseUrl + "/auth/register-owner", {
+      "fullName": data.name,
+      "email": data.email,
+      "password": data.password
+    })
+    if (resp) {
+      return resp;
+    } else {
+      return throwError(() => new Error('Invalid credentials')).pipe(delay(1000));
+    }
   }
+
+  registerStepData2(data: {
+    rest_name: string;
+    rest_address: string;
+    gst_number: string;
+    phone_number: string;
+    zip_code: string;
+  }): Observable<RegisterResponse> {
+    let headers = new HttpHeaders();
+    const userID = localStorage.getItem("userId")
+    if(userID){
+      headers=headers.append(
+      "X-User-Id",userID
+    )
+    }
+    
+    const resp = this.http.post<RegisterResponse>(baseUrl + "/restaurants",{
+      "name": data.rest_name,
+      "address": data.rest_address,
+      "zipcode": data.zip_code,
+      "phone": data.phone_number,
+      "GST": data.gst_number
+    },{
+       "headers":headers,
+    })
+    if (resp) {
+      return resp;
+    } else {
+      return throwError(() => new Error('Invalid credentials')).pipe(delay(1000));
+    }
+  }
+
+
+
 
   isAuthenticated(): boolean {
     // In a real app we might decode the JWT or verify expiration.
-    return !!localStorage.getItem(this.TOKEN_KEY);
+    return !!localStorage.getItem("userId");
   }
 
   logout(): void {
-    localStorage.removeItem(this.TOKEN_KEY);
+    localStorage.removeItem("userId");
+    localStorage.removeItem("accessLevel");
+    localStorage.removeItem("role");
+
     this.router.navigate(['/accounts/login']);
   }
 }

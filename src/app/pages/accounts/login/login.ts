@@ -43,8 +43,11 @@ export class Login {
     this.authService.login(email, password).subscribe({
       next: (response) => {
         this.isSubmitting.set(false);
+        localStorage.setItem("userId",response.userId)
+        localStorage.setItem("role",response.role)
+        localStorage.setItem("access_level",response.accessLevel+"")
         console.log('Login successful', response);
-        this.router.navigate(['/']); 
+        this.router.navigate(['/dashboard']); 
       },
       error: (err) => {
         this.isSubmitting.set(false);

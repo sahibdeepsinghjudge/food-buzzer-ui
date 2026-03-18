@@ -26,8 +26,7 @@ export class InventoryService {
 
 
   private dataUrl = '/src/app/pages/inventory/assets/data/raw-materials.json'
-
-
+  
   constructor(private http: HttpClient) {}
 
   getRawMaterials(): Observable<RawMaterial[]> {
