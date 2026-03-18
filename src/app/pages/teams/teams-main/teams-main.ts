@@ -37,7 +37,7 @@ export class TeamsMain implements OnInit {
   columns: TableColumn[] = [
     { key: 'name', label: 'Name' },
     { key: 'email', label: 'Email' },
-    { key: 'accessLevel', label: 'Access Level' },
+    { key: 'role', label: 'Role' },
     { key: 'status', label: 'Status' },
     {
       key: 'actions',

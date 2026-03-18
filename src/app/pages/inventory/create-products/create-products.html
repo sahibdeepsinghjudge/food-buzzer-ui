@@ -1,59 +1,87 @@
-<div class="bg-white rounded-xl shadow-2xs p-6">
-  <h1 class="text-2xl mb-6">Add Product</h1>
-  <form>
-    <div class="grid grid-cols-2 gap-4">
-      <div class="flex flex-col gap-2">
-        <label for="name">Product Name</label>
-        <input-field type="text" placeholder="Enter product name" name="product_name"></input-field>
+<div class="w-full">
+  <div class="bg-white rounded-2xl shadow-sm p-6 border border-neutral-100">
+    <h1 class="text-2xl mb-6 font-bold text-neutral-800">Add Raw Material</h1>
+    <form [formGroup]="productForm" (ngSubmit)="saveProduct()">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Name -->
+        <div class="flex flex-col gap-2">
+          <label for="name" class="font-medium text-neutral-700">Material Name *</label>
+          <input-field type="text" placeholder="e.g. Tomatoes" formControlName="name"></input-field>
+        </div>
+
+        <!-- SKU -->
+        <div class="flex flex-col gap-2">
+          <label for="sku" class="font-medium text-neutral-700">SKU</label>
+          <input-field type="text" placeholder="e.g. TOM-01" formControlName="sku"></input-field>
+        </div>
+
+        <!-- Category -->
+        <div class="flex flex-col gap-2">
+          <label for="category" class="font-medium text-neutral-700">Category *</label>
+          <select-input
+            [options]="categories"
+            placeholder="Select category"
+            formControlName="category"
+          ></select-input>
+        </div>
+
+        <!-- Unit -->
+        <div class="flex flex-col gap-2">
+          <label for="unit" class="font-medium text-neutral-700">Unit *</label>
+          <select-input
+            [options]="units"
+            placeholder="Select unit"
+            formControlName="unit"
+          ></select-input>
+        </div>
+
+        <!-- Current Stock -->
+        <div class="flex flex-col gap-2">
+          <label for="currentStock" class="font-medium text-neutral-700">Current Stock *</label>
+          <input-field type="number" placeholder="0" formControlName="currentStock"></input-field>
+        </div>
+
+        <!-- Reorder Level -->
+        <div class="flex flex-col gap-2">
+          <label for="reorderLevel" class="font-medium text-neutral-700">Reorder Level</label>
+          <input-field type="number" placeholder="0" formControlName="reorderLevel"></input-field>
+        </div>
+
+        <!-- Cost Per Unit -->
+        <div class="flex flex-col gap-2">
+          <label for="costPerUnit" class="font-medium text-neutral-700">Cost Per Unit (₹)</label>
+          <input-field type="number" placeholder="0.00" formControlName="costPerUnit"></input-field>
+        </div>
       </div>
-      <div class="flex flex-col gap-2">
-        <label for="unit">Unit</label>
-        <select-input [options]="units" placeholder="Select unit" name="unit"></select-input>
+
+      <!-- Error Message -->
+      @if (errorMessage()) {
+        <div
+          class="mt-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm flex items-center gap-2"
+        >
+          <mat-icon class="text-red-500 text-sm">error_outline</mat-icon>
+          {{ errorMessage() }}
+        </div>
+      }
+
+      <!-- Actions -->
+      <div class="flex items-center justify-end gap-3 mt-6 pt-6 border-t border-neutral-100">
+        <ui-button
+          text="Cancel"
+          radius="xl"
+          variant="secondary"
+          type="button"
+          routerLink="/inventory"
+        ></ui-button>
+        <ui-button
+          text="Add To Inventory"
+          radius="xl"
+          variant="primary"
+          type="submit"
+          [disabled]="productForm.invalid"
+          [isLoading]="isSaving()"
+        ></ui-button>
       </div>
-      <div class="flex flex-col gap-2">
-        <label for="current_stock">Current Stock</label>
-        <input-field
-          type="number"
-          placeholder="Enter current stock"
-          name="current_stock"
-        ></input-field>
-      </div>
-      <div class="flex flex-col gap-2">
-        <label for="reorder_level">Reorder Level</label>
-        <input-field
-          type="number"
-          placeholder="Enter reorder level"
-          name="reorder_level"
-        ></input-field>
-      </div>
-      <div class="flex flex-col gap-2">
-        <label for="cost_per_unit">Cost Per Unit</label>
-        <input-field
-          type="number"
-          placeholder="Enter cost per unit"
-          name="cost_per_unit"
-        ></input-field>
-      </div>
-    </div>
-    <div class="flex items-center gap-2 my-4">
-      <ui-button text="Add To Inventory" radius="xl" variant="black"></ui-button>
-    </div>
-  </form>
+    </form>
+  </div>
 </div>
-
-<!-- 
-
-name (varchar)
-
-sku (varchar, nullable, unique per restaurant)
-
-category (varchar) – e.g. 'VEGETABLE', 'MEAT'
-
-unit (varchar) – e.g. 'kg', 'g', 'litre', 'piece'
-
-current_stock (decimal(12,3)) – in unit
-
-reorder_level (decimal(12,3), nullable)
-
-cost_per_unit (decimal(12,2), nullable)
--->

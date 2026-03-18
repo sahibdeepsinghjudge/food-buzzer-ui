@@ -92,8 +92,11 @@ export class AuthService {
 
 
   isAuthenticated(): boolean {
-    // In a real app we might decode the JWT or verify expiration.
     return !!localStorage.getItem("userId");
+  }
+
+  isAdmin(): boolean {
+    return localStorage.getItem("role")?.toLowerCase() === "admin";
   }
 
   logout(): void {

@@ -47,11 +47,14 @@ export class CreateProduct implements OnInit {
   ngOnInit() {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
+      sku: ['', Validators.required],
+      category: ['', Validators.required],
       imageUrl: ['https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3'], // Default placeholder
       price: ['', [Validators.required, Validators.min(0)]],
       qty: [1, [Validators.required, Validators.min(1)]],
       isVeg: [true],
-      isBestseller: [false]
+      isBestseller: [false],
+      isLive: [true]
     });
 
     this.recipeFormGroup = this.fb.group({
@@ -77,11 +80,14 @@ export class CreateProduct implements OnInit {
       if (product) {
         this.productForm.patchValue({
           name: product.name,
+          sku: product.sku || '',
+          category: product.category || '',
           imageUrl: product.imageUrl,
           price: product.price,
           qty: product.qty,
           isVeg: product.isVeg,
-          isBestseller: product.isBestseller
+          isBestseller: product.isBestseller,
+          isLive: product.isLive !== undefined ? product.isLive : true
         });
 
         const loadedRecipes = product.recipes.map(r => {
@@ -142,18 +148,17 @@ export class CreateProduct implements OnInit {
     this.isSaving.set(true);
     const formValues = this.productForm.value;
     
-    const recipesToSave: ProductRecipe[] = this.selectedRecipes().map(r => ({
+    const recipesToSave = this.selectedRecipes().map(r => ({
       recipeId: r.recipeId,
-      qty: r.qty
+      quantity: r.qty
     }));
 
     const productData = {
       name: formValues.name,
-      imageUrl: formValues.imageUrl,
+      sku: formValues.sku,
+      category: formValues.category,
       price: parseFloat(formValues.price),
-      qty: parseFloat(formValues.qty),
-      isVeg: formValues.isVeg,
-      isBestseller: formValues.isBestseller,
+      isLive: formValues.isLive,
       recipes: recipesToSave
     };
 

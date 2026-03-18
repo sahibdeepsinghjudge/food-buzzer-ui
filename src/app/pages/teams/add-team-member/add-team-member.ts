@@ -18,7 +18,8 @@ import { TeamsService, TeamMember } from '../../../services/teams.service';
 export class AddTeamMember implements OnInit {
   memberForm!: FormGroup;
   isSaving = signal<boolean>(false);
-  accessLevelOptions = ['0', '1', '2', '3', '4', '5'];
+  errorMessage = signal<string>('');
+  roleOptions = ['staff', 'cashier', 'manager'];
 
   constructor(
     private router: Router,
@@ -30,7 +31,9 @@ export class AddTeamMember implements OnInit {
     this.memberForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      accessLevel: ['1', Validators.required]
+      phone: ['', Validators.required],
+      password: ['', Validators.required],
+      role: ['staff', Validators.required]
     });
   }
 
@@ -38,16 +41,24 @@ export class AddTeamMember implements OnInit {
     if (this.memberForm.invalid) return;
 
     this.isSaving.set(true);
+    this.errorMessage.set('');
     const formValues = this.memberForm.value;
     
     this.teamsService.addMember({
-      name: formValues.name,
+      fullName: formValues.name,
       email: formValues.email,
-      accessLevel: parseInt(formValues.accessLevel, 10),
-      status: 'Active'
-    }).subscribe(() => {
-      this.isSaving.set(false);
-      this.router.navigate(['/team']);
+      phone: formValues.phone,
+      password: formValues.password,
+      role: formValues.role
+    }).subscribe({
+      next: () => {
+        this.isSaving.set(false);
+        this.router.navigate(['/team']);
+      },
+      error: (err) => {
+        this.isSaving.set(false);
+        this.errorMessage.set(err.message || 'An unexpected error occurred.');
+      }
     });
   }
 }

@@ -11,7 +11,8 @@ type Variant =
   | 'primary-full'
   | 'secondary-full'
   | 'black-full'
-  | 'logout';
+  | 'logout'
+  | 'error';
 
 type Radius =
   | 'xl'
@@ -75,6 +76,7 @@ get buttonClasses() {
     'secondary-full': 'bg-bg-sec text-neutral-500 border-2 border-neutral-200 w-full',
     'black-full': 'bg-black text-white w-full',
     'logout': 'bg-white text-red-500 border-2 border-red-500 hover:bg-red-500 hover:text-white transition-all',
+    'error': 'bg-red-50 text-red-500 border-2 border-red-500 transition-all hover:px-12',
   };
 
   const radiusMap: Record<string, string> = {
