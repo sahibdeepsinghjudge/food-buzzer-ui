@@ -26,7 +26,8 @@ export const routes: Routes = [
             { path: 'inventory', loadChildren: () => import('./pages/inventory/inventory/inventory-module').then(m => m.InventoryModule) },
             { path: 'recipes', loadChildren: () => import('./pages/recipes/recipe/recipe-module').then(m => m.RecipeModule) },
             { path: 'products', loadChildren: () => import('./pages/products/products-module').then(m => m.ProductsModule) },
-            { path: 'team', loadChildren: () => import('./pages/teams/teams-main/teams-main-module').then(m => m.TeamsModule) }
+            { path: 'team', loadChildren: () => import('./pages/teams/teams-main/teams-main-module').then(m => m.TeamsModule) },
+            { path: 'settings', loadChildren: () => import('./pages/settings/setting/setting-module').then(m => m.SettingModule) }
         ]
     },
     { 

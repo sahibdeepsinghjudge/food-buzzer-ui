@@ -173,6 +173,47 @@
 
 
 
+  "restaurantdata":[
+    {
+      "restaurantId": 101,
+      "name": "Spice Garden",
+      "location": "Pune",
+      "phone": "9876543210",
+      "zipcode": "411001",
+      "ownerName": "Rahul Sharma",
+      "ownerId": 1,
+      "email": "rahul@example.com",
+      "cuisine": "Indian",
+      "openingTime": "10:00 AM",
+      "closingTime": "11:00 PM"
+    },
+    {
+      "restaurantId": 102,
+      "name": "Food Paradise",
+      "location": "Mumbai",
+      "phone": "9123456780",
+      "zipcode": "400001",
+      "ownerName": "Priya Mehta",
+      "ownerId": 2,
+      "email": "priya@example.com",
+      "cuisine": "Chinese",
+      "openingTime": "11:00 AM",
+      "closingTime": "10:30 PM"
+    },
+    {
+      "restaurantId": 103,
+      "name": "Tasty Bites",
+      "location": "Delhi",
+      "phone": "9988776655",
+      "zipcode": "110001",
+      "ownerName": "Amit Verma",
+      "ownerId": 3,
+      "email": "amit@example.com",
+      "cuisine": "Italian",
+      "openingTime": "09:00 AM",
+      "closingTime": "12:00 AM"
+    }
+  ],
 
   
   "orders": [
