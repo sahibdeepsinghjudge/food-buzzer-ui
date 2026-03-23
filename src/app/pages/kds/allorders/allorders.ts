@@ -1,73 +1,48 @@
 import { ChangeDetectorRef, Component} from '@angular/core';
 import { Kdsscreen } from '../kdsscreen/kdsscreen';
-import { Dataservice } from '../../../dataservice';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { OrdersService } from '../../../services/orders.service';
 
 @Component({
   selector: 'app-allorders',
-  imports: [Kdsscreen, CommonModule],
+  imports: [Kdsscreen, CommonModule, RouterModule],
   templateUrl: './allorders.html',
   styleUrl: './allorders.css',
 })
 export class Allorders{
-  orderedData:OrderData[]=[];
-  tables:number[]=[];
-  orderLength: number=0;
-  constructor(private dataService: Dataservice, private cdr: ChangeDetectorRef){}
+  orderedData: any[] = [];
+  orderLength: number = 0;
+  constructor(private ordersService: OrdersService, private cdr: ChangeDetectorRef){}
 
   ngOnInit(){
-    this.dataService.getData().subscribe(data=>{
-      this.orderedData = data.orders;
+    this.loadOrders();
+  }
+
+  loadOrders() {
+    this.ordersService.getRestaurantOrders().subscribe(orders => {
+      this.orderedData = orders;
       this.orderLength = this.orderedData.length;
-      this.cdr.detectChanges();     
-    })
+      this.cdr.detectChanges();
+    });
   }
 
-  printPage(){
-
-  }
+  printPage(){}
 
   activeDropDown: number|null = null;
-  toggleDropDown(orderId: number)
-  {
-    if(this.activeDropDown===orderId)
-    {
-      this.activeDropDown=null;
-    }
-    else
-    {
-      this.activeDropDown=orderId;  
-    }
+  toggleDropDown(orderId: number) {
+    this.activeDropDown = this.activeDropDown === orderId ? null : orderId;
   }
 
-  updateStatus(orderId: number, status: string)
-  {
-    const order = this.orderedData.find(o => o.orderId===orderId);
-    if(order)
-    {
-      order.status=status;
-    }
-    this.activeDropDown=null;
+  updateStatus(orderId: number, status: string) {
+    this.ordersService.updateOrderStatus(orderId, status).subscribe({
+      next: () => {
+        this.loadOrders();
+      },
+      error: (err) => {
+        console.error('Failed to update status:', err);
+      }
+    });
+    this.activeDropDown = null;
   }
-}
-
-export interface OrderData{
-  orderId: number;
-  table: number;
-  status: string;
-  time: Date;
-  customer: Customer;
-  items: Items[];
-}
-
-export interface Customer{
-  name: string;
-  email: string;
-  mobile: number;
-}
-
-export interface Items{
-  name: string;
-  quantity: number;
-  recipe: string[];
 }

@@ -1,67 +1,38 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { Kdsscreen } from '../kdsscreen/kdsscreen';
-import { Dataservice } from '../../../dataservice';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { OrdersService } from '../../../services/orders.service';
 
 @Component({
   selector: 'app-ready',
-  imports: [Kdsscreen, CommonModule],
+  imports: [Kdsscreen, CommonModule, RouterModule],
   templateUrl: './ready.html',
   styleUrl: './ready.css',
 })
 export class Ready {
-  orderData: OrderData[]=[];
-  orderedData: OrderData[]=[];
-  orderLength: number=0;
-  constructor(private dataService: Dataservice, private cdr: ChangeDetectorRef){}
+  orderedData: any[] = [];
+  orderLength: number = 0;
+  constructor(private ordersService: OrdersService, private cdr: ChangeDetectorRef){}
 
-  ngOnInit()
-  {
-    this.dataService.getData().subscribe(data=>{
-      this.orderData=data.orders;
-      this.orderedData = this.orderData.filter(o=> o.status==='Prepared');
+  ngOnInit() {
+    this.loadOrders();
+  }
+
+  loadOrders() {
+    this.ordersService.getRestaurantOrders(['PREPARED']).subscribe(orders => {
+      this.orderedData = orders;
       this.orderLength = this.orderedData.length;
-      localStorage.setItem('orders', JSON.stringify(this.orderedData));
-      this.cdr.detectChanges();     
-    })
+      this.cdr.detectChanges();
+    });
   }
-  updateStatus(orderId: number, status: string)
-  {
-    const order = this.orderedData.find(o => o.orderId===orderId);
-    if(order){
-      order.status=status;
-      this.orderedData = this.orderedData.filter(o => o.orderId !== orderId);
-      this.orderData = this.orderData.map(o =>
-      o.orderId === orderId ? { ...o, status: status } : o
-      );
-      localStorage.setItem('orders', JSON.stringify(this.orderData));
-    }
+
+  updateStatus(orderId: number, status: string) {
+    this.ordersService.updateOrderStatus(orderId, status).subscribe({
+      next: () => { this.loadOrders(); },
+      error: (err) => { console.error('Failed:', err); }
+    });
   }
-  
-  printPage()
-  {
 
-  }
-  
-}
-
-export interface OrderData{
-  orderId: number;
-  table: number;
-  status: string;
-  time: Date;
-  customer: Customer;
-  items: Items[];
-}
-
-export interface Customer{
-  name: string;
-  email: string;
-  mobile: number;
-}
-
-export interface Items{
-  name: string;
-  quantity: number;
-  recipe: string[];
+  printPage() {}
 }

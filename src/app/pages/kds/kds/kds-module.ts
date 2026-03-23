@@ -2,23 +2,19 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { Kdsscreen } from '../kdsscreen/kdsscreen';
-import { Allorders } from '../allorders/allorders';
-import { Pendingorders } from '../pendingorders/pendingorders';
-import { Accepted } from '../accepted/accepted';
-import { Declined } from '../declined/declined';
-import { Cooking } from '../cooking/cooking';
-import { Ready } from '../ready/ready';
-import { Completed } from '../completed/completed';
+import { KdsFilteredOrders } from '../kds-filtered-orders/kds-filtered-orders';
+import { KdsOrderDetail } from '../kds-order-detail/kds-order-detail';
 
-const routes : Routes = [
-  { path: '', component: Kdsscreen},
-  { path: 'view-all', component: Allorders},
-  { path: 'pending-orders', component: Pendingorders},
-  { path: 'accepted', component: Accepted},
-  { path: 'declined', component: Declined},
-  { path: 'cooking', component: Cooking},
-  { path: 'ready', component: Ready},
-  { path: 'completed', component: Completed},
+const routes: Routes = [
+  { path: '', component: Kdsscreen },
+  { path: 'view-all',        component: KdsFilteredOrders, data: { filter: 'view-all' } },
+  { path: 'pending-orders',  component: KdsFilteredOrders, data: { filter: 'pending-orders' } },
+  { path: 'accepted',        component: KdsFilteredOrders, data: { filter: 'accepted' } },
+  { path: 'declined',        component: KdsFilteredOrders, data: { filter: 'declined' } },
+  { path: 'cooking',         component: KdsFilteredOrders, data: { filter: 'cooking' } },
+  { path: 'ready',           component: KdsFilteredOrders, data: { filter: 'ready' } },
+  { path: 'completed',       component: KdsFilteredOrders, data: { filter: 'completed' } },
+  { path: 'order/:id',       component: KdsOrderDetail },
 ];
 
 @NgModule({

@@ -1,0 +1,172 @@
+<div class="px-6 pb-8">
+  <button
+    (click)="goBack()"
+    class="text-neutral-500 hover:text-primary transition-colors mb-6 text-sm font-medium cursor-pointer"
+  >
+    ← Back to Orders
+  </button>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="text-center py-20 text-neutral-400">
+    <p class="text-lg">Loading order details...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!isLoading && errorMsg" class="text-center py-20">
+    <p class="text-lg text-red-500">{{ errorMsg }}</p>
+  </div>
+
+  <div *ngIf="!isLoading && order">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-6">
+      <div class="flex items-center gap-4">
+        <h1 class="text-2xl font-bold">Order #{{ order.orderId }}</h1>
+        <span
+          class="px-3 py-1 rounded-full text-sm font-medium"
+          [ngClass]="getStatusColor(order.status)"
+        >
+          {{ order.status }}
+        </span>
+      </div>
+      <button
+        (click)="printBill()"
+        class="bg-neutral-800 text-white px-4 py-2 rounded-lg text-sm hover:bg-neutral-700 cursor-pointer flex items-center gap-2"
+      >
+        <span class="material-icons text-base">print</span> Print Bill
+      </button>
+    </div>
+
+    <!-- Customer & Order Info -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <div class="bg-white rounded-xl shadow-xs p-6 border border-neutral-100">
+        <h3 class="text-lg font-semibold mb-4 text-neutral-700">Customer Details</h3>
+        <div class="space-y-3">
+          <div class="flex justify-between">
+            <span class="text-neutral-500 text-sm">Name</span>
+            <span class="font-medium text-sm">{{ order.customerName || 'N/A' }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-neutral-500 text-sm">Phone</span>
+            <span class="font-medium text-sm">{{ order.customerPhone || 'N/A' }}</span>
+          </div>
+          <div *ngIf="order.customerEmail" class="flex justify-between">
+            <span class="text-neutral-500 text-sm">Email</span>
+            <span class="font-medium text-sm">{{ order.customerEmail }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-xs p-6 border border-neutral-100">
+        <h3 class="text-lg font-semibold mb-4 text-neutral-700">Order Info</h3>
+        <div class="space-y-3">
+          <div class="flex justify-between">
+            <span class="text-neutral-500 text-sm">Order ID</span>
+            <span class="font-medium text-sm">#{{ order.orderId }}</span>
+          </div>
+          <div *ngIf="order.tableId" class="flex justify-between">
+            <span class="text-neutral-500 text-sm">Table</span>
+            <span class="font-medium text-sm">{{ order.tableId }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-neutral-500 text-sm">Created</span>
+            <span class="font-medium text-sm">{{ order.createdAt }}</span>
+          </div>
+          <div *ngIf="order.updatedAt" class="flex justify-between">
+            <span class="text-neutral-500 text-sm">Last Updated</span>
+            <span class="font-medium text-sm">{{ order.updatedAt }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bill / Cart Items -->
+    <div class="bg-white rounded-xl shadow-xs p-6 mb-6 border border-neutral-100" id="bill-section">
+      <h3 class="text-lg font-semibold mb-4 text-neutral-700">Bill</h3>
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="text-left text-neutral-500 border-b border-neutral-200">
+            <th class="pb-3 font-medium">#</th>
+            <th class="pb-3 font-medium">Item</th>
+            <th class="pb-3 font-medium text-right">Qty</th>
+            <th class="pb-3 font-medium text-right">Unit Price</th>
+            <th class="pb-3 font-medium text-right">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let item of order.cartItems; let i = index"
+            class="border-b border-neutral-50"
+          >
+            <td class="py-3 text-neutral-400">{{ i + 1 }}</td>
+            <td class="py-3 font-medium">{{ item.name }}</td>
+            <td class="py-3 text-right">{{ item.quantity }}</td>
+            <td class="py-3 text-right">₹{{ item.unitPrice }}</td>
+            <td class="py-3 text-right font-medium">₹{{ item.totalPrice }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="mt-4 pt-4 border-t border-neutral-200 space-y-2">
+        <div class="flex justify-between text-sm text-neutral-500">
+          <span>Subtotal</span>
+          <span>₹{{ getCartTotal() }}</span>
+        </div>
+        <div *ngIf="order.discount > 0" class="flex justify-between text-sm text-green-600">
+          <span>Discount</span>
+          <span>-₹{{ order.discount }}</span>
+        </div>
+        <div class="flex justify-between text-lg font-bold pt-2 border-t border-neutral-200">
+          <span>Grand Total</span>
+          <span>₹{{ order.finalAmount || order.totalAmount || getCartTotal() }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status Actions -->
+    <div class="bg-white rounded-xl shadow-xs p-6 border border-neutral-100">
+      <h3 class="text-lg font-semibold mb-4 text-neutral-700">Actions</h3>
+      <div class="flex flex-wrap gap-3">
+        <button
+          *ngIf="order.status === 'PENDING'"
+          (click)="updateStatus('ACCEPTED')"
+          class="bg-green-500 text-white px-6 py-2.5 rounded-lg hover:bg-green-600 cursor-pointer font-medium"
+        >
+          ✓ Accept Order
+        </button>
+        <button
+          *ngIf="order.status === 'PENDING'"
+          (click)="updateStatus('DECLINED')"
+          class="bg-red-500 text-white px-6 py-2.5 rounded-lg hover:bg-red-600 cursor-pointer font-medium"
+        >
+          ✕ Decline Order
+        </button>
+        <button
+          *ngIf="order.status === 'ACCEPTED'"
+          (click)="updateStatus('COOKING')"
+          class="bg-orange-500 text-white px-6 py-2.5 rounded-lg hover:bg-orange-600 cursor-pointer font-medium"
+        >
+          🍳 Start Cooking
+        </button>
+        <button
+          *ngIf="order.status === 'COOKING'"
+          (click)="updateStatus('PREPARED')"
+          class="bg-blue-500 text-white px-6 py-2.5 rounded-lg hover:bg-blue-600 cursor-pointer font-medium"
+        >
+          ✓ Mark Prepared
+        </button>
+        <button
+          *ngIf="order.status === 'PREPARED'"
+          (click)="updateStatus('COMPLETED')"
+          class="bg-green-600 text-white px-6 py-2.5 rounded-lg hover:bg-green-700 cursor-pointer font-medium"
+        >
+          ✓ Complete Order
+        </button>
+        <p *ngIf="order.status === 'COMPLETED'" class="text-green-600 font-semibold text-lg">
+          ✓ Order Completed
+        </p>
+        <p *ngIf="order.status === 'DECLINED'" class="text-red-600 font-semibold text-lg">
+          ✕ Order Declined
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

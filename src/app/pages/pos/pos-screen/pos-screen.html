@@ -1,0 +1,174 @@
+<div class="flex h-[calc(100vh-4rem)] overflow-hidden">
+  <!-- LEFT: Product Grid -->
+  <div class="flex-1 overflow-y-auto p-6 bg-bg-sec">
+    <div class="mb-6">
+      <h1 class="text-2xl font-bold text-neutral-800 mb-4">Point of Sale</h1>
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="filterProducts()"
+        placeholder="Search products..."
+        class="w-full bg-white border border-neutral-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+      />
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div
+        *ngFor="let product of filteredProducts"
+        (click)="addToCart(product)"
+        class="bg-white rounded-xl border border-neutral-100 p-4 cursor-pointer hover:border-primary hover:shadow-md transition-all group"
+      >
+        <div class="relative mb-3">
+          <img
+            [src]="product.imageUrl"
+            [alt]="product.name"
+            class="w-full h-28 object-cover rounded-lg"
+          />
+          <span
+            class="absolute top-2 left-2 text-xs font-bold px-2 py-0.5 rounded-full"
+            [class.bg-green-100]="product.isVeg"
+            [class.text-green-700]="product.isVeg"
+            [class.bg-red-100]="!product.isVeg"
+            [class.text-red-700]="!product.isVeg"
+          >
+            {{ product.isVeg ? 'VEG' : 'NON-VEG' }}
+          </span>
+        </div>
+        <p class="font-semibold text-neutral-800 text-sm truncate">{{ product.name }}</p>
+        <p class="text-primary font-bold mt-1">₹{{ product.price }}</p>
+        <p
+          class="text-xs text-neutral-400 mt-1 opacity-0 group-hover:opacity-100 transition-opacity"
+        >
+          Tap to add
+        </p>
+      </div>
+    </div>
+
+    <div *ngIf="filteredProducts.length === 0" class="text-center py-20 text-neutral-400">
+      <p class="text-lg">No products found</p>
+    </div>
+  </div>
+
+  <!-- RIGHT: Cart Panel -->
+  <div class="w-[380px] bg-white border-l border-neutral-200 flex flex-col">
+    <!-- Cart Header -->
+    <div class="p-4 border-b border-neutral-100">
+      <div class="flex justify-between items-center">
+        <h2 class="text-lg font-bold text-neutral-800">Cart</h2>
+        <span class="text-sm text-neutral-400">{{ cart.length }} items</span>
+      </div>
+    </div>
+
+    <!-- Cart Items -->
+    <div class="flex-1 overflow-y-auto p-4 space-y-3">
+      <div *ngIf="cart.length === 0" class="text-center py-10 text-neutral-400">
+        <p class="text-4xl mb-2">🛒</p>
+        <p class="text-sm">Add products to get started</p>
+      </div>
+
+      <div
+        *ngFor="let item of cart"
+        class="flex items-center justify-between bg-neutral-50 rounded-xl p-3"
+      >
+        <div class="flex-1 min-w-0">
+          <p class="font-medium text-sm text-neutral-800 truncate">{{ item.name }}</p>
+          <p class="text-xs text-neutral-400">₹{{ item.unitPrice }} each</p>
+        </div>
+        <div class="flex items-center gap-2 ml-3">
+          <button
+            (click)="decreaseQty(item)"
+            class="w-7 h-7 rounded-full bg-white border border-neutral-200 flex items-center justify-center text-sm hover:bg-neutral-100 cursor-pointer"
+          >
+            −
+          </button>
+          <span class="text-sm font-semibold w-5 text-center">{{ item.quantity }}</span>
+          <button
+            (click)="increaseQty(item)"
+            class="w-7 h-7 rounded-full bg-primary text-white flex items-center justify-center text-sm hover:opacity-90 cursor-pointer"
+          >
+            +
+          </button>
+        </div>
+        <p class="font-semibold text-sm ml-3 w-16 text-right">₹{{ item.totalPrice }}</p>
+      </div>
+    </div>
+
+    <!-- Customer Info & Checkout -->
+    <div class="border-t border-neutral-100 p-4 space-y-3">
+      <!-- Customer Fields -->
+      <input
+        [(ngModel)]="customerName"
+        placeholder="Customer Name *"
+        class="w-full bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+      />
+      <input
+        [(ngModel)]="customerPhone"
+        placeholder="Phone Number *"
+        class="w-full bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+      />
+      <div class="flex gap-2">
+        <input
+          [(ngModel)]="tableId"
+          placeholder="Table ID"
+          class="flex-1 bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+        />
+        <input
+          [(ngModel)]="discount"
+          type="number"
+          placeholder="Discount %"
+          min="0"
+          max="100"
+          class="w-24 bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+        />
+      </div>
+
+      <!-- Totals -->
+      <div class="space-y-1 pt-2 border-t border-neutral-100">
+        <div class="flex justify-between text-sm text-neutral-500">
+          <span>Subtotal</span>
+          <span>₹{{ subtotal.toFixed(2) }}</span>
+        </div>
+        <div *ngIf="discount > 0" class="flex justify-between text-sm text-green-600">
+          <span>Discount ({{ discount }}%)</span>
+          <span>-₹{{ discountAmount.toFixed(2) }}</span>
+        </div>
+        <div class="flex justify-between text-lg font-bold text-neutral-800 pt-1">
+          <span>Total</span>
+          <span>₹{{ total.toFixed(2) }}</span>
+        </div>
+      </div>
+
+      <!-- Success/Error Messages -->
+      <div
+        *ngIf="orderSuccess()"
+        class="bg-green-50 text-green-700 text-sm p-3 rounded-lg text-center"
+      >
+        {{ orderSuccess() }}
+      </div>
+      <div *ngIf="orderError()" class="bg-red-50 text-red-600 text-sm p-3 rounded-lg text-center">
+        {{ orderError() }}
+      </div>
+
+      <!-- Place Order Button -->
+      <button
+        (click)="placeOrder()"
+        [disabled]="!canPlaceOrder || isPlacingOrder()"
+        class="w-full py-3 rounded-xl text-white font-semibold text-base transition-all cursor-pointer"
+        [class.bg-primary]="canPlaceOrder && !isPlacingOrder()"
+        [class.hover:opacity-90]="canPlaceOrder && !isPlacingOrder()"
+        [class.bg-neutral-300]="!canPlaceOrder || isPlacingOrder()"
+        [class.cursor-not-allowed]="!canPlaceOrder || isPlacingOrder()"
+      >
+        {{ isPlacingOrder() ? 'Placing Order...' : 'Place Order' }}
+      </button>
+
+      <button
+        *ngIf="cart.length > 0"
+        (click)="clearCart()"
+        class="w-full py-2 text-sm text-neutral-500 hover:text-red-500 transition-colors cursor-pointer"
+      >
+        Clear Cart
+      </button>
+    </div>
+  </div>
+</div>

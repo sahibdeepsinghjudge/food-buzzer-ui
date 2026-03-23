@@ -20,40 +20,110 @@
       <div>
         <h3 class="text-lg font-semibold text-neutral-700 mb-4">Basic Information</h3>
         <div class="space-y-6">
-          <input-field
-            label="Full Name"
-            id="name"
-            name="name"
-            placeholder="John Doe"
-            formControlName="name"
-          ></input-field>
+          <div>
+            <input-field
+              label="Full Name"
+              id="name"
+              name="name"
+              placeholder="John Doe"
+              formControlName="name"
+            ></input-field>
+            <p
+              *ngIf="
+                memberForm.get('name')?.touched && memberForm.get('name')?.errors?.['required']
+              "
+              class="text-red-500 text-sm mt-1"
+            >
+              Name is required
+            </p>
+            <p
+              *ngIf="memberForm.get('name')?.touched && memberForm.get('name')?.errors?.['pattern']"
+              class="text-red-500 text-sm mt-1"
+            >
+              Name must contain only letters and spaces
+            </p>
+          </div>
 
-          <input-field
-            label="Email Address"
-            id="email"
-            name="email"
-            type="email"
-            placeholder="john@example.com"
-            formControlName="email"
-          ></input-field>
+          <div>
+            <input-field
+              label="Email Address"
+              id="email"
+              name="email"
+              type="email"
+              placeholder="john@example.com"
+              formControlName="email"
+            ></input-field>
+            <p
+              *ngIf="
+                memberForm.get('email')?.touched && memberForm.get('email')?.errors?.['required']
+              "
+              class="text-red-500 text-sm mt-1"
+            >
+              Email is required
+            </p>
+            <p
+              *ngIf="memberForm.get('email')?.touched && memberForm.get('email')?.errors?.['email']"
+              class="text-red-500 text-sm mt-1"
+            >
+              Enter a valid email address
+            </p>
+          </div>
 
-          <input-field
-            label="Phone Number"
-            id="phone"
-            name="phone"
-            type="tel"
-            placeholder="+1 234 567 890"
-            formControlName="phone"
-          ></input-field>
+          <div>
+            <input-field
+              label="Phone Number"
+              id="phone"
+              name="phone"
+              type="tel"
+              placeholder="10-digit phone number"
+              formControlName="phone"
+            ></input-field>
+            <p
+              *ngIf="
+                memberForm.get('phone')?.touched && memberForm.get('phone')?.errors?.['required']
+              "
+              class="text-red-500 text-sm mt-1"
+            >
+              Phone number is required
+            </p>
+            <p
+              *ngIf="
+                memberForm.get('phone')?.touched && memberForm.get('phone')?.errors?.['pattern']
+              "
+              class="text-red-500 text-sm mt-1"
+            >
+              Enter a valid 10-digit number (cannot start with 0, 91, or 123)
+            </p>
+          </div>
 
-          <input-field
-            label="Temporary Password"
-            id="password"
-            name="password"
-            type="password"
-            placeholder="Set password (Min. 8 characters)"
-            formControlName="password"
-          ></input-field>
+          <div>
+            <input-field
+              label="Temporary Password"
+              id="password"
+              name="password"
+              type="password"
+              placeholder="Min. 6 characters"
+              formControlName="password"
+            ></input-field>
+            <p
+              *ngIf="
+                memberForm.get('password')?.touched &&
+                memberForm.get('password')?.errors?.['required']
+              "
+              class="text-red-500 text-sm mt-1"
+            >
+              Password is required
+            </p>
+            <p
+              *ngIf="
+                memberForm.get('password')?.touched &&
+                memberForm.get('password')?.errors?.['minlength']
+              "
+              class="text-red-500 text-sm mt-1"
+            >
+              Password must be at least 6 characters
+            </p>
+          </div>
         </div>
       </div>
 
@@ -85,7 +155,13 @@
       <div class="pt-6 mt-6 border-t border-neutral-100">
         <h3 class="text-lg font-semibold text-neutral-700 mb-6">Account Actions</h3>
         <div class="flex flex-col sm:flex-row gap-4">
-          <ui-button type="submit" text="Invite Member" variant="primary" [isLoading]="isSaving()">
+          <ui-button
+            type="submit"
+            text="Invite Member"
+            variant="primary"
+            [isLoading]="isSaving()"
+            [disabled]="memberForm.invalid"
+          >
           </ui-button>
         </div>
       </div>

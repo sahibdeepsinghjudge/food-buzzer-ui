@@ -55,7 +55,7 @@ export class Register {
       rest_name: ['', Validators.required],
       rest_address: ['', Validators.required],
       gst_number: ['', Validators.required],
-      phone_number: ['', [Validators.required, Validators.pattern(/^[0-9+\-\s]+$/)]],
+      phone_number: ['', [Validators.required, Validators.pattern(/^(?!0|91|123)[1-9][0-9]{9}$/)]],
       zip_code: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
     });
   }

@@ -28,4 +28,12 @@ export class Header {
     this.authService.logout();
     this.isSubmitting.set(false);
   }
+
+  get userEmail(): string {
+    return this.authService.getUserEmail();
+  }
+
+  get userRole(): string {
+    return this.authService.getRole();
+  }
 }

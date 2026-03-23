@@ -1,0 +1,19 @@
+<app-kdsscreen
+  [activeText]="config.activeText"
+  [activeLink]="config.activeLink"
+  [orderLength]="orderLength"
+>
+  <h1 class="m-5 text-2xl font-semibold">{{ config.title }}</h1>
+
+  <div *ngIf="orders.length === 0" class="text-center py-16 text-neutral-400">
+    <p class="text-lg">No {{ config.title.toLowerCase() }} found</p>
+  </div>
+
+  <div class="grid grid-cols-[repeat(auto-fit,minmax(20rem,1fr))] gap-6 m-5">
+    <app-kds-order-card
+      *ngFor="let order of orders"
+      [order]="order"
+      (statusChange)="onStatusChange($event)"
+    ></app-kds-order-card>
+  </div>
+</app-kdsscreen>

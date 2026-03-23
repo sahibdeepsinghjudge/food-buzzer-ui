@@ -92,17 +92,35 @@ export class AuthService {
 
 
   isAuthenticated(): boolean {
-    return !!localStorage.getItem("userId");
+    let userid = localStorage.getItem("userId");
+    if(userid){
+      if(userid==="null"){
+        return false;
+      }else{
+        return true;
+      }
+    }else{
+      return false;
+    }
   }
 
   isAdmin(): boolean {
     return localStorage.getItem("role")?.toLowerCase() === "admin";
   }
-
+  accessLevel():number{
+    return parseInt(localStorage.getItem("access_level") || '0');
+  }
+  getUserEmail(): string {
+    return localStorage.getItem("userEmail") || '';
+  }
+  getRole(): string {
+    return localStorage.getItem("role") || '';
+  }
   logout(): void {
     localStorage.removeItem("userId");
-    localStorage.removeItem("accessLevel");
+    localStorage.removeItem("access_level");
     localStorage.removeItem("role");
+    localStorage.removeItem("userEmail");
 
     this.router.navigate(['/accounts/login']);
   }

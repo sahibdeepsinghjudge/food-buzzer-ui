@@ -29,16 +29,19 @@ export class AddTeamMember implements OnInit {
 
   ngOnInit() {
     this.memberForm = this.fb.group({
-      name: ['', Validators.required],
+      name: ['', [Validators.required, Validators.pattern(/^[A-Za-z\s]+$/)]],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', Validators.required],
-      password: ['', Validators.required],
+      phone: ['', [Validators.required, Validators.pattern(/^(?!0|91|123)[1-9][0-9]{9}$/)]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
       role: ['staff', Validators.required]
     });
   }
 
   saveChanges() {
-    if (this.memberForm.invalid) return;
+    if (this.memberForm.invalid) {
+      this.memberForm.markAllAsTouched();
+      return;
+    }
 
     this.isSaving.set(true);
     this.errorMessage.set('');

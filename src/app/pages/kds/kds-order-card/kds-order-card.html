@@ -1,0 +1,123 @@
+<div class="bg-white rounded-xl shadow py-5 flex flex-col border border-neutral-200">
+  <!-- Header -->
+  <div class="px-6">
+    <div class="flex justify-between text-sm text-neutral-500">
+      <p>Table: {{ order.tableId || '-' }}</p>
+      <p>{{ order.createdAt }}</p>
+    </div>
+    <p class="font-semibold text-lg mt-1">Order #{{ order.id }}</p>
+  </div>
+  <hr class="my-2" />
+
+  <!-- Customer -->
+  <div class="px-6">
+    <p class="text-sm"><span class="text-neutral-500">Customer:</span> {{ order.customerName }}</p>
+    <p class="text-sm"><span class="text-neutral-500">Phone:</span> {{ order.customerPhone }}</p>
+  </div>
+  <hr class="my-2" />
+
+  <!-- Items -->
+  <div *ngFor="let i of order.cartItems" class="px-6">
+    <p class="font-medium text-sm py-1">
+      {{ i.quantity }}x {{ i.name }}
+      <span class="text-neutral-400">— ₹{{ i.totalPrice }}</span>
+    </p>
+  </div>
+
+  <!-- Links -->
+  <div class="px-6 pt-3 flex gap-2">
+    <a
+      [routerLink]="['/kds/order', order.id]"
+      class="text-primary text-sm font-medium hover:underline cursor-pointer"
+      >View Details</a
+    >
+    <span class="text-neutral-300">|</span>
+    <a
+      [routerLink]="['/kds/order', order.id]"
+      class="text-neutral-600 text-sm font-medium hover:underline cursor-pointer"
+      >See Bill</a
+    >
+  </div>
+
+  <!-- Status Actions -->
+  <div class="px-4 pt-3 mt-auto flex gap-1 relative">
+    <!-- PENDING -->
+    <ng-container *ngIf="order.status === 'PENDING'">
+      <button
+        (click)="toggleDropDown()"
+        class="bg-yellow-500 text-white flex-1 py-2.5 rounded-lg hover:bg-yellow-600 cursor-pointer text-sm font-medium"
+      >
+        Pending
+      </button>
+      <div
+        *ngIf="activeDropDown"
+        class="absolute right-0 top-0 h-full w-1/2 bg-white border border-neutral-300 rounded-lg flex flex-col shadow-md z-10"
+      >
+        <button
+          class="flex-1 text-green-600 hover:bg-gray-100 cursor-pointer text-sm font-medium"
+          (click)="emitStatus('ACCEPTED')"
+        >
+          Accept
+        </button>
+        <button
+          class="flex-1 text-red-600 border-t border-gray-200 hover:bg-gray-100 cursor-pointer text-sm font-medium"
+          (click)="emitStatus('DECLINED')"
+        >
+          Decline
+        </button>
+      </div>
+    </ng-container>
+
+    <!-- ACCEPTED -->
+    <button
+      *ngIf="order.status === 'ACCEPTED'"
+      class="bg-green-500 text-white flex-1 py-2.5 rounded-lg hover:bg-green-700 cursor-pointer text-sm font-medium"
+      (click)="emitStatus('COOKING')"
+    >
+      Start Cooking
+    </button>
+
+    <!-- COOKING -->
+    <button
+      *ngIf="order.status === 'COOKING'"
+      class="bg-orange-400 text-white flex-1 py-2.5 rounded-lg hover:bg-orange-700 cursor-pointer text-sm font-medium"
+      (click)="emitStatus('PREPARED')"
+    >
+      Mark Prepared
+    </button>
+
+    <!-- PREPARED -->
+    <button
+      *ngIf="order.status === 'PREPARED'"
+      class="bg-blue-500 text-white flex-1 py-2.5 rounded-lg hover:bg-blue-800 cursor-pointer text-sm font-medium"
+      (click)="emitStatus('COMPLETED')"
+    >
+      Complete Order
+    </button>
+
+    <!-- COMPLETED -->
+    <p
+      *ngIf="order.status === 'COMPLETED'"
+      class="text-green-500 flex-1 py-2.5 text-center font-medium"
+    >
+      ✓ Completed
+    </p>
+
+    <!-- DECLINED -->
+    <p
+      *ngIf="order.status === 'DECLINED'"
+      class="text-red-500 flex-1 py-2.5 text-center font-medium"
+    >
+      ✕ Declined
+    </p>
+
+    <!-- Print -->
+    <button
+      *ngIf="order.status !== 'DECLINED'"
+      class="bg-white border border-neutral-300 px-3 py-2.5 rounded-lg flex justify-center items-center hover:bg-gray-200 cursor-pointer"
+      (click)="printOrder()"
+    >
+      <span class="material-icons text-2xl">print</span>
+    </button>
+  </div>
+</div>

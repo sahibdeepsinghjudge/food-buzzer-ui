@@ -1,34 +1,45 @@
-<div class="bg-bg-sec min-h-screen flex flex-col">
+<div class="bg-neutral-50 min-h-screen flex flex-col">
+  <header class="fixed top-0 w-full bg-white shadow-sm flex items-center justify-between z-50 px-6">
+    <h1 class="text-lg font-bold text-primary py-4">KDS</h1>
+    <div class="flex items-center gap-6 py-4">
+      <a
+        *ngFor="let item of navHeadItems"
+        [routerLink]="item.link"
+        routerLinkActive="text-primary font-semibold border-b-2 border-primary"
+        class="text-neutral-500 hover:text-neutral-800 pb-1 transition-colors text-sm"
+      >
+        {{ item.text }}
+        <span
+          *ngIf="activeText === item.text"
+          class="ml-1 bg-primary text-white text-xs rounded-full px-1.5 py-0.5"
+          >{{ orderLength }}</span
+        >
+      </a>
+    </div>
+    <button (click)="logout()" class="text-sm text-neutral-500 hover:text-red-500 cursor-pointer">
+      Logout
+    </button>
+  </header>
 
-    <header class="fixed top-0 w-full bg-white shadow-sm text-neutral-500 flex items-center z-50">
-        <h1 class="w-20">🔍 Search</h1>   
-        <div class="flex justify-center gap-6 w-full p-4">
-            <a *ngFor="let item of navHeadItems"
-                href="#"
-                [routerLink]="item.link"
-                [class.text-black]="isActive(item.link)"
-                [class.underline]="isActive(item.link)">
-                {{ item.text }}
-                <span *ngIf="activeText===item.text">{{orderLength}}</span>
-            </a>
-        </div>
-    </header>
+  <main class="mt-16 mb-16 mx-6">
+    <ng-content></ng-content>
+  </main>
 
-    <main class="mb-20 mx-10">
-        <ng-content></ng-content>
-    </main>
-
-    <footer class="fixed bottom-0 w-full bg-white shadow-sm text-neutral-500">
-        <div class="flex justify-center gap-8 p-4">
-            <a *ngFor="let item of navFootItems"
-            href="#"
-            [routerLink]="item.link"
-            [class.text-black]="isActive(item.link)"
-            [class.underline]="isActive(item.link)">
-            {{item.text}}
-            <span *ngIf="activeText===item.text">{{orderLength}}</span>
-            </a>
-        </div>
-    </footer>
+  <footer class="fixed bottom-0 w-full bg-white shadow-[0_-2px_8px_rgba(0,0,0,0.06)]">
+    <div class="flex justify-center gap-8 py-3">
+      <a
+        *ngFor="let item of navFootItems"
+        [routerLink]="item.link"
+        routerLinkActive="text-primary font-semibold"
+        class="text-neutral-500 hover:text-neutral-800 transition-colors text-sm px-3 py-1"
+      >
+        {{ item.text }}
+        <span
+          *ngIf="activeText === item.text"
+          class="ml-1 bg-primary text-white text-xs rounded-full px-1.5 py-0.5"
+          >{{ orderLength }}</span
+        >
+      </a>
+    </div>
+  </footer>
 </div>
-

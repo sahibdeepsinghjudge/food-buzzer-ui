@@ -3,6 +3,15 @@ import { RouterModule } from '@angular/router';
 import { Header } from '../../../ui/header/header';
 import { Sidebar } from '../../../ui/sidebar/sidebar';
 
+
+
+export interface NavItem{
+  text:string,
+  link:string,
+  visibleTo:number[]
+}
+
+
 @Component({
   selector: 'dashboard-layout',
   imports: [RouterModule, Header, Sidebar],
@@ -10,22 +19,21 @@ import { Sidebar } from '../../../ui/sidebar/sidebar';
   styleUrl: './dashboard-layout.css',
 })
 export class DashboardLayout {
-    navItems = [
-        { text: 'Home', link: '/dashboard' },
-        // { text: 'POS', link: '/pos' },
-        { text: 'Orders', link: '/orders' },
-        { text: 'Products', link: '/products' },
-        { text: 'Inventory', link: '/inventory' },
-        { text: 'Recipes', link: '/recipes' },
-        { text: 'Team', link: '/team' },
-        { text: 'Analytics', link: '/analytics' },
-        { text: 'Digital Menu', link: '/digital-menu' },
-        { text: 'Customers', link: '/customers' },
-        { text: 'Settings', link: '/settings' },
-    ]
+    navItems:NavItem[] = [
+        { text: 'Home', link: '/dashboard', visibleTo:[2,3] },
+        { text: 'Orders', link: '/orders', visibleTo:[0,1,2,3] },
+        { text: 'Products', link: '/products', visibleTo:[2,3] },
+        { text: 'Inventory', link: '/inventory',visibleTo:[2,3] },
+        { text: 'Recipes', link: '/recipes',visibleTo:[2,3] },
+        { text: 'Team', link: '/team',visibleTo:[3] },
+        { text: 'Customers', link: '/customers',visibleTo:[2,3] },
+        { text: 'POS', link: '/pos', visibleTo: [2, 3] },
+        { text: 'Table Manager', link: '/table-manager', visibleTo: [1,2, 3] },
+        { text: 'KDS', link: '/kds/view-all', visibleTo: [1, 2, 3] },
+        { text: 'Settings', link: '/settings', visibleTo: [0, 1, 2, 3] },
+    ] 
   headerNavItems = [
-    { text: 'POS', link: '/pos' },
-    { text: 'Table Manager', link: '/table-manager' },
+ 
 
     // { text: 'Accounts', link: '/accounts' },
   ]

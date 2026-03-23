@@ -27,7 +27,7 @@ export class Login {
   ) {
     this.loginForm = this.fb.nonNullable.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]]
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
@@ -42,16 +42,23 @@ export class Login {
     const { email, password } = this.loginForm.getRawValue();
     this.authService.login(email, password).subscribe({
       next: (response) => {
-        this.isSubmitting.set(false);
-        localStorage.setItem("userId",response.userId)
-        localStorage.setItem("role",response.role)
-        localStorage.setItem("access_level",response.accessLevel+"")
-        console.log('Login successful', response);
-        if (this.authService.isAdmin()) { 
-          this.router.navigate(['/admin']); 
+        if(response.userId!=null){
+           this.isSubmitting.set(false);
+          localStorage.setItem("userId",response.userId)
+          localStorage.setItem("role",response.role)
+          localStorage.setItem("access_level",response.accessLevel+"")
+          localStorage.setItem("userEmail", email)
+          console.log('Login successful', response);
+          if (this.authService.isAdmin()) { 
+            this.router.navigate(['/admin']); 
+          }else{
+            this.router.navigate(['/dashboard']); 
+          }
         }else{
-          this.router.navigate(['/dashboard']); 
+            this.isSubmitting.set(false);
+            this.errorMessage = 'Invalid Credentials';
         }
+       
       },
       error: (err) => {
         this.isSubmitting.set(false);

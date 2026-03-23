@@ -17,10 +17,20 @@
     <div class="mt-4">
       <input-field placeholder="Password" type="password" formControlName="password"></input-field>
       <p
-        *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid"
+        *ngIf="
+          loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['required']
+        "
         class="text-red-500 text-sm mt-1"
       >
         Password is required
+      </p>
+      <p
+        *ngIf="
+          loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['minlength']
+        "
+        class="text-red-500 text-sm mt-1"
+      >
+        Password must be at least 6 characters
       </p>
     </div>
 

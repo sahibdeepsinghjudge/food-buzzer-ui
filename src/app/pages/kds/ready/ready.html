@@ -1,33 +1,57 @@
 <app-kdsscreen [activeLink]="'/kds/ready'" [activeText]="'Prepared'" [orderLength]="orderLength">
-    <h1 class="m-5 text-2xl font-semibold">Prepared Orders</h1>
-    <div class="grid grid-cols-[repeat(auto-fit,minmax(20rem,1fr))] justify-items-center gap-6 m-5">
-      <div *ngFor="let item of orderedData"
-      class="bg-white rounded-xl shadow py-5 flex flex-col border borer-black">
-        <div class="px-8">
-          <div class="flex justify-between">
-            <p class="mr-10">Table No. {{item.table}}</p>
-            <p>Time: {{item.time}}</p>
-          </div>
-          <p class="pb-2">Order No. #{{item.orderId}}</p>
+  <h1 class="m-5 text-2xl font-semibold">Prepared Orders</h1>
+  <div class="grid grid-cols-[repeat(auto-fit,minmax(20rem,1fr))] justify-items-center gap-6 m-5">
+    <div
+      *ngFor="let item of orderedData"
+      class="bg-white rounded-xl shadow py-5 flex flex-col border border-neutral-200"
+    >
+      <div class="px-6">
+        <div class="flex justify-between text-sm text-neutral-500">
+          <p>Table: {{ item.tableId || '-' }}</p>
+          <p>{{ item.createdAt }}</p>
         </div>
-        <hr>
-        <div class="px-8">
-          <p class="pt-2">Customer Name- {{item.customer.name}}</p>
-          <p class="pb-2">Number- {{item.customer.mobile}}</p>
-        </div>
-        <hr>
-        <div *ngFor="let i of item.items" class="flex flex-col px-8">
-          <p class="font-medium py-2 text-base">{{i.quantity}} {{i.name}}</p>
-          <ul class="ml-4 list-none">
-            <li *ngFor="let ingredient of i.recipe">{{ingredient}}</li>
-          </ul>
-        </div>
-        <div class="px-4 pr-4 pt-2 mt-auto flex gap-1 relative">
-          <button *ngIf="item.status==='Prepared'" class="bg-blue-500 text-white flex-1 py-3 rounded-lg hover:bg-blue-800 cursor-pointer" (click)="updateStatus(item.orderId, 'Completed')">{{item.status}}</button>
-          <button *ngIf="item.status!=='Declined'" class="bg-white border border-black px-3 py-3 rounded-lg flex justify-center items-center hover:bg-gray-200 cursor-pointer" (click)="printPage()">
-            <span class="material-icons text-3xl">print</span>
-          </button>
-        </div>
+        <p class="font-semibold text-lg mt-1">Order #{{ item.orderId }}</p>
+      </div>
+      <hr class="my-2" />
+      <div class="px-6">
+        <p class="text-sm">
+          <span class="text-neutral-500">Customer:</span> {{ item.customerName }}
+        </p>
+        <p class="text-sm"><span class="text-neutral-500">Phone:</span> {{ item.customerPhone }}</p>
+      </div>
+      <hr class="my-2" />
+      <div *ngFor="let i of item.cartItems" class="px-6">
+        <p class="font-medium text-sm py-1">
+          {{ i.quantity }}x {{ i.name }} <span class="text-neutral-400">— ₹{{ i.totalPrice }}</span>
+        </p>
+      </div>
+      <div class="px-6 pt-3 flex gap-2">
+        <a
+          [routerLink]="['/kds/order', item.orderId]"
+          class="text-primary text-sm font-medium hover:underline cursor-pointer"
+          >View Details</a
+        >
+        <span class="text-neutral-300">|</span>
+        <a
+          [routerLink]="['/kds/order', item.orderId]"
+          class="text-neutral-600 text-sm font-medium hover:underline cursor-pointer"
+          >See Bill</a
+        >
+      </div>
+      <div class="px-4 pt-3 mt-auto flex gap-1">
+        <button
+          class="bg-blue-500 text-white flex-1 py-2.5 rounded-lg hover:bg-blue-800 cursor-pointer text-sm font-medium"
+          (click)="updateStatus(item.orderId, 'COMPLETED')"
+        >
+          Complete Order
+        </button>
+        <button
+          class="bg-white border border-neutral-300 px-3 py-2.5 rounded-lg flex justify-center items-center hover:bg-gray-200 cursor-pointer"
+          (click)="printPage()"
+        >
+          <span class="material-icons text-2xl">print</span>
+        </button>
       </div>
     </div>
+  </div>
 </app-kdsscreen>

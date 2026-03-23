@@ -1,7 +1,7 @@
 <nav class="bg-white h-screen border-r border-neutral-200 flex flex-col justify-between">
   <ul class="p-4">
     <app-sidebar-item
-      *ngFor="let item of navItems"
+      *ngFor="let item of SideBarItems()"
       [text]="item.text"
       [link]="item.link"
     ></app-sidebar-item>
