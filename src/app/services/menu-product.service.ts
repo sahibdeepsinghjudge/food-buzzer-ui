@@ -14,11 +14,10 @@ export interface MenuProduct {
   name: string;
   sku?: string;
   category?: string;
-  imageUrl: string;
   price: number;
   qty: number;
   isVeg: boolean;
-  isBestseller: boolean;
+  isBestSeller: boolean;
   isLive?: boolean;
   recipes: ProductRecipe[];
   createdAt: string;
@@ -47,12 +46,11 @@ export class MenuProductService {
       name: dto.name || '',
       sku: dto.sku || '',
       category: dto.category || '',
-      imageUrl: dto.imageUrl || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
       price: dto.price || 0,
       qty: dto.qty || 1,
-      isVeg: dto.isVeg !== undefined ? dto.isVeg : true,
-      isBestseller: dto.isBestseller || false,
-      isLive: dto.isLive !== undefined ? dto.isLive : true,
+      isVeg: dto.isVeg,
+      isBestSeller: dto.isBestSeller,
+      isLive:dto.isLive,
       recipes: (dto.recipes || []).map((r: any) => ({
         recipeId: r.recipeId,
         qty: r.quantity || r.qty || 1
@@ -84,6 +82,7 @@ export class MenuProductService {
   }
 
   updateProduct(id: number, productPayload: any): Observable<MenuProduct> {
+    console.log(productPayload)
     return this.http.put<any>(baseUrl + `/products/${id}`, productPayload, { headers: this.getHeaders() }).pipe(
       map(res => this.mapToFrontendProduct(res.data || res))
     );

@@ -24,6 +24,7 @@ export interface OrderRequest {
 }
 
 export interface OrderResponse {
+  id: number; // mapped from orderId for frontend consistency
   orderId: number;
   customerName: string;
   customerPhone: string;
@@ -55,6 +56,24 @@ export class OrdersService {
     return headers;
   }
 
+  // Helper to map backend order to frontend model (parses cartItems if it's a string)
+  private mapOrder(order: any): OrderResponse {
+    let parsedCartItems = order.cartItems;
+    if (typeof order.cartItems === 'string') {
+      try {
+        parsedCartItems = JSON.parse(order.cartItems);
+      } catch (e) {
+        console.error('Failed to parse cartItems:', order.cartItems);
+        parsedCartItems = [];
+      }
+    }
+    return {
+      ...order,
+      id: order.id || order.orderId, // ensure 'id' field is always present for frontend
+      cartItems: parsedCartItems
+    };
+  }
+
   // GET /api/orders/restaurant/orders?statuses=...
   getRestaurantOrders(statuses?: string[]): Observable<any[]> {
     let params = new HttpParams();
@@ -69,28 +88,36 @@ export class OrdersService {
     }).pipe(
       map(res => {
         const data = res.data || res;
-        return Array.isArray(data) ? data : [];
+        const ordersArray = Array.isArray(data) ? data : [];
+        return ordersArray.map(o => this.mapOrder(o));
       })
     );
   }
 
+  // Helper method to fetch a single order (currently API only has fetch all, so we filter)
+  getOrderById(orderId: number): Observable<OrderResponse | undefined> {
+    return this.getRestaurantOrders().pipe(
+      map(orders => orders.find(o => Number(o.id) === orderId || Number(o.orderId) === orderId))
+    );
+  }
+
   // POST /api/orders/create
-  createOrder(payload: OrderRequest): Observable<any> {
+  createOrder(payload: OrderRequest): Observable<OrderResponse> {
     return this.http.post<any>(baseUrl + '/orders/create', payload, {
       headers: this.getHeaders()
     }).pipe(
-      map(res => res.data || res)
+      map(res => this.mapOrder(res.data || res))
     );
   }
 
   // PUT /api/orders/{orderId}/status?status=...
-  updateOrderStatus(orderId: number, status: string): Observable<any> {
+  updateOrderStatus(orderId: number, status: string): Observable<OrderResponse> {
     const params = new HttpParams().set('status', status);
     return this.http.put<any>(baseUrl + `/orders/${orderId}/status`, null, {
       headers: this.getHeaders(),
       params
     }).pipe(
-      map(res => res.data || res)
+      map(res => this.mapOrder(res.data || res))
     );
   }
 }

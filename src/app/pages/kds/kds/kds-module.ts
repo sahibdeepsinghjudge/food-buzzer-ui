@@ -6,7 +6,7 @@ import { KdsFilteredOrders } from '../kds-filtered-orders/kds-filtered-orders';
 import { KdsOrderDetail } from '../kds-order-detail/kds-order-detail';
 
 const routes: Routes = [
-  { path: '', component: Kdsscreen },
+  { path: '',        component: KdsFilteredOrders, data: { filter: 'view-all' } },
   { path: 'view-all',        component: KdsFilteredOrders, data: { filter: 'view-all' } },
   { path: 'pending-orders',  component: KdsFilteredOrders, data: { filter: 'pending-orders' } },
   { path: 'accepted',        component: KdsFilteredOrders, data: { filter: 'accepted' } },

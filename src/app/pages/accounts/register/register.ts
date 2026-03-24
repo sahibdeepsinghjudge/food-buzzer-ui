@@ -116,8 +116,9 @@ export class Register {
             message: 'Account created',
           });
           localStorage.setItem("userId",response.userId)
-        localStorage.setItem("role",response.role)
-        localStorage.setItem("access_level",response.accessLevel+"")
+          localStorage.setItem("role", response.role)
+          localStorage.setItem("userEmail",step1Data.email)
+          localStorage.setItem("access_level",response.accessLevel+"")
           this.currentStep.set(2);
           console.log('Registration successful:', response);
         } else {

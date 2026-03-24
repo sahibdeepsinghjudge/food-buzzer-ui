@@ -1,8 +1,17 @@
-<div class="flex h-[calc(100vh-4rem)] overflow-hidden">
+<div class="bg-primary text-white font-semibold w-screen px-12 py-2">
+  <a href="/orders" class="flex flex-row items-center"
+    ><mat-icon> arrow_back</mat-icon> Back to home</a
+  >
+</div>
+
+<div class="bg-white w-screen flex flex-row justify-between items-center px-12 py-4">
+  <app-logo></app-logo>
+  <app-clock></app-clock>
+</div>
+<div class="flex h-screen overflow-hidden">
   <!-- LEFT: Product Grid -->
   <div class="flex-1 overflow-y-auto p-6 bg-bg-sec">
     <div class="mb-6">
-      <h1 class="text-2xl font-bold text-neutral-800 mb-4">Point of Sale</h1>
       <input
         type="text"
         [(ngModel)]="searchQuery"
@@ -19,11 +28,11 @@
         class="bg-white rounded-xl border border-neutral-100 p-4 cursor-pointer hover:border-primary hover:shadow-md transition-all group"
       >
         <div class="relative mb-3">
-          <img
-            [src]="product.imageUrl"
-            [alt]="product.name"
-            class="w-full h-28 object-cover rounded-lg"
-          />
+          <div
+            class="text-green-600 text-3xl bg-green-100 flex items-center justify-center h-28 rounded-lg"
+          >
+            {{ product.name[0] }}
+          </div>
           <span
             class="absolute top-2 left-2 text-xs font-bold px-2 py-0.5 rounded-full"
             [class.bg-green-100]="product.isVeg"

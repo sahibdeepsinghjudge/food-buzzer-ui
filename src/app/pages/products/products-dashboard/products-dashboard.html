@@ -54,7 +54,7 @@
       >
         <!-- Bestseller Badge -->
         <div
-          *ngIf="product.isBestseller"
+          *ngIf="product.isBestSeller"
           class="absolute top-4 right-4 bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1.5 rounded-full z-10 shadow-sm flex items-center gap-1"
         >
           <mat-icon class="text-sm w-4 h-4">star</mat-icon>
@@ -62,16 +62,8 @@
         </div>
 
         <!-- Image Container -->
-        <div class="h-48 w-full bg-neutral-100 relative overflow-hidden">
-          <img
-            [src]="product.imageUrl"
-            [alt]="product.name"
-            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            onerror="
-              this.src =
-                'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
-            "
-          />
+        <div class="h-48 w-full bg-green-100 flex items-center justify-center overflow-hidden">
+          <h2 class="text-green-600 text-4xl">{{ product.name[0] }}</h2>
         </div>
 
         <!-- Details -->

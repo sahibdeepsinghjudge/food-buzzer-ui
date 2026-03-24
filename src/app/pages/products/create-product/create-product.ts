@@ -48,12 +48,11 @@ export class CreateProduct implements OnInit {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
       sku: ['', Validators.required],
-      category: ['', Validators.required],
-      imageUrl: ['https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3'], // Default placeholder
+      category: ['', Validators.required], // Default placeholder
       price: ['', [Validators.required, Validators.min(0)]],
       qty: [1, [Validators.required, Validators.min(1)]],
       isVeg: [true],
-      isBestseller: [false],
+      isBestSeller: [false],
       isLive: [true]
     });
 
@@ -78,15 +77,15 @@ export class CreateProduct implements OnInit {
   loadProductData(id: number) {
     this.menuProductService.getProductById(id).subscribe(product => {
       if (product) {
+        console.log(product)
         this.productForm.patchValue({
           name: product.name,
           sku: product.sku || '',
           category: product.category || '',
-          imageUrl: product.imageUrl,
           price: product.price,
           qty: product.qty,
           isVeg: product.isVeg,
-          isBestseller: product.isBestseller,
+          isBestSeller: product.isBestSeller,
           isLive: product.isLive !== undefined ? product.isLive : true
         });
 
@@ -159,6 +158,8 @@ export class CreateProduct implements OnInit {
       category: formValues.category,
       price: parseFloat(formValues.price),
       isLive: formValues.isLive,
+      isVeg: formValues.isVeg,
+      isBestSeller:formValues.isBestSeller,
       recipes: recipesToSave
     };
 

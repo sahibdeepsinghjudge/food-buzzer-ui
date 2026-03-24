@@ -1,20 +1,20 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-kdsscreen',
-  imports: [RouterModule, CommonModule],
+  standalone: true,
+  imports: [RouterModule, CommonModule, MatIcon],
   templateUrl: './kdsscreen.html',
   styleUrls: ['./kdsscreen.css'],
 })
 export class Kdsscreen {
   @Input() activeText: string = 'View All';
-  @Input() activeLink: string = '';
+  @Input() activeLink: string = '/kds/view-all';
   @Input() orderLength: number = 0;
-
-  constructor(private authService: AuthService) {}
 
   navHeadItems = [
     { text: 'Pending', link: '/kds/pending-orders' },
@@ -29,7 +29,13 @@ export class Kdsscreen {
     { text: 'Completed', link: '/kds/completed' },
   ];
 
+  constructor(private authService: AuthService) {}
+
   logout() {
     this.authService.logout();
+  }
+
+  isNotStaff(): boolean {
+    return this.authService.accessLevel() > 0;
   }
 }

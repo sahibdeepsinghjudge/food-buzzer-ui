@@ -35,10 +35,16 @@ export class OrderDetails implements OnInit {
       next: (orders: any[]) => {
         // Compare as numbers to handle type mismatches
         this.order = orders.find((o: any) => Number(o.id) === this.id) || null;
-        this.isLoading = false;
+        console.log(this.order);
         if (!this.order) {
           this.errorMsg = 'Order not found. It may belong to a different restaurant.';
         }
+        if (!this.order.cartItems) {
+          this.errorMsg = 'Cart Items not found. It may belong to a different restaurant.';
+        }
+        // this.order.cartItems = JSON.parse(this.order.cartItems)
+        this.isLoading = false;
+       
         this.cdr.detectChanges();
       },
       error: (err) => {

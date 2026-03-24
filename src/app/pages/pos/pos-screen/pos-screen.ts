@@ -1,9 +1,13 @@
 import { Component, OnInit, ChangeDetectorRef, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MenuProductService, MenuProduct } from '../../../services/menu-product.service';
 import { OrdersService, CartItemDTO, OrderRequest } from '../../../services/orders.service';
+import { Logo } from '../../../ui/logo/logo';
+import { AuthService } from '../../../services/auth.service';
+import { ClockComponent } from '../../../ui/clock-component/clock-component';
+import { MatIcon } from '@angular/material/icon';
 
 interface CartItem {
   productId: number;
@@ -15,8 +19,8 @@ interface CartItem {
 
 @Component({
   selector: 'app-pos-screen',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
+  // standalone: true,
+  imports: [CommonModule, FormsModule,Logo,ClockComponent,MatIcon],
   templateUrl: './pos-screen.html',
   styleUrls: ['./pos-screen.css']
 })
@@ -36,12 +40,14 @@ export class PosScreen implements OnInit {
   isPlacingOrder = signal(false);
   orderSuccess = signal('');
   orderError = signal('');
+  currentDateTime = signal('');
 
   constructor(
     private productService: MenuProductService,
     private ordersService: OrdersService,
     private cdr: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private authService : AuthService
   ) {}
 
   ngOnInit() {
@@ -49,6 +55,7 @@ export class PosScreen implements OnInit {
       this.products = products.filter(p => p.isLive !== false);
       this.filteredProducts = [...this.products];
       this.cdr.detectChanges();
+      this.currentDateTime.set(new Date().toISOString())
     });
   }
 

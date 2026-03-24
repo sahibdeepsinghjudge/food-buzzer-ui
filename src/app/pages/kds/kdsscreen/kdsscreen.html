@@ -1,44 +1,80 @@
-<div class="bg-neutral-50 min-h-screen flex flex-col">
-  <header class="fixed top-0 w-full bg-white shadow-sm flex items-center justify-between z-50 px-6">
-    <h1 class="text-lg font-bold text-primary py-4">KDS</h1>
-    <div class="flex items-center gap-6 py-4">
+<div *ngIf="isNotStaff()" class="bg-primary text-white font-semibold w-screen px-6 md:px-12 py-2">
+  <a
+    routerLink="/orders"
+    class="flex flex-row items-center text-sm md:text-base cursor-pointer hover:underline"
+  >
+    <mat-icon class="mr-1 text-[18px]">arrow_back</mat-icon> Back to home
+  </a>
+</div>
+
+<div class="bg-neutral-50 min-h-screen flex flex-col relative pb-20">
+  <!-- Header -->
+  <header
+    class="w-full bg-white shadow-sm flex flex-col md:flex-row items-center justify-between z-40 px-6 py-4 border-b border-neutral-200"
+  >
+    <div class="flex items-center gap-2 mb-3 md:mb-0">
+      <mat-icon class="text-primary text-3xl">restaurant</mat-icon>
+      <h1 class="text-xl font-bold text-neutral-800 tracking-tight">
+        FoodBuzzer <span class="text-primary font-black">KDS</span>
+      </h1>
+    </div>
+
+    <!-- Top Nav (Pending/Accepted/Declined) -->
+    <div
+      class="flex items-center gap-6 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-hide"
+    >
       <a
         *ngFor="let item of navHeadItems"
         [routerLink]="item.link"
-        routerLinkActive="text-primary font-semibold border-b-2 border-primary"
-        class="text-neutral-500 hover:text-neutral-800 pb-1 transition-colors text-sm"
+        class="text-neutral-500 hover:text-neutral-900 pb-1 transition-colors text-sm font-medium whitespace-nowrap border-b-2 border-transparent relative"
+        [class.text-primary]="activeLink === item.link"
+        [class.border-primary]="activeLink === item.link"
+        [class.font-bold]="activeLink === item.link"
       >
         {{ item.text }}
         <span
-          *ngIf="activeText === item.text"
-          class="ml-1 bg-primary text-white text-xs rounded-full px-1.5 py-0.5"
-          >{{ orderLength }}</span
+          *ngIf="activeLink === item.link"
+          class="ml-1.5 bg-primary text-white text-[10px] font-bold rounded-full px-2 py-0.5 align-middle shadow-sm"
         >
+          {{ orderLength }}
+        </span>
       </a>
     </div>
-    <button (click)="logout()" class="text-sm text-neutral-500 hover:text-red-500 cursor-pointer">
-      Logout
+
+    <button
+      (click)="logout()"
+      class="text-sm font-medium text-neutral-500 hover:text-red-600 transition-colors cursor-pointer hidden md:flex items-center gap-1"
+    >
+      <mat-icon class="text-[18px]">logout</mat-icon> Logout
     </button>
   </header>
 
-  <main class="mt-16 mb-16 mx-6">
+  <!-- Main Content Area -->
+  <main class="flex-1 w-full max-w-[1600px] mx-auto pb-10">
     <ng-content></ng-content>
   </main>
 
-  <footer class="fixed bottom-0 w-full bg-white shadow-[0_-2px_8px_rgba(0,0,0,0.06)]">
-    <div class="flex justify-center gap-8 py-3">
+  <!-- Bottom Navigation (Status Pipeline) -->
+  <footer
+    class="fixed bottom-0 w-full bg-white shadow-[0_-4px_12px_rgba(0,0,0,0.04)] border-t border-neutral-200 z-50"
+  >
+    <div class="flex justify-center md:gap-12 gap-4 py-3 px-4 overflow-x-auto scrollbar-hide">
       <a
         *ngFor="let item of navFootItems"
         [routerLink]="item.link"
-        routerLinkActive="text-primary font-semibold"
-        class="text-neutral-500 hover:text-neutral-800 transition-colors text-sm px-3 py-1"
+        class="flex flex-col md:flex-row items-center gap-1 text-neutral-500 hover:text-neutral-900 transition-colors text-sm font-medium px-4 md:py-2 rounded-lg"
+        [class.bg-primary]="activeLink === item.link"
+        [class.text-white]="activeLink === item.link"
+        [class.shadow-sm]="activeLink === item.link"
+        [class.hover:text-white]="activeLink === item.link"
       >
-        {{ item.text }}
+        <span>{{ item.text }}</span>
         <span
-          *ngIf="activeText === item.text"
-          class="ml-1 bg-primary text-white text-xs rounded-full px-1.5 py-0.5"
-          >{{ orderLength }}</span
+          *ngIf="activeLink === item.link"
+          class="bg-white text-primary text-[10px] font-bold rounded-full px-2 py-0.5 ml-0 md:ml-1"
         >
+          {{ orderLength }}
+        </span>
       </a>
     </div>
   </footer>

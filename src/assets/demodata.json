@@ -1,22 +1,83 @@
 {
   "owners": {
-    "columns": ["id", "name", "email", "mobile"],
+    "columns": [
+      "id",
+      "name",
+      "email",
+      "mobile"
+    ],
     "data": [
-      { "id": 1, "name": "Rahul Sharma", "email": "rahul@gmail.com", "mobile": "9304827162"},
-      { "id": 2, "name": "Priya Mehta", "email": "priya@gmail.com", "mobile": "9475858585"},
-      { "id": 3, "name": "Amit Verma", "email": "amit@gmail.com", "mobile": "9384758459"},
-      { "id": 4, "name": "Neha Kapoor", "email": "neha@gmail.com", "mobile": "9123456789"},
-      { "id": 5, "name": "Rohit Singh", "email": "rohit@gmail.com", "mobile": "9898989898"},
-      { "id": 6, "name": "Karan Malhotra", "email": "karan@gmail.com", "mobile": "9765432101"},
-      { "id": 7, "name": "Sneha Joshi", "email": "sneha@gmail.com", "mobile": "9345678901"},
-      { "id": 8, "name": "Vikas Gupta", "email": "vikas@gmail.com", "mobile": "9234567890"},
-      { "id": 9, "name": "Anjali Desai", "email": "anjali@gmail.com", "mobile": "9876501234"},
-      { "id": 10, "name": "Arjun Nair", "email": "arjun@gmail.com", "mobile": "9123409876"}
+      {
+        "id": 1,
+        "name": "Rahul Sharma",
+        "email": "rahul@gmail.com",
+        "mobile": "9304827162"
+      },
+      {
+        "id": 2,
+        "name": "Priya Mehta",
+        "email": "priya@gmail.com",
+        "mobile": "9475858585"
+      },
+      {
+        "id": 3,
+        "name": "Amit Verma",
+        "email": "amit@gmail.com",
+        "mobile": "9384758459"
+      },
+      {
+        "id": 4,
+        "name": "Neha Kapoor",
+        "email": "neha@gmail.com",
+        "mobile": "9123456789"
+      },
+      {
+        "id": 5,
+        "name": "Rohit Singh",
+        "email": "rohit@gmail.com",
+        "mobile": "9898989898"
+      },
+      {
+        "id": 6,
+        "name": "Karan Malhotra",
+        "email": "karan@gmail.com",
+        "mobile": "9765432101"
+      },
+      {
+        "id": 7,
+        "name": "Sneha Joshi",
+        "email": "sneha@gmail.com",
+        "mobile": "9345678901"
+      },
+      {
+        "id": 8,
+        "name": "Vikas Gupta",
+        "email": "vikas@gmail.com",
+        "mobile": "9234567890"
+      },
+      {
+        "id": 9,
+        "name": "Anjali Desai",
+        "email": "anjali@gmail.com",
+        "mobile": "9876501234"
+      },
+      {
+        "id": 10,
+        "name": "Arjun Nair",
+        "email": "arjun@gmail.com",
+        "mobile": "9123409876"
+      }
     ]
   },
-
   "restaurants": {
-    "columns": ["id", "name", "location", "phone", "gstNumber", "ownerId"],
+    "columns": [
+      "id",
+      "name",
+      "location",
+      "phone",
+      "gstNumber",
+      "ownerId"
+    ],
     "data": [
       {
         "id": 1,
@@ -170,10 +231,7 @@
       }
     ]
   },
-
-
-
-  "restaurantdata":[
+  "restaurantdata": [
     {
       "restaurantId": 101,
       "name": "Spice Garden",
@@ -185,7 +243,9 @@
       "email": "rahul@example.com",
       "cuisine": "Indian",
       "openingTime": "10:00 AM",
-      "closingTime": "11:00 PM"
+      "closingTime": "11:00 PM",
+      "ownerEmail": "abc@gmail.com",
+      "password": "mehak123"
     },
     {
       "restaurantId": 102,
@@ -198,7 +258,9 @@
       "email": "priya@example.com",
       "cuisine": "Chinese",
       "openingTime": "11:00 AM",
-      "closingTime": "10:30 PM"
+      "closingTime": "10:30 PM",
+      "ownerEmail": "ghi@gmail.com",
+      "password": "123456"
     },
     {
       "restaurantId": 103,
@@ -211,21 +273,48 @@
       "email": "amit@example.com",
       "cuisine": "Italian",
       "openingTime": "09:00 AM",
-      "closingTime": "12:00 AM"
+      "closingTime": "12:00 AM",
+      "ownerEmail": "lmn@gmail.com",
+      "password": "0293ure"
     }
   ],
-
-  
   "orders": [
     {
       "orderId": 101,
       "table": 5,
       "time": "2026-03-14T12:30:00",
       "status": "Pending",
-      "customer": { "name": "Rahul Sharma", "email": "rahul.sharma@example.com", "mobile": "9876543210" },
+      "customer": {
+        "name": "Rahul Sharma",
+        "email": "rahul.sharma@example.com",
+        "mobile": "9876543210"
+      },
       "items": [
-        { "name": "Paneer Butter Masala", "quantity": 2, "recipe": ["Paneer cubes", "Butter", "Tomato puree", "Cream", "Garam masala", "Salt", "Kasuri methi"] },
-        { "name": "Garlic Naan", "quantity": 2, "recipe": ["Maida flour", "Yeast", "Sugar", "Salt", "Garlic paste", "Butter"] }
+        {
+          "name": "Paneer Butter Masala",
+          "quantity": 2,
+          "recipe": [
+            "Paneer cubes",
+            "Butter",
+            "Tomato puree",
+            "Cream",
+            "Garam masala",
+            "Salt",
+            "Kasuri methi"
+          ]
+        },
+        {
+          "name": "Garlic Naan",
+          "quantity": 2,
+          "recipe": [
+            "Maida flour",
+            "Yeast",
+            "Sugar",
+            "Salt",
+            "Garlic paste",
+            "Butter"
+          ]
+        }
       ]
     },
     {
@@ -233,9 +322,24 @@
       "table": 3,
       "time": "2026-03-14T12:40:00",
       "status": "Accepted",
-      "customer": { "name": "Sneha Verma", "email": "sneha.verma@example.com", "mobile": "9123456780" },
+      "customer": {
+        "name": "Sneha Verma",
+        "email": "sneha.verma@example.com",
+        "mobile": "9123456780"
+      },
       "items": [
-        { "name": "Veg Fried Rice", "quantity": 1, "recipe": ["Rice", "Mixed vegetables", "Soy sauce", "Garlic", "Oil", "Salt"] }
+        {
+          "name": "Veg Fried Rice",
+          "quantity": 1,
+          "recipe": [
+            "Rice",
+            "Mixed vegetables",
+            "Soy sauce",
+            "Garlic",
+            "Oil",
+            "Salt"
+          ]
+        }
       ]
     },
     {
@@ -243,10 +347,34 @@
       "table": 8,
       "time": "2026-03-14T12:50:00",
       "status": "Cooking",
-      "customer": { "name": "Arjun Mehta", "email": "arjun.mehta@example.com", "mobile": "9871234560" },
+      "customer": {
+        "name": "Arjun Mehta",
+        "email": "arjun.mehta@example.com",
+        "mobile": "9871234560"
+      },
       "items": [
-        { "name": "Chicken Biryani", "quantity": 1, "recipe": ["Basmati rice", "Chicken", "Yogurt", "Onions", "Spices", "Mint", "Ghee"] },
-        { "name": "Raita", "quantity": 1, "recipe": ["Yogurt", "Salt", "Roasted cumin powder"] }
+        {
+          "name": "Chicken Biryani",
+          "quantity": 1,
+          "recipe": [
+            "Basmati rice",
+            "Chicken",
+            "Yogurt",
+            "Onions",
+            "Spices",
+            "Mint",
+            "Ghee"
+          ]
+        },
+        {
+          "name": "Raita",
+          "quantity": 1,
+          "recipe": [
+            "Yogurt",
+            "Salt",
+            "Roasted cumin powder"
+          ]
+        }
       ]
     },
     {
@@ -254,10 +382,34 @@
       "table": 2,
       "time": "2026-03-14T13:00:00",
       "status": "Prepared",
-      "customer": { "name": "Amit Kapoor", "email": "amit.kapoor@example.com", "mobile": "9988776655" },
+      "customer": {
+        "name": "Amit Kapoor",
+        "email": "amit.kapoor@example.com",
+        "mobile": "9988776655"
+      },
       "items": [
-        { "name": "Butter Chicken", "quantity": 2, "recipe": ["Chicken", "Butter", "Tomato puree", "Cream", "Spices"] },
-        { "name": "Naan", "quantity": 2, "recipe": ["Maida flour", "Yeast", "Sugar", "Salt", "Butter"] }
+        {
+          "name": "Butter Chicken",
+          "quantity": 2,
+          "recipe": [
+            "Chicken",
+            "Butter",
+            "Tomato puree",
+            "Cream",
+            "Spices"
+          ]
+        },
+        {
+          "name": "Naan",
+          "quantity": 2,
+          "recipe": [
+            "Maida flour",
+            "Yeast",
+            "Sugar",
+            "Salt",
+            "Butter"
+          ]
+        }
       ]
     },
     {
@@ -265,10 +417,32 @@
       "table": 6,
       "time": "2026-03-14T13:10:00",
       "status": "Completed",
-      "customer": { "name": "Priya Singh", "email": "priya.singh@example.com", "mobile": "9001122334" },
+      "customer": {
+        "name": "Priya Singh",
+        "email": "priya.singh@example.com",
+        "mobile": "9001122334"
+      },
       "items": [
-        { "name": "Masala Dosa", "quantity": 1, "recipe": ["Dosa batter", "Potato masala", "Oil", "Salt"] },
-        { "name": "Coconut Chutney", "quantity": 1, "recipe": ["Coconut", "Green chilli", "Salt", "Mustard seeds"] }
+        {
+          "name": "Masala Dosa",
+          "quantity": 1,
+          "recipe": [
+            "Dosa batter",
+            "Potato masala",
+            "Oil",
+            "Salt"
+          ]
+        },
+        {
+          "name": "Coconut Chutney",
+          "quantity": 1,
+          "recipe": [
+            "Coconut",
+            "Green chilli",
+            "Salt",
+            "Mustard seeds"
+          ]
+        }
       ]
     },
     {
@@ -276,25 +450,353 @@
       "table": 4,
       "time": "2026-03-14T13:20:00",
       "status": "Declined",
-      "customer": { "name": "Karan Malhotra", "email": "karan.malhotra@example.com", "mobile": "9898989898" },
+      "customer": {
+        "name": "Karan Malhotra",
+        "email": "karan.malhotra@example.com",
+        "mobile": "9898989898"
+      },
       "items": [
-        { "name": "Fish Curry", "quantity": 1, "recipe": ["Fish", "Coconut milk", "Turmeric", "Chilli powder", "Salt"] }
+        {
+          "name": "Fish Curry",
+          "quantity": 1,
+          "recipe": [
+            "Fish",
+            "Coconut milk",
+            "Turmeric",
+            "Chilli powder",
+            "Salt"
+          ]
+        }
       ]
     },
-
-    {"orderId":107,"table":1,"time":"2026-03-14T13:25:00","status":"Pending","customer":{"name":"Ritu Jain","email":"ritu.jain@example.com","mobile":"9871112233"},"items":[{"name":"Veg Pulao","quantity":1,"recipe":["Rice","Mixed vegetables","Salt","Oil","Spices"]}]},
-    {"orderId":108,"table":9,"time":"2026-03-14T13:30:00","status":"Accepted","customer":{"name":"Sahil Mehra","email":"sahil.mehra@example.com","mobile":"9765432109"},"items":[{"name":"Paneer Tikka","quantity":2,"recipe":["Paneer cubes","Spices","Yogurt","Capsicum","Onions"]}]},
-    {"orderId":109,"table":10,"time":"2026-03-14T13:35:00","status":"Cooking","customer":{"name":"Nisha Agarwal","email":"nisha.agarwal@example.com","mobile":"9456123789"},"items":[{"name":"Chicken Curry","quantity":1,"recipe":["Chicken","Onions","Tomatoes","Spices"]}]},
-    {"orderId":110,"table":12,"time":"2026-03-14T13:40:00","status":"Prepared","customer":{"name":"Vikram Sharma","email":"vikram.sharma@example.com","mobile":"9876541230"},"items":[{"name":"Mutton Biryani","quantity":2,"recipe":["Basmati rice","Mutton","Spices","Mint","Yogurt"]}]},
-    {"orderId":111,"table":7,"time":"2026-03-14T13:45:00","status":"Completed","customer":{"name":"Meera Khanna","email":"meera.khanna@example.com","mobile":"9123450987"},"items":[{"name":"Paneer Butter Masala","quantity":1,"recipe":["Paneer","Butter","Tomato puree","Cream","Spices"]}]},
-    {"orderId":112,"table":5,"time":"2026-03-14T13:50:00","status":"Declined","customer":{"name":"Rohit Sharma","email":"rohit.sharma@example.com","mobile":"9988776650"},"items":[{"name":"Fish Fry","quantity":1,"recipe":["Fish","Spices","Oil","Salt"]}]},
-    {"orderId":113,"table":8,"time":"2026-03-14T13:55:00","status":"Pending","customer":{"name":"Anjali Verma","email":"anjali.verma@example.com","mobile":"9876543211"},"items":[{"name":"Veg Manchurian","quantity":2,"recipe":["Cauliflower","Cornflour","Spices","Sauce"]}]},
-    {"orderId":114,"table":3,"time":"2026-03-14T14:00:00","status":"Accepted","customer":{"name":"Rakesh Gupta","email":"rakesh.gupta@example.com","mobile":"9876542222"},"items":[{"name":"Chicken Tandoori","quantity":1,"recipe":["Chicken","Yogurt","Spices","Oil"]}]},
-    {"orderId":115,"table":6,"time":"2026-03-14T14:05:00","status":"Cooking","customer":{"name":"Pooja Sharma","email":"pooja.sharma@example.com","mobile":"9876543333"},"items":[{"name":"Paneer Masala","quantity":2,"recipe":["Paneer","Spices","Tomato puree","Cream"]}]},
-    {"orderId":116,"table":2,"time":"2026-03-14T14:10:00","status":"Prepared","customer":{"name":"Ajay Mehta","email":"ajay.mehta@example.com","mobile":"9876544444"},"items":[{"name":"Butter Naan","quantity":3,"recipe":["Maida flour","Yeast","Sugar","Salt","Butter"]}]},
-    {"orderId":117,"table":9,"time":"2026-03-14T14:15:00","status":"Completed","customer":{"name":"Divya Kapoor","email":"divya.kapoor@example.com","mobile":"9876545555"},"items":[{"name":"Veg Biryani","quantity":2,"recipe":["Rice","Mixed vegetables","Spices","Oil"]}]},
-    {"orderId":118,"table":11,"time":"2026-03-14T14:20:00","status":"Declined","customer":{"name":"Vikas Sharma","email":"vikas.sharma@example.com","mobile":"9876546666"},"items":[{"name":"Prawn Curry","quantity":1,"recipe":["Prawns","Coconut milk","Turmeric","Salt","Chilli powder"]}]},
-    {"orderId":119,"table":4,"time":"2026-03-14T14:25:00","status":"Pending","customer":{"name":"Rekha Singh","email":"rekha.singh@example.com","mobile":"9876547777"},"items":[{"name":"Chole Bhature","quantity":2,"recipe":["Chickpeas","Flour","Spices","Oil"]}]},
-    {"orderId":120,"table":10,"time":"2026-03-14T14:30:00","status":"Accepted","customer":{"name":"Sunil Verma","email":"sunil.verma@example.com","mobile":"9876548888"},"items":[{"name":"Matar Paneer","quantity":1,"recipe":["Paneer","Peas","Tomato puree","Spices","Cream"]}]}
+    {
+      "orderId": 107,
+      "table": 1,
+      "time": "2026-03-14T13:25:00",
+      "status": "Pending",
+      "customer": {
+        "name": "Ritu Jain",
+        "email": "ritu.jain@example.com",
+        "mobile": "9871112233"
+      },
+      "items": [
+        {
+          "name": "Veg Pulao",
+          "quantity": 1,
+          "recipe": [
+            "Rice",
+            "Mixed vegetables",
+            "Salt",
+            "Oil",
+            "Spices"
+          ]
+        }
+      ]
+    },
+    {
+      "orderId": 108,
+      "table": 9,
+      "time": "2026-03-14T13:30:00",
+      "status": "Accepted",
+      "customer": {
+        "name": "Sahil Mehra",
+        "email": "sahil.mehra@example.com",
+        "mobile": "9765432109"
+      },
+      "items": [
+        {
+          "name": "Paneer Tikka",
+          "quantity": 2,
+          "recipe": [
+            "Paneer cubes",
+            "Spices",
+            "Yogurt",
+            "Capsicum",
+            "Onions"
+          ]
+        }
+      ]
+    },
+    {
+      "orderId": 109,
+      "table": 10,
+      "time": "2026-03-14T13:35:00",
+      "status": "Cooking",
+      "customer": {
+        "name": "Nisha Agarwal",
+        "email": "nisha.agarwal@example.com",
+        "mobile": "9456123789"
+      },
+      "items": [
+        {
+          "name": "Chicken Curry",
+          "quantity": 1,
+          "recipe": [
+            "Chicken",
+            "Onions",
+            "Tomatoes",
+            "Spices"
+          ]
+        }
+      ]
+    },
+    {
+      "orderId": 110,
+      "table": 12,
+      "time": "2026-03-14T13:40:00",
+      "status": "Prepared",
+      "customer": {
+        "name": "Vikram Sharma",
+        "email": "vikram.sharma@example.com",
+        "mobile": "9876541230"
+      },
+      "items": [
+        {
+          "name": "Mutton Biryani",
+          "quantity": 2,
+          "recipe": [
+            "Basmati rice",
+            "Mutton",
+            "Spices",
+            "Mint",
+            "Yogurt"
+          ]
+        }
+      ]
+    },
+    {
+      "orderId": 111,
+      "table": 7,
+      "time": "2026-03-14T13:45:00",
+      "status": "Completed",
+      "customer": {
+        "name": "Meera Khanna",
+        "email": "meera.khanna@example.com",
+        "mobile": "9123450987"
+      },
+      "items": [
+        {
+          "name": "Paneer Butter Masala",
+          "quantity": 1,
+          "recipe": [
+            "Paneer",
+            "Butter",
+            "Tomato puree",
+            "Cream",
+            "Spices"
+          ]
+        }
+      ]
+    },
+    {
+      "orderId": 112,
+      "table": 5,
+      "time": "2026-03-14T13:50:00",
+      "status": "Declined",
+      "customer": {
+        "name": "Rohit Sharma",
+        "email": "rohit.sharma@example.com",
+        "mobile": "9988776650"
+      },
+      "items": [
+        {
+          "name": "Fish Fry",
+          "quantity": 1,
+          "recipe": [
+            "Fish",
+            "Spices",
+            "Oil",
+            "Salt"
+          ]
+        }
+      ]
+    },
+    {
+      "orderId": 113,
+      "table": 8,
+      "time": "2026-03-14T13:55:00",
+      "status": "Pending",
+      "customer": {
+        "name": "Anjali Verma",
+        "email": "anjali.verma@example.com",
+        "mobile": "9876543211"
+      },
+      "items": [
+        {
+          "name": "Veg Manchurian",
+          "quantity": 2,
+          "recipe": [
+            "Cauliflower",
+            "Cornflour",
+            "Spices",
+            "Sauce"
+          ]
+        }
+      ]
+    },
+    {
+      "orderId": 114,
+      "table": 3,
+      "time": "2026-03-14T14:00:00",
+      "status": "Accepted",
+      "customer": {
+        "name": "Rakesh Gupta",
+        "email": "rakesh.gupta@example.com",
+        "mobile": "9876542222"
+      },
+      "items": [
+        {
+          "name": "Chicken Tandoori",
+          "quantity": 1,
+          "recipe": [
+            "Chicken",
+            "Yogurt",
+            "Spices",
+            "Oil"
+          ]
+        }
+      ]
+    },
+    {
+      "orderId": 115,
+      "table": 6,
+      "time": "2026-03-14T14:05:00",
+      "status": "Cooking",
+      "customer": {
+        "name": "Pooja Sharma",
+        "email": "pooja.sharma@example.com",
+        "mobile": "9876543333"
+      },
+      "items": [
+        {
+          "name": "Paneer Masala",
+          "quantity": 2,
+          "recipe": [
+            "Paneer",
+            "Spices",
+            "Tomato puree",
+            "Cream"
+          ]
+        }
+      ]
+    },
+    {
+      "orderId": 116,
+      "table": 2,
+      "time": "2026-03-14T14:10:00",
+      "status": "Prepared",
+      "customer": {
+        "name": "Ajay Mehta",
+        "email": "ajay.mehta@example.com",
+        "mobile": "9876544444"
+      },
+      "items": [
+        {
+          "name": "Butter Naan",
+          "quantity": 3,
+          "recipe": [
+            "Maida flour",
+            "Yeast",
+            "Sugar",
+            "Salt",
+            "Butter"
+          ]
+        }
+      ]
+    },
+    {
+      "orderId": 117,
+      "table": 9,
+      "time": "2026-03-14T14:15:00",
+      "status": "Completed",
+      "customer": {
+        "name": "Divya Kapoor",
+        "email": "divya.kapoor@example.com",
+        "mobile": "9876545555"
+      },
+      "items": [
+        {
+          "name": "Veg Biryani",
+          "quantity": 2,
+          "recipe": [
+            "Rice",
+            "Mixed vegetables",
+            "Spices",
+            "Oil"
+          ]
+        }
+      ]
+    },
+    {
+      "orderId": 118,
+      "table": 11,
+      "time": "2026-03-14T14:20:00",
+      "status": "Declined",
+      "customer": {
+        "name": "Vikas Sharma",
+        "email": "vikas.sharma@example.com",
+        "mobile": "9876546666"
+      },
+      "items": [
+        {
+          "name": "Prawn Curry",
+          "quantity": 1,
+          "recipe": [
+            "Prawns",
+            "Coconut milk",
+            "Turmeric",
+            "Salt",
+            "Chilli powder"
+          ]
+        }
+      ]
+    },
+    {
+      "orderId": 119,
+      "table": 4,
+      "time": "2026-03-14T14:25:00",
+      "status": "Pending",
+      "customer": {
+        "name": "Rekha Singh",
+        "email": "rekha.singh@example.com",
+        "mobile": "9876547777"
+      },
+      "items": [
+        {
+          "name": "Chole Bhature",
+          "quantity": 2,
+          "recipe": [
+            "Chickpeas",
+            "Flour",
+            "Spices",
+            "Oil"
+          ]
+        }
+      ]
+    },
+    {
+      "orderId": 120,
+      "table": 10,
+      "time": "2026-03-14T14:30:00",
+      "status": "Accepted",
+      "customer": {
+        "name": "Sunil Verma",
+        "email": "sunil.verma@example.com",
+        "mobile": "9876548888"
+      },
+      "items": [
+        {
+          "name": "Matar Paneer",
+          "quantity": 1,
+          "recipe": [
+            "Paneer",
+            "Peas",
+            "Tomato puree",
+            "Spices",
+            "Cream"
+          ]
+        }
+      ]
+    }
   ]
 }

@@ -3,13 +3,59 @@
   [activeLink]="config.activeLink"
   [orderLength]="orderLength"
 >
-  <h1 class="m-5 text-2xl font-semibold">{{ config.title }}</h1>
-
-  <div *ngIf="orders.length === 0" class="text-center py-16 text-neutral-400">
-    <p class="text-lg">No {{ config.title.toLowerCase() }} found</p>
+  <div class="m-5 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <h1 class="text-2xl font-semibold text-neutral-800">{{ config.title }}</h1>
+      <div
+        *ngIf="isLoading"
+        class="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"
+      ></div>
+    </div>
   </div>
 
-  <div class="grid grid-cols-[repeat(auto-fit,minmax(20rem,1fr))] gap-6 m-5">
+  <!-- Loading State (Initial) -->
+  <div
+    *ngIf="isLoading && orders.length === 0 && !errorMsg"
+    class="flex flex-col items-center justify-center py-24 text-neutral-400"
+  >
+    <div
+      class="w-10 h-10 border-4 border-neutral-300 border-t-primary rounded-full animate-spin mb-4"
+    ></div>
+    <p class="font-medium">Loading orders...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="errorMsg" class="text-center py-16">
+    <p class="text-lg text-red-500 font-medium bg-red-50 px-6 py-4 rounded-xl inline-block">
+      {{ errorMsg }}
+    </p>
+    <div class="mt-4">
+      <button
+        (click)="loadOrders()"
+        class="text-primary font-semibold hover:underline cursor-pointer"
+      >
+        Try Again
+      </button>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div
+    *ngIf="!isLoading && orders.length === 0 && !errorMsg"
+    class="text-center py-20 bg-white rounded-2xl border border-neutral-100 m-5"
+  >
+    <div class="text-6xl text-neutral-200 mb-4">🍽️</div>
+    <p class="text-xl font-medium text-neutral-500">
+      No {{ config.title.toLowerCase() }} right now
+    </p>
+    <p class="text-sm text-neutral-400 mt-2">New orders will appear here automatically.</p>
+  </div>
+
+  <!-- Orders Grid -->
+  <div
+    *ngIf="orders.length > 0"
+    class="grid grid-cols-[repeat(auto-fit,minmax(20rem,1fr))] gap-6 m-5"
+  >
     <app-kds-order-card
       *ngFor="let order of orders"
       [order]="order"

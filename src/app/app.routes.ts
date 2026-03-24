@@ -29,9 +29,10 @@ export const routes: Routes = [
             { path: 'team', loadChildren: () => import('./pages/teams/teams-main/teams-main-module').then(m => m.TeamsModule) },
             { path: 'settings', loadChildren: () => import('./pages/settings/setting/setting-module').then(m => m.SettingModule) },
             { path: 'orders', loadChildren: () => import('./pages/orders/orders/orders-module').then(m => m.OrdersModule) },
-            { path: 'pos', loadChildren: () => import('./pages/pos/pos/pos-module').then(m => m.PosModule) },
         ]
     },
+    { path: 'pos', loadChildren: () => import('./pages/pos/pos/pos-module').then(m => m.PosModule) },
+
     { 
         path: 'admin', 
         loadChildren: () => import('./pages/admin/admin/admin-module').then(m => m.AdminModule),

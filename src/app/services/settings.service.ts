@@ -11,9 +11,8 @@ export interface RestaurantData{
   ownerName: string;
   ownerId: number;
   email: string;
-  cisine: string;
-  openingTime: Date;
-  closingTime: Date;
+  ownerEmail: string;
+  password: string;
 }
 
 @Injectable({

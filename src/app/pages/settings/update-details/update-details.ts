@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { SettingsService } from '../../../services/settings.service';
+import { RestaurantData, SettingsService } from '../../../services/settings.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Button } from '../../../ui/button/button';
@@ -17,18 +17,23 @@ export class UpdateDetails {
   settingsForm!: FormGroup;
   isLoading = true;
   settingsdata: any;
+  record: RestaurantData[]=[];
+  newPasswordChange: any;
+  changePass: any;
   constructor(private fb: FormBuilder, private serviceData: SettingsService, private cdr: ChangeDetectorRef){
 
   this.settingsForm = this.fb.group({
+      ownerName: [''],
+      ownerEmail: ['', [Validators.required, Validators.email]],
       restaurantName: ['', [Validators.minLength(3)]],
       phone: ['', [Validators.pattern('^[6-9][0-9]{9}$')]],
       email: ['', [Validators.required, Validators.email]],
       location: [''],
       zipcode: [''],
-      cuisine: [''],      
-      openingTime: [''],      
-      closeingTime: [''],      
-  })
+      password: [''],
+      newpassword: [''],
+      confirmpassword: ['']
+    })
 }
 
   id: number=1;
@@ -39,19 +44,47 @@ export class UpdateDetails {
       const record = this.settingsdata[0];
       if (record) {
           this.settingsForm.patchValue({
+            ownerName: record.ownerName,
+            ownerEmail: record.ownerEmail,
             restaurantName: record.name,
             phone: record.phone,
             email: record.email,
             location: record.location,
             zipcode: record.zipcode,
-            cuisine: record.cuisine,
-            openingTime: record.openingTime,
-            closeingTime: record.closingTime
+            password: ''
           });
         }
       this.isLoading = false;
       this.cdr.detectChanges();
     });
+  }
+
+  changePassword(){
+    const newPass=this.settingsForm.get("newpassword")?.value;
+    const confirmPass=this.settingsForm.get("confirmpassword")?.value;
+    const pass=this.settingsForm.get("password")?.value;
+    if(pass!==this.settingsdata[0].password)
+    {
+      this.changePass=false;
+    }
+    else
+    {
+      this.changePass=true;
+    }
+    if(newPass!==confirmPass)
+    {
+      this.newPasswordChange=false;
+    }
+    else
+    {
+      this.newPasswordChange=true;
+    }
+    if(pass===this.settingsdata[0].password && newPass===confirmPass)
+    {
+      this.newPasswordChange=true;
+      this.changePass=true;
+      this.settingsForm.get('password')?.setValue(newPass);
+    }
   }
 
   saveSettings() {

@@ -72,7 +72,7 @@ export class AuthService {
     )
     }
     
-    const resp = this.http.post<RegisterResponse>(baseUrl + "/restaurants",{
+    const resp = this.http.post<RegisterResponse>(baseUrl + "/restaurants/create-restaurant",{
       "name": data.rest_name,
       "address": data.rest_address,
       "zipcode": data.zip_code,
