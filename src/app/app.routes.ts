@@ -43,4 +43,8 @@ export const routes: Routes = [
         loadChildren:() => import('./pages/kds/kds/kds-module').then(m=>m.KdsModule),
         canActivate: [authGuard]
     },
+    {
+        path: 'tableorders',
+        loadChildren:() => import('./pages/tableorders/tableorder/tableorder-module').then(m=>m.TableorderModule),
+    },
 ];

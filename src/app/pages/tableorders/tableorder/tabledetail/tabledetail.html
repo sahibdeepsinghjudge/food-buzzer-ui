@@ -1,0 +1,27 @@
+<div>
+    <div class="flex justify-end">
+        <button class="block bg-black text-white p-2 m-4 px-5 rounded-2xl" (click)="addTable()">+ Add Table</button>
+    </div>
+
+    <div class="flex justify-end items-center mb-4">
+        <mat-icon class="!text-green-500 !text-sm">circle</mat-icon>
+        <label class="text-sm font-medium text-neutral-500 mr-5 ml-1">Free Tables</label>
+
+        <mat-icon class="!text-gray-500 !text-sm">circle</mat-icon>
+        <label class="text-sm font-medium text-neutral-500 mr-5 ml-1">Occupied Tables</label>
+    </div>
+
+    <div class="flex gap-4 flex-wrap p-4">
+        <div *ngFor="let table of tables">
+            <div [ngClass]="table.isOccupied ? 'border-gray-400 bg-gray-50' : 'border-green-500'"
+                 class="p-6 rounded-sm border-2 flex flex-col items-center justify-center min-w-[100px]">
+                
+                <span class="font-bold text-lg">{{ table.tableNo }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="tables.length === 0 && !isLoading" class="text-center p-10 text-gray-500">
+        No active tables found.
+    </div>
+</div>
