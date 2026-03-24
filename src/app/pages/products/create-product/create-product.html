@@ -45,22 +45,6 @@
           <div class="grid grid-cols-2 gap-4">
             <div class="flex flex-col gap-1">
               <input-field
-                label="SKU *"
-                id="sku"
-                name="sku"
-                placeholder="e.g. BRG-001"
-                formControlName="sku"
-              ></input-field>
-              <p
-                *ngIf="productForm.get('sku')?.invalid && productForm.get('sku')?.touched"
-                class="text-xs text-red-500 ml-1"
-              >
-                SKU is required.
-              </p>
-            </div>
-
-            <div class="flex flex-col gap-1">
-              <input-field
                 label="Category *"
                 id="category"
                 name="category"

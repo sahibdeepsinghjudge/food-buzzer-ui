@@ -140,13 +140,14 @@
     </div>
 
     <!-- Print -->
-    <button
+    <a
       *ngIf="order.status !== 'DECLINED'"
+      target="_blank"
+      [routerLink]="['/print/order', order.id]"
       class="bg-neutral-100 text-neutral-600 border border-neutral-200 w-11 rounded-lg flex justify-center items-center hover:bg-neutral-200 hover:text-neutral-800 transition-colors cursor-pointer shrink-0"
-      (click)="printOrder()"
-      title="Print KOT"
+      title="Print Receipt"
     >
       <span class="material-icons text-xl">print</span>
-    </button>
+    </a>
   </div>
 </div>

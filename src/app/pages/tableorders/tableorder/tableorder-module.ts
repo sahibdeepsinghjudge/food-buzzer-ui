@@ -5,7 +5,7 @@ import { Tabledetail } from './tabledetail/tabledetail';
 
 const routes : Routes = [
   {
-    path: 'tabledetail' , component: Tabledetail
+    path: '' , component: Tabledetail
   }
 ];
 

@@ -29,6 +29,7 @@ export const routes: Routes = [
             { path: 'team', loadChildren: () => import('./pages/teams/teams-main/teams-main-module').then(m => m.TeamsModule) },
             { path: 'settings', loadChildren: () => import('./pages/settings/setting/setting-module').then(m => m.SettingModule) },
             { path: 'orders', loadChildren: () => import('./pages/orders/orders/orders-module').then(m => m.OrdersModule) },
+            { path: 'table-manager', loadChildren: () => import('./pages/tableorders/tableorder/tableorder-module').then(m => m.TableorderModule) },
         ]
     },
     { path: 'pos', loadChildren: () => import('./pages/pos/pos/pos-module').then(m => m.PosModule) },
@@ -44,7 +45,8 @@ export const routes: Routes = [
         canActivate: [authGuard]
     },
     {
-        path: 'tableorders',
-        loadChildren:() => import('./pages/tableorders/tableorder/tableorder-module').then(m=>m.TableorderModule),
-    },
+        path: 'print/order/:id',
+        loadComponent: () => import('./pages/orders/print-bill/print-bill').then(m => m.PrintBill),
+        canActivate: [authGuard]
+    }
 ];

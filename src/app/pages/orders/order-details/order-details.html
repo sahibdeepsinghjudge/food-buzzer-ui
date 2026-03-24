@@ -28,12 +28,13 @@
           {{ order.status }}
         </span>
       </div>
-      <button
-        (click)="printBill()"
+      <a
+        [routerLink]="['/print/order', order.id]"
+        target="_blank"
         class="bg-neutral-800 text-white px-4 py-2 rounded-lg text-sm hover:bg-neutral-700 cursor-pointer flex items-center gap-2"
       >
         <span class="material-icons text-base">print</span> Print Bill
-      </button>
+      </a>
     </div>
 
     <!-- Customer & Order Info -->

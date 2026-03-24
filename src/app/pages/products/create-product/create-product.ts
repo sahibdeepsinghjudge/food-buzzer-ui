@@ -47,7 +47,6 @@ export class CreateProduct implements OnInit {
   ngOnInit() {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
-      sku: ['', Validators.required],
       category: ['', Validators.required], // Default placeholder
       price: ['', [Validators.required, Validators.min(0)]],
       qty: [1, [Validators.required, Validators.min(1)]],
@@ -77,10 +76,8 @@ export class CreateProduct implements OnInit {
   loadProductData(id: number) {
     this.menuProductService.getProductById(id).subscribe(product => {
       if (product) {
-        console.log(product)
         this.productForm.patchValue({
           name: product.name,
-          sku: product.sku || '',
           category: product.category || '',
           price: product.price,
           qty: product.qty,
@@ -160,7 +157,6 @@ export class CreateProduct implements OnInit {
 
     const productData = {
       name: formValues.name,
-      sku: formValues.sku,
       category: formValues.category,
       price: parseFloat(formValues.price),
       isLive: formValues.isLive,

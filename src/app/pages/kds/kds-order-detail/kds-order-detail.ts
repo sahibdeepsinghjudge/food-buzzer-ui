@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Kdsscreen } from '../kdsscreen/kdsscreen';
 import { OrdersService, OrderResponse } from '../../../services/orders.service';
 
 @Component({
   selector: 'app-kds-order-detail',
   standalone: true,
-  imports: [CommonModule, Kdsscreen],
+  imports: [CommonModule, Kdsscreen, RouterModule],
   templateUrl: './kds-order-detail.html',
   styleUrls: ['./kds-order-detail.css']
 })

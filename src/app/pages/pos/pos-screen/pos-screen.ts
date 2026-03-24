@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
 import { Router } from '@angular/router';
 import { MenuProductService, MenuProduct } from '../../../services/menu-product.service';
 import { OrdersService, CartItemDTO, OrderRequest } from '../../../services/orders.service';
+import { Tableservice, TableData } from '../../../services/table.service';
 import { Logo } from '../../../ui/logo/logo';
 import { AuthService } from '../../../services/auth.service';
 import { ClockComponent } from '../../../ui/clock-component/clock-component';
@@ -28,6 +29,7 @@ export class PosScreen implements OnInit {
   products: MenuProduct[] = [];
   filteredProducts: MenuProduct[] = [];
   cart: CartItem[] = [];
+  tables: TableData[] = [];
   searchQuery = '';
   
   // Checkout Form
@@ -44,7 +46,8 @@ export class PosScreen implements OnInit {
     private ordersService: OrdersService,
     private cdr: ChangeDetectorRef,
     private router: Router,
-    private authService : AuthService
+    private authService: AuthService,
+    private tableService: Tableservice
   ) {
     this.checkoutForm = this.fb.group({
       customerName: ['', [Validators.required]],
@@ -59,7 +62,15 @@ export class PosScreen implements OnInit {
       this.products = products.filter(p => p.isLive !== false);
       this.filteredProducts = [...this.products];
       this.cdr.detectChanges();
-      this.currentDateTime.set(new Date().toISOString())
+      this.currentDateTime.set(new Date().toISOString());
+    });
+    
+    this.tableService.getTableStatus().subscribe({
+      next: (data) => {
+        this.tables = Array.isArray(data) ? data : [];
+        this.cdr.detectChanges();
+      },
+      error: (err) => console.error('Failed to fetch tables:', err)
     });
   }
 

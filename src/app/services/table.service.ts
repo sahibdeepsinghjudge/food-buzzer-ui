@@ -21,7 +21,7 @@ export class Tableservice {
 
     constructor(private http: HttpClient) {}
 
-    private getHeaders(): HttpHeaders {
+  private getHeaders(): HttpHeaders {
     let headers = new HttpHeaders();
     const userId = localStorage.getItem("userId");
     if (userId) {
@@ -31,11 +31,20 @@ export class Tableservice {
     return headers;
   }
 
+
+
   getTableStatus(): Observable<any> 
   {
     let url = baseUrl + '/restaurant-tables/active';
 
     return this.http.get<any>(url, { headers: this.getHeaders() }).pipe(
+      map(res => { console.log(res); return res.data || res; })
+    );
+  }
+
+  createTable(tableNo: number): Observable<any> {
+    const payload = { tableNo: tableNo, tableSize: 1, floor: 1 };
+    return this.http.post<any>(baseUrl + '/restaurant-tables/create', payload, { headers: this.getHeaders() }).pipe(
       map(res => res.data || res)
     );
   }

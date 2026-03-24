@@ -138,11 +138,19 @@
       </div>
 
       <div class="flex gap-2">
-        <input
+        <select
           formControlName="tableId"
-          placeholder="Table ID"
-          class="flex-1 bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-        />
+          class="flex-1 bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary appearance-none cursor-pointer"
+        >
+          <option value="" disabled selected>Select Table (Optional)</option>
+          <option
+            *ngFor="let table of tables"
+            [value]="table.tableNo"
+            [disabled]="table.isOccupied"
+          >
+            Table {{ table.tableNo }} {{ table.isOccupied ? '(Occupied)' : '' }}
+          </option>
+        </select>
         <div class="flex flex-col gap-1 w-24">
           <input
             formControlName="discount"

@@ -95,18 +95,37 @@ export class CreateRecipe implements OnInit {
 
           let displayPortion = ing.portionSize;
           let displayUnit = material.unit;
+          const baseMatUnit = material.unit.toLowerCase();
 
           // Inverse conversion from base units back to display units if possible
-          if (material.unit.toLowerCase() === 'kg' || material.unit.toLowerCase() === 'kilograms') {
-            displayUnit = 'KG';
-            displayPortion = ing.portionSize / 1000;
-          } else if (material.unit.toLowerCase() === 'l' || material.unit.toLowerCase() === 'liters') {
-            displayUnit = 'L';
-            displayPortion = ing.portionSize / 1000;
-          } else if (material.unit.toLowerCase() === 'g' || material.unit.toLowerCase() === 'grams') {
-            displayUnit = 'g';
-          } else if (material.unit.toLowerCase() === 'ml' || material.unit.toLowerCase() === 'milliliters') {
-            displayUnit = 'ml';
+          if (baseMatUnit === 'kg' || baseMatUnit === 'kilograms') {
+            if (ing.portionSize < 1 && ing.portionSize > 0) {
+              displayUnit = 'g';
+              displayPortion = ing.portionSize * 1000;
+            } else {
+              displayUnit = 'KG';
+            }
+          } else if (baseMatUnit === 'l' || baseMatUnit === 'liters') {
+            if (ing.portionSize < 1 && ing.portionSize > 0) {
+              displayUnit = 'ml';
+              displayPortion = ing.portionSize * 1000;
+            } else {
+              displayUnit = 'L';
+            }
+          } else if (baseMatUnit === 'g' || baseMatUnit === 'grams') {
+            if (ing.portionSize >= 1000) {
+              displayUnit = 'KG';
+              displayPortion = ing.portionSize / 1000;
+            } else {
+              displayUnit = 'g';
+            }
+          } else if (baseMatUnit === 'ml' || baseMatUnit === 'milliliters') {
+            if (ing.portionSize >= 1000) {
+              displayUnit = 'L';
+              displayPortion = ing.portionSize / 1000;
+            } else {
+              displayUnit = 'ml';
+            }
           }
 
           return {
@@ -153,17 +172,29 @@ export class CreateRecipe implements OnInit {
     const displayUnit = this.selectedUnit();
     const displayPortion = parseFloat(portionSize);
 
-    // Convert to smaller unit (g or ml) for storage
+    // Convert to backend base unit for storage
     let basePortionSize = displayPortion;
-    let baseUnit = displayUnit;
+    const baseMatUnit = material.unit.toLowerCase();
+    const uiUnit = displayUnit.toLowerCase();
 
-    if (displayUnit === 'KG') {
-      basePortionSize = displayPortion * 1000;
-      baseUnit = 'g';
-    } else if (displayUnit === 'L') {
-      basePortionSize = displayPortion * 1000;
-      baseUnit = 'ml';
+    // From Grams to KG (Material is KG, UI is Grams)
+    if ((uiUnit === 'g' || uiUnit === 'grams') && (baseMatUnit === 'kg' || baseMatUnit === 'kilograms')) {
+      basePortionSize = displayPortion / 1000;
     }
+    // From ML to Liters (Material is L, UI is ML)
+    else if ((uiUnit === 'ml' || uiUnit === 'milliliters') && (baseMatUnit === 'l' || baseMatUnit === 'liters')) {
+      basePortionSize = displayPortion / 1000;
+    }
+    // From KG to Grams (Material is G, UI is KG)
+    else if ((uiUnit === 'kg' || uiUnit === 'kilograms') && (baseMatUnit === 'g' || baseMatUnit === 'grams')) {
+      basePortionSize = displayPortion * 1000;
+    }
+    // From Liters to ML (Material is ML, UI is L)
+    else if ((uiUnit === 'l' || uiUnit === 'liters') && (baseMatUnit === 'ml' || baseMatUnit === 'milliliters')) {
+      basePortionSize = displayPortion * 1000;
+    }
+
+    const baseUnit = material.unit;
 
     const currentIngredients = this.selectedIngredients();
     const existingIndex = currentIngredients.findIndex(i => i.materialId === material.id);

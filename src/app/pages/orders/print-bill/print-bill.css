@@ -1,0 +1,28 @@
+@media print {
+  body {
+    background-color: transparent !important;
+  }
+
+  .__bill-wrapper {
+    background: transparent !important;
+    padding: 0 !important;
+    min-height: auto !important;
+  }
+
+  .receipt-card {
+    box-shadow: none !important;
+    max-width: 100% !important;
+    width: 80mm !important; /* Emulate 80mm generic printer explicitly */
+    margin: 0 auto !important;
+    padding: 0 !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  /* Clear all margins/padding applied to the page to allow raw printing */
+  @page {
+    margin: 0;
+  }
+}

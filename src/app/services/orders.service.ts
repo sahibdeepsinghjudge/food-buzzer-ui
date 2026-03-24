@@ -50,7 +50,7 @@ export class OrdersService {
     let headers = new HttpHeaders();
     const userId = localStorage.getItem("userId");
     if (userId) {
-      headers = headers.append("userId", userId);
+      headers = headers.append("X-User-Id", userId);
       headers = headers.append('ngrok-skip-browser-warning', 'true');
     }
     return headers;

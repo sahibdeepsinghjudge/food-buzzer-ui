@@ -8,16 +8,6 @@
 
     <!-- Actions Area -->
     <div class="flex items-center gap-4">
-      <div class="w-72 mt-2">
-        <input-field
-          placeholder="Search teammates..."
-          (ngModelChange)="onSearch($event)"
-          [ngModel]="searchQuery()"
-          id="search"
-          name="search"
-        >
-        </input-field>
-      </div>
       <div class="mt-2">
         <ui-button text="Add Team Mate" variant="black" routerLink="/team/new"> </ui-button>
       </div>
@@ -31,6 +21,16 @@
 
   <!-- Data Table -->
   <div *ngIf="!isLoading()">
+    <div class="w-72 mt-2">
+      <input-field
+        placeholder="Search teammates..."
+        (ngModelChange)="onSearch($event)"
+        [ngModel]="searchQuery()"
+        id="search"
+        name="search"
+      >
+      </input-field>
+    </div>
     <app-table [columns]="columns" [data]="filteredMembers()"></app-table>
 
     <!-- Empty State -->

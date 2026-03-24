@@ -1,0 +1,117 @@
+<div *ngIf="isLoading" class="flex justify-center items-center h-screen bg-neutral-100">
+  <p class="text-neutral-500 font-medium animate-pulse">Loading Bill...</p>
+</div>
+
+<div *ngIf="errorMsg" class="flex flex-col items-center justify-center p-8 h-screen bg-neutral-100">
+  <div class="bg-red-50 text-red-600 p-6 rounded-2xl w-full max-w-md text-center shadow-sm">
+    <p>{{ errorMsg }}</p>
+    <button
+      (click)="goBack()"
+      class="mt-4 px-6 py-2 bg-white text-red-600 border border-red-200 rounded-lg hover:bg-neutral-50 transition-colors"
+    >
+      Go Back
+    </button>
+  </div>
+</div>
+
+<div
+  *ngIf="!isLoading && order"
+  class="bg-neutral-100 min-h-screen pt-10 pb-20 px-4 flex flex-col items-center __bill-wrapper"
+>
+  <!-- Receipt Paper -->
+  <div
+    class="bg-white p-8 w-full max-w-sm shadow-lg text-black font-mono leading-relaxed receipt-card"
+    id="printableArea"
+  >
+    <!-- Header -->
+    <div class="text-center border-b border-dashed border-neutral-400 pb-4 mb-4">
+      <h1 class="text-2xl font-bold tracking-widest mb-1">FOOD BUZZER</h1>
+      <p class="text-xs uppercase">Original Receipt</p>
+    </div>
+
+    <!-- Details -->
+    <div class="text-xs space-y-1 mb-4">
+      <div class="flex justify-between">
+        <span>Order #:</span>
+        <span class="font-bold">{{ order.id || order.orderId }}</span>
+      </div>
+      <div class="flex justify-between">
+        <span>Date:</span>
+        <span>{{ (order.createdAt | date: 'short') || 'N/A' }}</span>
+      </div>
+      <div class="flex justify-between" *ngIf="order.customerName">
+        <span>Customer:</span>
+        <span>{{ order.customerName }}</span>
+      </div>
+      <div class="flex justify-between" *ngIf="order.customerPhone">
+        <span>Phone:</span>
+        <span>{{ order.customerPhone }}</span>
+      </div>
+      <div class="flex justify-between" *ngIf="order.tableId">
+        <span>Table:</span>
+        <span class="font-bold">{{ order.tableId }}</span>
+      </div>
+    </div>
+
+    <!-- Items -->
+    <div class="border-y border-dashed border-neutral-400 py-3 mb-4">
+      <div class="flex justify-between text-xs font-bold mb-2 uppercase">
+        <span class="w-1/2">Item</span>
+        <span class="w-1/4 text-center">Qty</span>
+        <span class="w-1/4 text-right">Price</span>
+      </div>
+
+      <div *ngFor="let item of order.cartItems" class="flex justify-between text-xs mb-1">
+        <span class="w-1/2 break-words pr-2">{{ item.name }}</span>
+        <span class="w-1/4 text-center">x{{ item.quantity }}</span>
+        <span class="w-1/4 text-right"
+          >₹{{ item.totalPrice || item.unitPrice * item.quantity }}</span
+        >
+      </div>
+    </div>
+
+    <!-- Totals -->
+    <div class="space-y-1 text-xs text-right">
+      <div class="flex justify-between">
+        <span>Subtotal:</span>
+        <span>₹{{ order.subTotal || order.cartTotal || order.grandTotal | number: '1.2-2' }}</span>
+      </div>
+      <div *ngIf="order.discount > 0" class="flex justify-between">
+        <span>Discount:</span>
+        <span>-₹{{ order.discount | number: '1.2-2' }}</span>
+      </div>
+      <div *ngIf="order.taxes > 0" class="flex justify-between">
+        <span>Tax ({{ order.taxPercentage || 0 }}%):</span>
+        <span>₹{{ order.taxes | number: '1.2-2' }}</span>
+      </div>
+    </div>
+
+    <div
+      class="flex justify-between text-base font-bold border-t border-dashed border-neutral-400 pt-3 mt-3 pb-3"
+    >
+      <span>GRAND TOTAL</span>
+      <span>₹{{ order.grandTotal | number: '1.2-2' }}</span>
+    </div>
+
+    <div class="text-center text-xs mt-6 text-neutral-600 font-sans">
+      <p class="font-bold">Thank you for visiting!</p>
+      <p>Please come again.</p>
+    </div>
+  </div>
+
+  <!-- Floating Actions (Hidden on Print) -->
+  <div class="fixed bottom-6 right-6 flex gap-3 no-print">
+    <button
+      (click)="goBack()"
+      class="px-6 py-3 bg-white text-neutral-800 font-semibold rounded-full shadow-lg border border-neutral-200 hover:bg-neutral-50 flex items-center gap-2 transition-all"
+    >
+      <mat-icon>close</mat-icon> Close
+    </button>
+    <button
+      (click)="printBill()"
+      class="px-6 py-3 bg-black text-white font-semibold rounded-full shadow-xl flex items-center gap-2 hover:scale-105 transition-all"
+    >
+      <mat-icon>print</mat-icon> Print Bill
+    </button>
+  </div>
+</div>
