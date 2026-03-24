@@ -143,7 +143,10 @@ export class CreateRecipe implements OnInit {
   }
 
   addIngredient() {
-    if (this.ingredientForm.invalid || !this.selectedMaterial()) return;
+    if (this.ingredientForm.invalid || !this.selectedMaterial()) {
+      this.ingredientForm.markAllAsTouched();
+      return;
+    }
 
     const { portionSize } = this.ingredientForm.value;
     const material = this.selectedMaterial()!;
@@ -191,7 +194,10 @@ export class CreateRecipe implements OnInit {
   }
 
   saveRecipe() {
-    if (this.recipeForm.invalid) return;
+    if (this.recipeForm.invalid) {
+      this.recipeForm.markAllAsTouched();
+      return;
+    }
 
     this.isSaving.set(true);
     const formValues = this.recipeForm.value;

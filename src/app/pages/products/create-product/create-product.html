@@ -26,50 +26,100 @@
             Basic Information
           </h3>
 
-          <input-field
-            label="Product Name"
-            id="name"
-            name="name"
-            placeholder="e.g. Deluxe Burger Combo"
-            formControlName="name"
-          ></input-field>
+          <div class="flex flex-col gap-1">
+            <input-field
+              label="Product Name *"
+              id="name"
+              name="name"
+              placeholder="e.g. Deluxe Burger Combo"
+              formControlName="name"
+            ></input-field>
+            <p
+              *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched"
+              class="text-xs text-red-500 ml-1"
+            >
+              Product Name is required.
+            </p>
+          </div>
 
           <div class="grid grid-cols-2 gap-4">
-            <input-field
-              label="SKU"
-              id="sku"
-              name="sku"
-              placeholder="e.g. BRG-001"
-              formControlName="sku"
-            ></input-field>
+            <div class="flex flex-col gap-1">
+              <input-field
+                label="SKU *"
+                id="sku"
+                name="sku"
+                placeholder="e.g. BRG-001"
+                formControlName="sku"
+              ></input-field>
+              <p
+                *ngIf="productForm.get('sku')?.invalid && productForm.get('sku')?.touched"
+                class="text-xs text-red-500 ml-1"
+              >
+                SKU is required.
+              </p>
+            </div>
 
-            <input-field
-              label="Category"
-              id="category"
-              name="category"
-              placeholder="e.g. Burgers"
-              formControlName="category"
-            ></input-field>
+            <div class="flex flex-col gap-1">
+              <input-field
+                label="Category *"
+                id="category"
+                name="category"
+                placeholder="e.g. Burgers"
+                formControlName="category"
+              ></input-field>
+              <p
+                *ngIf="productForm.get('category')?.invalid && productForm.get('category')?.touched"
+                class="text-xs text-red-500 ml-1"
+              >
+                Category is required.
+              </p>
+            </div>
           </div>
 
           <div class="grid grid-cols-2 gap-4 border-b border-neutral-100 pb-6 mb-6">
-            <input-field
-              label="Price (₹)"
-              id="price"
-              name="price"
-              type="number"
-              placeholder="e.g. 299"
-              formControlName="price"
-            ></input-field>
+            <div class="flex flex-col gap-1">
+              <input-field
+                label="Price (₹) *"
+                id="price"
+                name="price"
+                type="number"
+                placeholder="e.g. 299"
+                formControlName="price"
+              ></input-field>
+              <p
+                *ngIf="productForm.get('price')?.invalid && productForm.get('price')?.touched"
+                class="text-xs text-red-500 ml-1"
+              >
+                <span *ngIf="productForm.get('price')?.errors?.['required']"
+                  >Price is required.</span
+                >
+                <span *ngIf="productForm.get('price')?.errors?.['min']"
+                  >Price cannot be negative.</span
+                >
+              </p>
+            </div>
 
-            <input-field
-              label="Quantity"
-              id="qty"
-              name="qty"
-              type="number"
-              placeholder="e.g. 1"
-              formControlName="qty"
-            ></input-field>
+            <div class="flex flex-col gap-1">
+              <input-field
+                label="Quantity *"
+                id="qty"
+                name="qty"
+                type="number"
+                placeholder="e.g. 1"
+                formControlName="qty"
+              ></input-field>
+              <p
+                *ngIf="productForm.get('qty')?.invalid && productForm.get('qty')?.touched"
+                class="text-xs text-red-500 ml-1"
+              >
+                <span *ngIf="productForm.get('qty')?.errors?.['required']"
+                  >Quantity is required.</span
+                >
+                <span *ngIf="productForm.get('qty')?.errors?.['min']"
+                  >Quantity must be at least 1.</span
+                >
+              </p>
+            </div>
           </div>
 
           <!-- Toggles -->
@@ -180,6 +230,12 @@
                 formControlName="qty"
                 class="w-full h-[52px] rounded-xl border border-neutral-300 px-4 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-colors"
               />
+              <p
+                *ngIf="recipeFormGroup.get('qty')?.invalid && recipeFormGroup.get('qty')?.touched"
+                class="text-xs text-red-500 mt-1"
+              >
+                Valid quantity (≥1) is required to add recipe.
+              </p>
             </div>
 
             <div class="mt-2 w-full flex justify-end">

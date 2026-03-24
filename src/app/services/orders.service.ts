@@ -87,6 +87,7 @@ export class OrdersService {
       params
     }).pipe(
       map(res => {
+        console.log(res);
         const data = res.data || res;
         const ordersArray = Array.isArray(data) ? data : [];
         return ordersArray.map(o => this.mapOrder(o));

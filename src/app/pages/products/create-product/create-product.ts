@@ -112,7 +112,10 @@ export class CreateProduct implements OnInit {
   }
 
   addRecipeToProduct() {
-    if (this.recipeFormGroup.invalid || !this.selectedRecipe()) return;
+    if (this.recipeFormGroup.invalid || !this.selectedRecipe()) {
+      this.recipeFormGroup.markAllAsTouched();
+      return;
+    }
 
     const { qty } = this.recipeFormGroup.value;
     const recipe = this.selectedRecipe()!;
@@ -142,7 +145,10 @@ export class CreateProduct implements OnInit {
   }
 
   saveProduct() {
-    if (this.productForm.invalid) return;
+    if (this.productForm.invalid) {
+      this.productForm.markAllAsTouched();
+      return;
+    }
 
     this.isSaving.set(true);
     const formValues = this.productForm.value;

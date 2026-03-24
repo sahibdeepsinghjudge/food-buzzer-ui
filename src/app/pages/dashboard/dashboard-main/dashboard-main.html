@@ -1,61 +1,227 @@
-<p class="text-neutral-800 text-xl font-semibold">
-  Hi <b>{{ user() }}</b> 👋🏼
-</p>
-
-<div class="mt-4">
-  <h3 class="text-xl text-primary font-semibold mb-4">Monthly Stats</h3>
-  <div class="grid grid-cols-4 gap-3">
-    <div class="bg-white rounded-2xl flex items-center justify-center py-6 shadow-sm">
-      <div class="text-center">
-        <p class="text-2xl font-semibold">0</p>
-        <span class="text-lg text-primary font-semibold"> Total Orders </span>
-      </div>
-    </div>
-    <div class="bg-white rounded-2xl flex items-center justify-center py-6 shadow-sm">
-      <div class="text-center">
-        <p class="text-2xl font-semibold">Rs.0</p>
-        <span class="text-lg text-primary font-semibold"> Total Revenue </span>
-      </div>
-    </div>
-    <div class="bg-white rounded-2xl flex items-center justify-center py-6 shadow-sm">
-      <div class="text-center">
-        <p class="text-2xl font-semibold">0.0</p>
-        <span class="text-lg text-primary font-semibold"> Average Rating </span>
-      </div>
-    </div>
+<div class="px-4 max-w-[1600px]">
+  <div class="flex items-center justify-between mb-8">
+    <p class="text-neutral-600 text-2xl font-medium">
+      Hi <span class="font-semibold text-neutral-800">{{ user() }}</span> 👋🏼
+    </p>
   </div>
-  <div class="mt-6">
-    <h3 class="text-xl text-primary font-semibold mb-4">Today's Stats</h3>
-    <div class="grid grid-cols-4 gap-3">
-      <div class="bg-white rounded-2xl flex items-center justify-center py-6 shadow-sm">
-        <div class="text-center">
-          <p class="text-2xl font-semibold">0</p>
-          <span class="text-lg text-primary font-semibold"> Orders </span>
-        </div>
-      </div>
-      <div class="bg-white rounded-2xl flex items-center justify-center py-6 shadow-sm">
-        <div class="text-center">
-          <p class="text-2xl font-semibold">Rs.0</p>
-          <span class="text-lg text-primary font-semibold"> Revenue </span>
-        </div>
-      </div>
-      <div class="bg-white rounded-2xl flex items-center justify-center py-6 shadow-sm">
-        <div class="text-center">
-          <p class="text-2xl font-semibold">0.0</p>
-          <span class="text-lg text-primary font-semibold"> Average Rating </span>
-        </div>
-      </div>
-      <div class="bg-white rounded-2xl flex items-center justify-center py-6 shadow-sm">
-        <div class="text-center">
-          <p class="text-2xl font-semibold">0</p>
-          <span class="text-lg text-red-500 font-semibold"> Low on Stock </span>
-        </div>
-      </div>
-    </div>
 
-    <h3 class="text-xl text-primary font-semibold mb-4 mt-6">Rush Hours</h3>
-    <div class="w-full max-w-6xl rounded-xl shadow p-12 bg-white">hashd</div>
-    <h3 class="text-xl text-primary font-semibold mb-4 mt-6">Top Selling Items</h3>
-    <div class="w-full max-w-6xl rounded-xl shadow p-12 bg-white">hashd</div>
+  <div class="space-y-10">
+    <!-- Monthly Stats -->
+    <section>
+      <div class="flex items-center gap-3 mb-5">
+        <h3 class="text-xl text-neutral-800 font-bold">Monthly Stats</h3>
+        <div
+          *ngIf="isMonthlyLoading()"
+          class="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"
+        ></div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+        <!-- Orders -->
+        <div
+          class="bg-white rounded-2xl p-6 shadow-sm border border-neutral-100 flex items-center justify-between"
+        >
+          <div>
+            <span class="text-sm font-semibold text-neutral-500 uppercase tracking-wider"
+              >Total Orders</span
+            >
+            <p class="text-3xl font-bold mt-1 text-neutral-800">
+              {{ monthlyData()?.totalOrders || 0 }}
+            </p>
+          </div>
+          <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center">
+            <mat-icon class="text-blue-500 text-2xl">receipt_long</mat-icon>
+          </div>
+        </div>
+
+        <!-- Revenue -->
+        <div
+          class="bg-white rounded-2xl p-6 shadow-sm border border-neutral-100 flex items-center justify-between"
+        >
+          <div>
+            <span class="text-sm font-semibold text-neutral-500 uppercase tracking-wider"
+              >Total Revenue</span
+            >
+            <p class="text-3xl font-bold mt-1 text-neutral-800">
+              ₹{{ monthlyData()?.totalRevenue || 0 | number: '1.0-2' }}
+            </p>
+          </div>
+          <div class="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center">
+            <mat-icon class="text-green-500 text-2xl">payments</mat-icon>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Daily Stats -->
+    <section>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
+        <div class="flex items-center gap-3">
+          <h3 class="text-xl text-neutral-800 font-bold">Today's Performance</h3>
+          <div
+            *ngIf="isDailyLoading() || isInventoryLoading()"
+            class="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"
+          ></div>
+        </div>
+
+        <!-- Date Picker -->
+        <div
+          class="relative bg-white rounded-xl shadow-sm border border-neutral-200 pl-3 focus-within:ring-2 focus-within:ring-primary focus-within:border-primary overflow-hidden transition-shadow flex items-center"
+        >
+          <mat-icon class="text-neutral-400 text-[20px]">calendar_today</mat-icon>
+          <input
+            type="date"
+            [ngModel]="selectedDate()"
+            (ngModelChange)="selectedDate.set($event); onDateChange()"
+            class="py-2.5 px-3 bg-transparent border-none outline-none font-medium text-neutral-700 w-40 cursor-pointer"
+          />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+        <!-- Daily Orders -->
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-neutral-100">
+          <span class="text-sm font-semibold text-neutral-500 uppercase tracking-wider"
+            >Orders</span
+          >
+          <p class="text-3xl font-bold mt-2 text-primary">{{ dailyData()?.totalOrders || 0 }}</p>
+        </div>
+
+        <!-- Daily Revenue -->
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-neutral-100">
+          <span class="text-sm font-semibold text-neutral-500 uppercase tracking-wider"
+            >Revenue</span
+          >
+          <p class="text-3xl font-bold mt-2 text-green-600">
+            ₹{{ dailyData()?.totalRevenue || 0 | number: '1.0-2' }}
+          </p>
+        </div>
+
+        <!-- Low Stock -->
+        <a
+          routerLink="/inventory"
+          class="bg-white rounded-2xl p-6 shadow-sm border border-neutral-100 hover:border-red-200 cursor-pointer hover:shadow-md transition-all group block relative"
+        >
+          <div class="flex items-center justify-between">
+            <span
+              class="text-sm font-semibold text-neutral-500 uppercase tracking-wider group-hover:text-red-500 transition-colors"
+              >Low on Stock</span
+            >
+            <mat-icon class="text-neutral-300 group-hover:text-red-400 transition-colors"
+              >arrow_forward</mat-icon
+            >
+          </div>
+          <p class="text-3xl font-bold mt-2 text-red-500">{{ lowStockCount() }}</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- Charts & Tables Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Active Hours (Bar Chart) -->
+      <section class="bg-white p-6 rounded-3xl shadow-sm border border-neutral-100">
+        <h3 class="text-lg text-neutral-800 font-bold mb-6">Active Hours</h3>
+
+        <div
+          *ngIf="isDailyLoading()"
+          class="h-64 flex items-center justify-center text-neutral-400"
+        >
+          <div
+            class="w-8 h-8 border-4 border-neutral-300 border-t-primary rounded-full animate-spin"
+          ></div>
+        </div>
+
+        <div
+          *ngIf="!isDailyLoading() && hourlyChart().length === 0"
+          class="h-64 flex items-center justify-center text-neutral-400 italic"
+        >
+          No data available for this date.
+        </div>
+
+        <div
+          *ngIf="!isDailyLoading() && hourlyChart().length > 0"
+          class="h-64 flex items-end justify-between gap-2 mt-4 relative pb-6 px-2"
+        >
+          <!-- Y-axis lines (decorative) -->
+          <div
+            class="absolute w-full border-b border-dashed border-neutral-200 bottom-6 left-0 z-0"
+          ></div>
+          <div
+            class="absolute w-full border-b border-dashed border-neutral-200 bottom-[calc(50%+12px)] left-0 z-0"
+          ></div>
+          <div
+            class="absolute w-full border-b border-dashed border-neutral-200 top-2 left-0 z-0"
+          ></div>
+
+          <!-- Bars -->
+          <div
+            *ngFor="let bar of hourlyChart()"
+            class="relative flex flex-col items-center flex-1 h-full justify-end group z-10"
+          >
+            <!-- Tooltip -->
+            <div
+              class="opacity-0 group-hover:opacity-100 absolute -top-10 bg-neutral-800 text-white text-xs font-bold px-2.5 py-1 rounded shadow-lg transition-opacity whitespace-nowrap z-20 pointer-events-none"
+            >
+              {{ bar.count }} orders
+              <!-- Tooltip arrow -->
+              <div
+                class="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-neutral-800 rotate-45"
+              ></div>
+            </div>
+
+            <!-- Bar Body -->
+            <div
+              class="w-full max-w-[48px] bg-primary/20 group-hover:bg-primary transition-all rounded-t shrink-0"
+              [style.height.%]="bar.heightPercent > 0 ? bar.heightPercent : 1"
+              [class.bg-primary]="bar.heightPercent > 0"
+            ></div>
+
+            <!-- X-Axis Label -->
+            <span
+              class="absolute -bottom-6 text-[10px] font-medium text-neutral-400 whitespace-nowrap rotate-45 md:rotate-0 origin-left"
+            >
+              <!-- Only show label every 3 hours to avoid crowding on small screens -->
+              {{ bar.hourLabel }}
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Top Selling Items -->
+      <section class="bg-white p-6 rounded-3xl shadow-sm border border-neutral-100 flex flex-col">
+        <h3 class="text-lg text-neutral-800 font-bold mb-4">Top Selling Items</h3>
+
+        <div
+          *ngIf="isDailyLoading()"
+          class="flex-1 flex items-center justify-center text-neutral-400 min-h-64"
+        >
+          <div
+            class="w-8 h-8 border-4 border-neutral-300 border-t-primary rounded-full animate-spin"
+          ></div>
+        </div>
+
+        <div
+          *ngIf="
+            !isDailyLoading() &&
+            (!dailyData()?.topSellingItems || dailyData()!.topSellingItems.length === 0)
+          "
+          class="flex-1 flex flex-col items-center justify-center text-neutral-400 min-h-64 bg-neutral-50 rounded-2xl border border-neutral-100/50"
+        >
+          <mat-icon class="text-4xl text-neutral-300 mb-2">fastfood</mat-icon>
+          <p>No item sales recorded today.</p>
+        </div>
+
+        <div
+          *ngIf="!isDailyLoading() && dailyData()?.topSellingItems?.length"
+          class="flex-1 overflow-hidden"
+        >
+          <app-table
+            [columns]="topSellingColumns"
+            [data]="dailyData()!.topSellingItems"
+            class="block"
+          ></app-table>
+        </div>
+      </section>
+    </div>
   </div>
 </div>

@@ -7,6 +7,12 @@
         <div class="flex flex-col gap-2">
           <label for="name" class="font-medium text-neutral-700">Material Name *</label>
           <input-field type="text" placeholder="e.g. Tomatoes" formControlName="name"></input-field>
+          <p
+            *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched"
+            class="text-xs text-red-500"
+          >
+            Material name is required.
+          </p>
         </div>
 
         <!-- SKU -->
@@ -23,6 +29,12 @@
             placeholder="Select category"
             formControlName="category"
           ></select-input>
+          <p
+            *ngIf="productForm.get('category')?.invalid && productForm.get('category')?.touched"
+            class="text-xs text-red-500"
+          >
+            Category is required.
+          </p>
         </div>
 
         <!-- Unit -->
@@ -33,12 +45,31 @@
             placeholder="Select unit"
             formControlName="unit"
           ></select-input>
+          <p
+            *ngIf="productForm.get('unit')?.invalid && productForm.get('unit')?.touched"
+            class="text-xs text-red-500"
+          >
+            Unit is required.
+          </p>
         </div>
 
         <!-- Current Stock -->
         <div class="flex flex-col gap-2">
           <label for="currentStock" class="font-medium text-neutral-700">Current Stock *</label>
           <input-field type="number" placeholder="0" formControlName="currentStock"></input-field>
+          <p
+            *ngIf="
+              productForm.get('currentStock')?.invalid && productForm.get('currentStock')?.touched
+            "
+            class="text-xs text-red-500"
+          >
+            <span *ngIf="productForm.get('currentStock')?.errors?.['required']"
+              >Stock is required.</span
+            >
+            <span *ngIf="productForm.get('currentStock')?.errors?.['min']"
+              >Stock must be 0 or greater.</span
+            >
+          </p>
         </div>
 
         <!-- Reorder Level -->
@@ -51,6 +82,14 @@
         <div class="flex flex-col gap-2">
           <label for="costPerUnit" class="font-medium text-neutral-700">Cost Per Unit (₹)</label>
           <input-field type="number" placeholder="0.00" formControlName="costPerUnit"></input-field>
+          <p
+            *ngIf="
+              productForm.get('costPerUnit')?.invalid && productForm.get('costPerUnit')?.touched
+            "
+            class="text-xs text-red-500"
+          >
+            Cost must be 0 or greater.
+          </p>
         </div>
       </div>
 

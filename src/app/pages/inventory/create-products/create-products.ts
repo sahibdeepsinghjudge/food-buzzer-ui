@@ -6,11 +6,12 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { InventoryService } from '../inventory-service';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-create-products',
   standalone: true,
-  imports: [InputField, Button, SelectInput, ReactiveFormsModule, MatIconModule],
+  imports: [InputField, Button, SelectInput, ReactiveFormsModule, MatIconModule, CommonModule],
   templateUrl: './create-products.html',
   styleUrls: ['./create-products.css'],
 })
@@ -44,7 +45,10 @@ export class CreateProducts {
   }
 
   saveProduct() {
-    if (this.productForm.invalid) return;
+    if (this.productForm.invalid) {
+      this.productForm.markAllAsTouched();
+      return;
+    }
     this.isSaving.set(true);
     this.errorMessage.set('');
 

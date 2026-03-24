@@ -1,23 +1,13 @@
-<div class="px-8 mt-10">
+<div class="px-6">
   <div class="flex justify-between items-center mb-8">
     <!-- Header Texts -->
     <div class="space-y-1">
-      <h2 class="text-3xl font-bold text-neutral-800">Recipes</h2>
+      <h2 class="text-2xl font-bold text-neutral-800">Recipes</h2>
       <p class="text-neutral-500">Manage your culinary creations and build new recipes.</p>
     </div>
 
     <!-- Actions Area -->
     <div class="flex items-center gap-4">
-      <div class="w-72 mt-2">
-        <input-field
-          placeholder="Search recipes..."
-          (ngModelChange)="onSearch($event)"
-          [ngModel]="searchQuery()"
-          id="search"
-          name="search"
-        >
-        </input-field>
-      </div>
       <div class="mt-2">
         <ui-button text="Create Recipe" variant="black" routerLink="/recipes/create-recipe">
         </ui-button>
@@ -31,7 +21,17 @@
   </div>
 
   <!-- Data Table -->
-  <div *ngIf="!isLoading()">
+  <div *ngIf="!isLoading()" class="bg-white p-4 rounded-2xl">
+    <div class="w-full md:w-max-6xl" *ngIf="filteredRecipes().length > 0">
+      <input-field
+        placeholder="Search recipes..."
+        (ngModelChange)="onSearch($event)"
+        [ngModel]="searchQuery()"
+        id="search"
+        name="search"
+      >
+      </input-field>
+    </div>
     <app-table [columns]="columns" [data]="filteredRecipes()"></app-table>
 
     <!-- Empty State -->

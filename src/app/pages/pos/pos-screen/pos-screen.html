@@ -103,33 +103,63 @@
     </div>
 
     <!-- Customer Info & Checkout -->
-    <div class="border-t border-neutral-100 p-4 space-y-3">
+    <div class="border-t border-neutral-100 p-4 space-y-3" [formGroup]="checkoutForm">
       <!-- Customer Fields -->
-      <input
-        [(ngModel)]="customerName"
-        placeholder="Customer Name *"
-        class="w-full bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-      />
-      <input
-        [(ngModel)]="customerPhone"
-        placeholder="Phone Number *"
-        class="w-full bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-      />
+      <div class="flex flex-col gap-1">
+        <input
+          formControlName="customerName"
+          placeholder="Customer Name *"
+          class="w-full bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+        />
+        <p
+          *ngIf="
+            checkoutForm.get('customerName')?.invalid && checkoutForm.get('customerName')?.touched
+          "
+          class="text-xs text-red-500 ml-1"
+        >
+          Name is required.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <input
+          formControlName="customerPhone"
+          placeholder="Phone Number *"
+          class="w-full bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+        />
+        <p
+          *ngIf="
+            checkoutForm.get('customerPhone')?.invalid && checkoutForm.get('customerPhone')?.touched
+          "
+          class="text-xs text-red-500 ml-1"
+        >
+          Phone is required.
+        </p>
+      </div>
+
       <div class="flex gap-2">
         <input
-          [(ngModel)]="tableId"
+          formControlName="tableId"
           placeholder="Table ID"
           class="flex-1 bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
         />
-        <input
-          [(ngModel)]="discount"
-          type="number"
-          placeholder="Discount %"
-          min="0"
-          max="100"
-          class="w-24 bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-        />
+        <div class="flex flex-col gap-1 w-24">
+          <input
+            formControlName="discount"
+            type="number"
+            placeholder="Discount %"
+            min="0"
+            max="100"
+            class="w-full bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
       </div>
+      <p
+        *ngIf="checkoutForm.get('discount')?.invalid && checkoutForm.get('discount')?.touched"
+        class="text-xs text-red-500 ml-1"
+      >
+        Discount must be 0-100%.
+      </p>
 
       <!-- Totals -->
       <div class="space-y-1 pt-2 border-t border-neutral-100">
@@ -137,8 +167,8 @@
           <span>Subtotal</span>
           <span>₹{{ subtotal.toFixed(2) }}</span>
         </div>
-        <div *ngIf="discount > 0" class="flex justify-between text-sm text-green-600">
-          <span>Discount ({{ discount }}%)</span>
+        <div *ngIf="discountValue > 0" class="flex justify-between text-sm text-green-600">
+          <span>Discount ({{ discountValue }}%)</span>
           <span>-₹{{ discountAmount.toFixed(2) }}</span>
         </div>
         <div class="flex justify-between text-lg font-bold text-neutral-800 pt-1">
@@ -161,12 +191,8 @@
       <!-- Place Order Button -->
       <button
         (click)="placeOrder()"
-        [disabled]="!canPlaceOrder || isPlacingOrder()"
-        class="w-full py-3 rounded-xl text-white font-semibold text-base transition-all cursor-pointer"
-        [class.bg-primary]="canPlaceOrder && !isPlacingOrder()"
-        [class.hover:opacity-90]="canPlaceOrder && !isPlacingOrder()"
-        [class.bg-neutral-300]="!canPlaceOrder || isPlacingOrder()"
-        [class.cursor-not-allowed]="!canPlaceOrder || isPlacingOrder()"
+        [disabled]="isPlacingOrder()"
+        class="w-full py-3 rounded-xl text-white font-semibold text-base transition-all cursor-pointer hover:opacity-90 bg-primary disabled:bg-neutral-300 disabled:cursor-not-allowed"
       >
         {{ isPlacingOrder() ? 'Placing Order...' : 'Place Order' }}
       </button>

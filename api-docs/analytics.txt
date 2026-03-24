@@ -1,0 +1,156 @@
+ "/api/analytics/monthly/current": {
+      "get": {
+        "tags": [
+          "analytics-controller"
+        ],
+        "operationId": "getCurrentMonthAnalytics",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/MonthlyAnalyticsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/analytics/daily": {
+      "get": {
+        "tags": [
+          "analytics-controller"
+        ],
+        "operationId": "getDailyAnalytics",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/DailyAnalyticsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
+    schemas
+     "MonthlyAnalyticsResponse": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "month": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalOrders": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalRevenue": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "DailyAnalyticsResponse": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "totalOrders": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalRevenue": {
+            "type": "number",
+            "format": "double"
+          },
+          "topSellingItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TopSellingItemDTO"
+            }
+          },
+          "hourlyOrders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HourlyOrderCountDTO"
+            }
+          }
+        }
+      },
+      "HourlyOrderCountDTO": {
+        "type": "object",
+        "properties": {
+          "hour": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "orderCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "TopSellingItemDTO": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "itemName": {
+            "type": "string"
+          },
+          "quantitySold": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "revenue": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      }

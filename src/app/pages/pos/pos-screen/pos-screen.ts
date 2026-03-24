@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, signal } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MenuProductService, MenuProduct } from '../../../services/menu-product.service';
 import { OrdersService, CartItemDTO, OrderRequest } from '../../../services/orders.service';
@@ -20,7 +20,7 @@ interface CartItem {
 @Component({
   selector: 'app-pos-screen',
   // standalone: true,
-  imports: [CommonModule, FormsModule,Logo,ClockComponent,MatIcon],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, Logo, ClockComponent, MatIcon],
   templateUrl: './pos-screen.html',
   styleUrls: ['./pos-screen.css']
 })
@@ -30,12 +30,8 @@ export class PosScreen implements OnInit {
   cart: CartItem[] = [];
   searchQuery = '';
   
-  // Customer info
-  customerName = '';
-  customerPhone = '';
-  customerEmail = '';
-  tableId = '';
-  discount = 0;
+  // Checkout Form
+  checkoutForm: FormGroup;
 
   isPlacingOrder = signal(false);
   orderSuccess = signal('');
@@ -43,12 +39,20 @@ export class PosScreen implements OnInit {
   currentDateTime = signal('');
 
   constructor(
+    private fb: FormBuilder,
     private productService: MenuProductService,
     private ordersService: OrdersService,
     private cdr: ChangeDetectorRef,
     private router: Router,
     private authService : AuthService
-  ) {}
+  ) {
+    this.checkoutForm = this.fb.group({
+      customerName: ['', [Validators.required]],
+      customerPhone: ['', [Validators.required]],
+      tableId: [''],
+      discount: [0, [Validators.min(0), Validators.max(100)]]
+    });
+  }
 
   ngOnInit() {
     this.productService.getProducts().subscribe(products => {
@@ -110,30 +114,35 @@ export class PosScreen implements OnInit {
   }
 
   get discountAmount(): number {
-    return (this.subtotal * this.discount) / 100;
+    const discount = this.checkoutForm.value.discount || 0;
+    return (this.subtotal * discount) / 100;
   }
 
   get total(): number {
     return this.subtotal - this.discountAmount;
   }
 
-  get canPlaceOrder(): boolean {
-    return this.cart.length > 0 && this.customerName.trim() !== '' && this.customerPhone.trim() !== '';
+  get discountValue(): number {
+    return this.checkoutForm.value.discount || 0;
   }
 
   clearCart() {
     this.cart = [];
-    this.customerName = '';
-    this.customerPhone = '';
-    this.customerEmail = '';
-    this.tableId = '';
-    this.discount = 0;
+    this.checkoutForm.reset({ discount: 0 });
     this.orderSuccess.set('');
     this.orderError.set('');
   }
 
   placeOrder() {
-    if (!this.canPlaceOrder) return;
+    if (this.cart.length === 0) {
+      this.orderError.set('Cart is empty. Please add items to place an order.');
+      return;
+    }
+
+    if (this.checkoutForm.invalid) {
+      this.checkoutForm.markAllAsTouched();
+      return;
+    }
 
     this.isPlacingOrder.set(true);
     this.orderError.set('');
@@ -147,13 +156,14 @@ export class PosScreen implements OnInit {
       totalPrice: c.totalPrice
     }));
 
+    const formVal = this.checkoutForm.value;
+
     const payload: OrderRequest = {
-      customerName: this.customerName,
-      customerPhone: this.customerPhone,
-      customerEmail: this.customerEmail || undefined,
-      tableId: this.tableId || undefined,
+      customerName: formVal.customerName,
+      customerPhone: formVal.customerPhone,
+      tableId: formVal.tableId || undefined,
       cartItems,
-      overrideDiscount: this.discount > 0 ? this.discount : undefined
+      overrideDiscount: formVal.discount > 0 ? formVal.discount : undefined
     };
 
     this.ordersService.createOrder(payload).subscribe({
@@ -161,11 +171,7 @@ export class PosScreen implements OnInit {
         this.isPlacingOrder.set(false);
         this.orderSuccess.set(`Order #${res.orderId || ''} placed successfully!`);
         this.cart = [];
-        this.customerName = '';
-        this.customerPhone = '';
-        this.customerEmail = '';
-        this.tableId = '';
-        this.discount = 0;
+        this.checkoutForm.reset({ discount: 0 });
         this.cdr.detectChanges();
       },
       error: (err) => {

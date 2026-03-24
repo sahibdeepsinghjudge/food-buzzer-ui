@@ -47,6 +47,10 @@ export const authGuard: CanActivateFn = (route, state) => {
       visibleTo : [1,2,3],
       fallbackRoute: "/kds"
     },
+    "onboarding":{
+      visibleTo : [3],
+      fallbackRoute: "/accounts/login"
+    },
   }
 
   const currentAccess = accessMaps[state.url.split("/")[1]];
