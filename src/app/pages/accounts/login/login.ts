@@ -6,11 +6,12 @@ import { Button } from '../../../ui/button/button';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
+import { Logo } from '../../../ui/logo/logo';
 
 @Component({
   selector: 'app-login',
   standalone: true,  
-  imports: [CommonModule, AccountsContainer, RouterModule, InputField, Button, ReactiveFormsModule],
+  imports: [CommonModule, AccountsContainer, RouterModule, InputField, Button, ReactiveFormsModule,Logo],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })

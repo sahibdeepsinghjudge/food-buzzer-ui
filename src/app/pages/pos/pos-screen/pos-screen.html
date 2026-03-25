@@ -8,7 +8,7 @@
   <app-logo></app-logo>
   <app-clock></app-clock>
 </div>
-<div class="flex h-screen overflow-hidden">
+<div class="flex h-[calc(100vh-100px)] overflow-y-scroll">
   <!-- LEFT: Product Grid -->
   <div class="flex-1 overflow-y-auto p-6 bg-bg-sec">
     <div class="mb-6">
@@ -109,7 +109,12 @@
         <input
           formControlName="customerName"
           placeholder="Customer Name *"
-          class="w-full bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+          class="w-full bg-neutral-50 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 transition-all"
+          [ngClass]="
+            checkoutForm.get('customerName')?.invalid && checkoutForm.get('customerName')?.touched
+              ? 'border-red-400 focus:ring-red-200'
+              : 'border-neutral-200 focus:ring-primary'
+          "
         />
         <p
           *ngIf="
@@ -125,16 +130,24 @@
         <input
           formControlName="customerPhone"
           placeholder="Phone Number *"
-          class="w-full bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+          class="w-full bg-neutral-50 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 transition-all"
+          [ngClass]="
+            checkoutForm.get('customerPhone')?.invalid && checkoutForm.get('customerPhone')?.touched
+              ? 'border-red-400 focus:ring-red-200'
+              : 'border-neutral-200 focus:ring-primary'
+          "
         />
-        <p
+        <div
           *ngIf="
             checkoutForm.get('customerPhone')?.invalid && checkoutForm.get('customerPhone')?.touched
           "
           class="text-xs text-red-500 ml-1"
         >
-          Phone is required.
-        </p>
+          <p *ngIf="checkoutForm.get('customerPhone')?.errors?.['required']">Phone is required.</p>
+          <p *ngIf="checkoutForm.get('customerPhone')?.errors?.['pattern']">
+            Phone must contain only numbers.
+          </p>
+        </div>
       </div>
 
       <div class="flex gap-2">
@@ -199,7 +212,7 @@
       <!-- Place Order Button -->
       <button
         (click)="placeOrder()"
-        [disabled]="isPlacingOrder()"
+        [disabled]="isPlacingOrder() || checkoutForm.invalid || cart.length === 0"
         class="w-full py-3 rounded-xl text-white font-semibold text-base transition-all cursor-pointer hover:opacity-90 bg-primary disabled:bg-neutral-300 disabled:cursor-not-allowed"
       >
         {{ isPlacingOrder() ? 'Placing Order...' : 'Place Order' }}

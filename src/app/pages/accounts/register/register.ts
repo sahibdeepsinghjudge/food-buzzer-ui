@@ -7,6 +7,7 @@ import { InputField } from '../../../ui/input-field/input-field';
 import { AccountsContainer } from '../accounts-container/accounts-container';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../../services/auth.service';
+import { Logo } from '../../../ui/logo/logo';
 
 interface Error {
   code: 403 | 404 | 500 | 422;
@@ -33,6 +34,7 @@ interface Success {
     InputField,
     AccountsContainer,
     MatIconModule,
+    Logo
   ],
   templateUrl: './register.html',
   styleUrls: ['./register.css'],
@@ -55,7 +57,7 @@ export class Register {
       rest_name: ['', Validators.required],
       rest_address: ['', Validators.required],
       gst_number: ['', Validators.required],
-      phone_number: ['', [Validators.required, Validators.pattern(/^(?!0|91|123)[1-9][0-9]{9}$/)]],
+      phone: ['', [Validators.required, Validators.pattern(/^(?!0|91|123)[1-9][0-9]{9}$/)]],
       zip_code: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
     });
   }

@@ -1,4 +1,4 @@
-<div class="px-8 mt-10">
+<div class="px-6">
   <div class="flex items-center mb-8">
     <div class="space-y-1">
       <h2 class="text-3xl font-bold text-neutral-800">Restaurant Settings</h2>
@@ -79,82 +79,109 @@
           Change Password
         </button>
       </div>
-    </div>
+      <!-- Owner Security Boundary -->
+      <div
+        *ngIf="isOwner"
+        class="bg-white p-8 rounded-[32px] border border-neutral-200 shadow-sm space-y-6"
+      >
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <mat-icon class="text-neutral-400">storefront</mat-icon>
+            <h3 class="text-lg font-bold text-neutral-800">General Info</h3>
+          </div>
 
-    <div class="bg-white p-8 rounded-[32px] border border-neutral-200 shadow-sm space-y-6">
-      <div class="flex items-center gap-2 mb-2">
-        <mat-icon class="text-neutral-400">storefront</mat-icon>
-        <h3 class="text-lg font-bold text-neutral-800">General Info</h3>
-      </div>
-
-      <div class="space-y-4">
-        <div>
-          <label class="block text-sm font-medium text-neutral-500 mb-2">Restaurant Name</label>
-          <input
-            type="text"
-            formControlName="restaurantName"
-            class="w-full p-3 bg-neutral-50 border border-neutral-100 rounded-2xl outline-none focus:ring-2 focus:ring-blue-400 transition-all"
-            readonly
-          />
-        </div>
-
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm font-medium text-neutral-500 mb-2">Phone</label>
-            <input
-              type="text"
-              formControlName="phone"
-              class="w-full p-3 bg-neutral-50 border border-neutral-100 rounded-2xl outline-none focus:ring-2 focus:ring-blue-400"
-            />
+          <!-- Status Badge -->
+          <div *ngIf="approvalStatus">
+            <span
+              class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider"
+              [ngClass]="{
+                'bg-yellow-100 text-yellow-700': approvalStatus === 'PENDING',
+                'bg-green-100 text-green-700': approvalStatus === 'APPROVED',
+                'bg-red-100 text-red-700':
+                  approvalStatus === 'DECLINED' || approvalStatus === 'REJECTED',
+              }"
+            >
+              {{ approvalStatus }}
+            </span>
           </div>
         </div>
 
-        <div>
-          <label class="block text-sm font-medium text-neutral-500 mb-2">Email Address</label>
-          <input
-            type="email"
-            formControlName="email"
-            class="w-full p-3 bg-neutral-50 border border-neutral-100 rounded-2xl outline-none focus:ring-2 focus:ring-blue-400"
-          />
-          <p
-            *ngIf="settingsForm.get('email')?.invalid && settingsForm.get('email')?.touched"
-            class="text-red-500 text-xs mt-1 italic"
-          >
-            Please enter a valid email.
-          </p>
-        </div>
-      </div>
-
-      <div class="space-y-4">
-        <div>
-          <label class="block text-sm font-medium text-neutral-500 mb-2">Full Address</label>
-          <input
-            type="text"
-            formControlName="location"
-            class="w-full p-3 bg-neutral-50 border border-neutral-100 rounded-2xl outline-none focus:ring-2 focus:ring-blue-400"
-          />
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium text-neutral-500 mb-2">Zipcode</label>
-          <input
-            type="text"
-            formControlName="zipcode"
-            class="w-full p-3 bg-neutral-50 border border-neutral-100 rounded-2xl outline-none"
-          />
-        </div>
-      </div>
-    </div>
-
-    <div class="flex justify-end items-center gap-4">
-      <div class="my-6">
-        <ui-button
-          text="Update Changes"
-          variant="black"
-          [disabled]="settingsForm.invalid"
-          (click)="saveSettings()"
+        <!-- Approval Note box -->
+        <div
+          *ngIf="approvalNote && approvalStatus !== 'APPROVED'"
+          class="bg-red-50 text-red-700 p-4 rounded-xl text-sm border border-red-100 mb-4"
         >
-        </ui-button>
+          <strong>Review Note:</strong> {{ approvalNote }}
+        </div>
+
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-neutral-500 mb-2">Restaurant Name</label>
+            <input
+              type="text"
+              formControlName="restaurantName"
+              class="w-full p-3 bg-neutral-50 border border-neutral-100 rounded-2xl outline-none focus:ring-2 focus:ring-blue-400 transition-all"
+            />
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-neutral-500 mb-2">Phone</label>
+              <input
+                type="text"
+                formControlName="phone"
+                class="w-full p-3 bg-neutral-50 border border-neutral-100 rounded-2xl outline-none focus:ring-2 focus:ring-blue-400"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-neutral-500 mb-2">Email Address</label>
+            <input
+              type="email"
+              formControlName="restEmail"
+              class="w-full p-3 bg-neutral-50 border border-neutral-100 rounded-2xl outline-none focus:ring-2 focus:ring-blue-400"
+            />
+            <p
+              *ngIf="settingsForm.get('email')?.invalid && settingsForm.get('email')?.touched"
+              class="text-red-500 text-xs mt-1 italic"
+            >
+              Please enter a valid email.
+            </p>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-neutral-500 mb-2">Full Address</label>
+            <input
+              type="text"
+              formControlName="location"
+              class="w-full p-3 bg-neutral-50 border border-neutral-100 rounded-2xl outline-none focus:ring-2 focus:ring-blue-400"
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-neutral-500 mb-2">Zipcode</label>
+            <input
+              type="text"
+              formControlName="zipcode"
+              class="w-full p-3 bg-neutral-50 border border-neutral-100 rounded-2xl outline-none"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-end items-center gap-4">
+        <div class="my-6">
+          <ui-button
+            text="Update Changes"
+            variant="black"
+            [disabled]="settingsForm.invalid"
+            (click)="saveSettings()"
+          >
+          </ui-button>
+        </div>
       </div>
     </div>
   </form>

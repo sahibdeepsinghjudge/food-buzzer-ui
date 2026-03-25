@@ -2,7 +2,7 @@
   @if (currentStep() != 3) {
     <ng-content title>
       <p class="text-neutral-500 text-lg">start your journey with</p>
-      <h1 class="text-4xl my-1 font-bold text-primary">foodBuzzer</h1>
+      <app-logo></app-logo>
     </ng-content>
   }
   <ng-container [ngSwitch]="currentStep()">
@@ -86,7 +86,7 @@
     </form>
 
     <!-- STEP 2 -->
-    <div *ngSwitchCase="2" class="text-center space-y-4">
+    <div *ngSwitchCase="2" class="space-y-4">
       <form [formGroup]="step2form" (ngSubmit)="submitForm2()" class="mt-2">
         <input-field
           label="Restaurant Name"
@@ -136,23 +136,17 @@
           <input-field
             label="Phone Number"
             type="text"
-            formControlName="phone_number"
+            formControlName="phone"
             placeholder="Enter phone number"
           ></input-field>
           <p
-            *ngIf="
-              step2form.get('phone_number')?.touched &&
-              step2form.get('phone_number')?.errors?.['required']
-            "
+            *ngIf="step2form.get('phone')?.touched && step2form.get('phone')?.errors?.['required']"
             class="text-red-500 text-sm mt-1 text-left"
           >
             Phone number is required
           </p>
           <p
-            *ngIf="
-              step2form.get('phone_number')?.touched &&
-              step2form.get('phone_number')?.errors?.['pattern']
-            "
+            *ngIf="step2form.get('phone')?.touched && step2form.get('phone')?.errors?.['pattern']"
             class="text-red-500 text-sm mt-1 text-left"
           >
             Enter a valid 10-digit number (cannot start with 0, 91, or 123)

@@ -1,11 +1,230 @@
-<div class="w-screen h-screen bg-bg-sec flex items-center justify-center">
-  <div class="bg-white w-3xl shadow-xl shadow-black/10 rounded-4xl p-12">
-    <p class="text-neutral-500 text-lg">welcome to</p>
-    <h1 class="text-4xl my-2 font-semibold">food buzzer</h1>
-    <p class="mb-4">elevate your restaurant management with food buzzer</p>
-    <div class="flex gap-2">
-      <ui-button text="Login" variant="primary" routerLink="accounts/login"></ui-button>
-      <ui-button text="Register" variant="white" routerLink="accounts/register"></ui-button>
+<div
+  class="min-h-screen bg-neutral-50 font-sans text-neutral-800 overflow-x-hidden relative selection:bg-primary selection:text-white"
+>
+  <!-- Background Decorative Blurs -->
+  <div
+    class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] pointer-events-none"
+  ></div>
+  <div
+    class="absolute top-[20%] right-[-5%] w-[30%] h-[30%] bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"
+  ></div>
+
+  <!-- Navigation -->
+  <nav class="sticky top-0 z-50 w-full backdrop-blur-xl bg-white/70 border-b border-neutral-200/50">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <div class="flex items-center gap-2 cursor-pointer" routerLink="/">
+        <span class="text-xl font-bold tracking-tight text-neutral-900">food buzzer</span>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <a
+          routerLink="accounts/login"
+          class="text-sm font-semibold text-neutral-600 hover:text-neutral-900 transition-colors hidden sm:block"
+          >Sign In</a
+        >
+        <ui-button text="Get Started" variant="primary" routerLink="accounts/register"></ui-button>
+      </div>
     </div>
-  </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="relative max-w-7xl mx-auto px-6 pt-24 pb-32 text-center">
+    <!-- Beta Pill -->
+    <a
+      href="#"
+      class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-neutral-200 shadow-sm text-sm font-medium text-neutral-600 mb-8 hover:bg-neutral-50 transition-colors"
+    >
+      <span class="flex w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+      Introducing FoodBuzzer
+    </a>
+
+    <h1
+      class="text-5xl md:text-[72px] font-black tracking-tight text-neutral-900 leading-[1.1] mb-6"
+    >
+      Elevate Your <br class="hidden md:block" />
+      Restaurant Management.
+    </h1>
+
+    <p class="text-lg md:text-xl text-neutral-500 max-w-2xl mx-auto mb-10 leading-relaxed">
+      A seamlessly integrated ecosystem uniting Point of Sale operations, real-time Kitchen
+      Displays, and granular intelligent Inventory tracking. Built for modern food experiences.
+    </p>
+
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20">
+      <ui-button
+        text="Get Started"
+        variant="primary"
+        routerLink="accounts/register"
+        class="w-full sm:w-auto"
+      ></ui-button>
+      <a
+        routerLink="accounts/login"
+        class="px-6 py-2.5 rounded-xl font-medium bg-white border border-neutral-200 shadow-sm hover:shadow hover:bg-neutral-50 transition-all text-neutral-700 w-full sm:w-auto text-center"
+      >
+        Sign in to Dashboard
+      </a>
+    </div>
+
+    <!-- Hero Mockup Dashboard -->
+    <div class="relative mx-auto w-full max-w-5xl group">
+      <!-- Glow behind image -->
+      <div
+        class="absolute -inset-4 bg-gradient-to-r from-primary/30 to-blue-500/30 blur-2xl opacity-50 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"
+      ></div>
+      <img
+        src="hero_dashboard.png"
+        alt="FoodBuzzer Hero Dashboard"
+        class="relative rounded-[32px] shadow-2xl shadow-neutral-900/10 border border-neutral-100/50 w-full object-cover transform transition-transform hover:-translate-y-2 duration-700"
+      />
+    </div>
+  </header>
+
+  <!-- Features Grid -->
+  <section class="bg-white py-32 border-t border-neutral-200/50">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center max-w-3xl mx-auto mb-20">
+        <h2 class="text-4xl font-black text-neutral-900 tracking-tight mb-4">
+          Command every aspect of <br />
+          your food pipeline.
+        </h2>
+        <p class="text-lg text-neutral-500 leading-relaxed">
+          Stop jumping between outdated tools. FoodBuzzer unifies your front-of-house table service
+          directly with your back-of-house kitchen operations effortlessly.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Feature 1: POS -->
+        <div
+          class="bg-neutral-50 rounded-3xl p-8 border border-neutral-100 hover:border-neutral-200 transition-colors group overflow-hidden relative"
+        >
+          <div class="relative z-10 mb-8 max-w-md">
+            <div
+              class="w-12 h-12 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center mb-6"
+            >
+              <span class="text-xl">💳</span>
+            </div>
+            <h3
+              class="text-2xl font-bold text-neutral-900 mb-2 mt-4 inline-flex items-center gap-2"
+            >
+              Lightning Fast POS
+            </h3>
+            <p class="text-neutral-500 leading-relaxed mb-6">
+              Checkout seamlessly with our minimal tablet interface. Map active tables dynamically
+              and compute bill splits instantly without a hitch.
+            </p>
+          </div>
+          <!-- Visual Offset Image -->
+          <div class="relative z-0 h-48 md:h-64 mt-4 w-full">
+            <img
+              src="pos_system.png"
+              alt="POS System Interface"
+              class="absolute top-0 left-0 w-[120%] lg:w-[150%] max-w-none rounded-2xl shadow-xl shadow-black/10 transform transition-transform group-hover:-translate-y-2 duration-500 border border-neutral-200"
+            />
+          </div>
+        </div>
+
+        <!-- Feature 2: KDS -->
+        <div
+          class="bg-neutral-50 rounded-3xl p-8 border border-neutral-100 hover:border-neutral-200 transition-colors group overflow-hidden relative"
+        >
+          <div class="relative z-10 mb-8 max-w-md">
+            <div
+              class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center mb-6"
+            >
+              <span class="text-xl">🍳</span>
+            </div>
+            <h3
+              class="text-2xl font-bold text-neutral-900 mb-2 mt-4 inline-flex items-center gap-2"
+            >
+              Interactive KDS
+            </h3>
+            <p class="text-neutral-500 leading-relaxed mb-6">
+              A direct visual line into the kitchen. Dark Mode optimized Kanban boards tracking
+              active, pending, and complete orders real-time.
+            </p>
+          </div>
+          <!-- Visual Offset Image -->
+          <div class="relative z-0 h-48 md:h-64 mt-4 w-full">
+            <img
+              src="kds_screen.png"
+              alt="KDS System Interface"
+              class="absolute top-0 right-0 w-[120%] lg:w-[150%] max-w-none rounded-2xl shadow-xl shadow-black/10 transform transition-transform group-hover:-translate-y-2 duration-500 border border-neutral-200"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 3: Inventory wide row -->
+      <div
+        class="bg-neutral-900 rounded-[32px] p-8 md:p-16 mt-8 border border-neutral-800 flex flex-col lg:flex-row items-center justify-between gap-12 group overflow-hidden"
+      >
+        <div class="lg:w-5/12 text-left">
+          <div
+            class="w-12 h-12 rounded-xl bg-green-500/20 text-green-400 flex items-center justify-center mb-6"
+          >
+            <span class="text-xl">📊</span>
+          </div>
+          <h3 class="text-3xl font-bold text-white mb-4">Smart Recipe Inventory</h3>
+          <p class="text-neutral-400 leading-relaxed text-lg mb-8">
+            Maintain perfect stock accuracy. Write recipes down to the gram and track intelligent
+            low-stock warnings as orders automatically deduct raw materials dynamically.
+          </p>
+          <ui-button
+            text="Explore Inventory"
+            variant="white"
+            routerLink="accounts/login"
+          ></ui-button>
+        </div>
+        <div class="lg:w-7/12 relative h-64 md:h-auto">
+          <img
+            src="inventory_app.png"
+            alt="Inventory Dashboard Interface"
+            class="absolute top-[-50px] md:top-[-100px] left-0 rounded-2xl shadow-2xl shadow-black/50 border border-neutral-800 w-[120%] max-w-none transform transition-transform group-hover:-translate-x-4 duration-700"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="py-32 relative">
+    <div class="absolute inset-0 bg-primary/5"></div>
+    <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+      <h2 class="text-4xl md:text-5xl font-black tracking-tight text-neutral-900 mb-6">
+        Ready to scale up operations?
+      </h2>
+      <p class="text-xl text-neutral-500 mb-10 max-w-2xl mx-auto">
+        Join the next generation of restaurant operators upgrading their technology stack with
+        FoodBuzzer.
+      </p>
+      <div class="flex items-center justify-center">
+        <ui-button
+          text="Create Your Free Account"
+          variant="primary"
+          routerLink="accounts/register"
+        ></ui-button>
+      </div>
+      <p class="mt-6 text-sm font-medium text-neutral-400">
+        No credit card required. Setup takes minutes.
+      </p>
+    </div>
+  </section>
+
+  <!-- Real Footer -->
+  <footer class="bg-white border-t border-neutral-200 py-12">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
+      <div class="flex items-center gap-2 mb-4 md:mb-0 opacity-80">
+        <div
+          class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-sm"
+        >
+          fb
+        </div>
+        <span class="text-xl font-bold tracking-tight text-neutral-900">food buzzer</span>
+      </div>
+      <p class="text-sm font-medium text-neutral-400">
+        © 2026 FoodBuzzer. Built for modern restaurants.
+      </p>
+    </div>
+  </footer>
 </div>

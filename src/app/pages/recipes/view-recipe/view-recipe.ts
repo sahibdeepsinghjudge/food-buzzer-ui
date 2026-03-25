@@ -60,12 +60,28 @@ export class ViewRecipe implements OnInit {
           let displayUnit = material?.unit || '';
 
           if (material) {
-             if (material.unit.toLowerCase() === 'kg' || material.unit.toLowerCase() === 'kilograms') {
-                displayUnit = 'KG';
-                displayPortion = ing.portionSize / 1000;
-             } else if (material.unit.toLowerCase() === 'l' || material.unit.toLowerCase() === 'liters') {
-                displayUnit = 'L';
-                displayPortion = ing.portionSize / 1000;
+             const baseUnit = material.unit.toLowerCase();
+             let rawQty = ing.portionSize;
+             
+             if (baseUnit === 'kg' || baseUnit === 'kilograms') {
+                if (rawQty % 1 !== 0) { // e.g. 1.5 or 0.05
+                   displayUnit = 'g';
+                   displayPortion = rawQty * 1000;
+                } else {
+                   displayUnit = 'KG';
+                   displayPortion = rawQty;
+                }
+             } else if (baseUnit === 'l' || baseUnit === 'liters') {
+                if (rawQty % 1 !== 0) {
+                   displayUnit = 'ml';
+                   displayPortion = rawQty * 1000;
+                } else {
+                   displayUnit = 'L';
+                   displayPortion = rawQty;
+                }
+             } else {
+                displayUnit = material.unit;
+                displayPortion = rawQty;
              }
           }
 

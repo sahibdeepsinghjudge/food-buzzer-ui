@@ -63,7 +63,7 @@
       [routerLink]="['/kds/order', order.id]"
       class="text-primary font-semibold hover:underline cursor-pointer flex items-center gap-1"
     >
-      <span class="material-icons text-[16px]">receipt_long</span> View Bill
+      <span class="material-icons text-[16px]">receipt_long</span> View Details
     </a>
   </div>
 
@@ -137,6 +137,15 @@
       class="bg-red-50 text-red-700 border border-red-200 flex-1 py-2.5 rounded-lg text-center text-sm font-bold flex items-center justify-center gap-1"
     >
       <span class="material-icons text-[18px]">cancel</span> Declined
+    </div>
+
+    <!-- FAILED / OUT OF STOCK -->
+    <div
+      *ngIf="order.status === 'FAILED'"
+      class="bg-red-600 text-white flex-1 py-2 rounded-lg text-center text-[11px] font-bold flex flex-col items-center justify-center leading-tight shadow-sm"
+    >
+      <span class="material-icons text-[16px] mb-0.5">error_outline</span>
+      FAILED: NO INVENTORY
     </div>
 
     <!-- Print -->

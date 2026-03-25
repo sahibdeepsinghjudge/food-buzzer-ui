@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { MatIcon } from '@angular/material/icon';
+import { Logo } from '../../../ui/logo/logo';
 
 @Component({
   selector: 'app-kdsscreen',
   standalone: true,
-  imports: [RouterModule, CommonModule, MatIcon],
+  imports: [RouterModule, CommonModule, MatIcon,Logo],
   templateUrl: './kdsscreen.html',
   styleUrls: ['./kdsscreen.css'],
 })

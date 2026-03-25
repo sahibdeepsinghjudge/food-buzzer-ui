@@ -17,6 +17,21 @@
   </div>
 
   <div *ngIf="!isLoading && order">
+    <!-- Failed Inventory Alert -->
+    <div
+      *ngIf="order.status === 'FAILED'"
+      class="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 flex items-start gap-3 shadow-sm"
+    >
+      <span class="material-icons text-red-500 mt-0.5">error_outline</span>
+      <div>
+        <h3 class="text-red-800 font-bold text-sm">Order Failed: Insufficient Inventory</h3>
+        <p class="text-red-600 text-xs mt-1">
+          This order was rejected by the system because the required raw materials are out of stock.
+          Please restock inventory and re-ring the items.
+        </p>
+      </div>
+    </div>
+
     <!-- Header -->
     <div class="flex items-center justify-between mb-6">
       <div class="flex items-center gap-4">
@@ -115,9 +130,13 @@
           <span>Discount</span>
           <span>-₹{{ order.discount }}</span>
         </div>
-        <div class="flex justify-between text-lg font-bold pt-2 border-t border-neutral-200">
+        <div class="flex justify-between text-sm text-neutral-500">
+          <span>Total Amount</span>
+          <span>₹{{ order.cartTotal }}</span>
+        </div>
+        <div class="flex justify-between text-lg font-bold mt-2 border-t border-neutral-200 py-2">
           <span>Grand Total</span>
-          <span>₹{{ order.finalAmount || order.totalAmount || getCartTotal() }}</span>
+          <span>₹{{ order.grandTotal }}</span>
         </div>
       </div>
     </div>
@@ -166,6 +185,12 @@
         </p>
         <p *ngIf="order.status === 'DECLINED'" class="text-red-600 font-semibold text-lg">
           ✕ Order Declined
+        </p>
+        <p
+          *ngIf="order.status === 'FAILED'"
+          class="text-red-700 font-bold text-lg flex items-center gap-2"
+        >
+          <span class="material-icons">warning</span> FAILED (No Inventory)
         </p>
       </div>
     </div>

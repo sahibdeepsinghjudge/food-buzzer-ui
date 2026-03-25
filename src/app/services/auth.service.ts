@@ -61,7 +61,7 @@ export class AuthService {
     rest_name: string;
     rest_address: string;
     gst_number: string;
-    phone_number: string;
+    phone: string;
     zip_code: string;
   }): Observable<RegisterResponse> {
     let headers = new HttpHeaders();
@@ -76,7 +76,7 @@ export class AuthService {
       "name": data.rest_name,
       "address": data.rest_address,
       "zipcode": data.zip_code,
-      "phone": data.phone_number,
+      "phone": data.phone,
       "GST": data.gst_number
     },{
        "headers":headers,
@@ -115,6 +115,9 @@ export class AuthService {
   }
   getRole(): string {
     return localStorage.getItem("role") || '';
+  }
+  isOwner(): boolean {
+    return localStorage.getItem("role")?.toLowerCase() === "owner";
   }
   logout(): void {
     localStorage.removeItem("userId");

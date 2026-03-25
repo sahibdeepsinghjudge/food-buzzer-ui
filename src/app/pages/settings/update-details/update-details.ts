@@ -6,6 +6,8 @@ import { Button } from '../../../ui/button/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormGroup } from '@angular/forms';
 import { Validators } from '@angular/forms';
+import { forkJoin } from 'rxjs';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-update-details',
@@ -16,13 +18,17 @@ import { Validators } from '@angular/forms';
 export class UpdateDetails {
   settingsForm!: FormGroup;
   isLoading = true;
-  settingsdata: any;
-  record: RestaurantData[]=[];
+  isUpdatingDetails = false;
+  approvalStatus: string = '';
+  approvalNote: string = '';
   newPasswordChange: any;
   changePass: any;
-  constructor(private fb: FormBuilder, private serviceData: SettingsService, private cdr: ChangeDetectorRef){
+  isOwner: boolean = false;
 
-  this.settingsForm = this.fb.group({
+  constructor(private fb: FormBuilder, private serviceData: SettingsService, private cdr: ChangeDetectorRef, private authService: AuthService){
+    this.isOwner = this.authService.isOwner();
+
+    this.settingsForm = this.fb.group({
       ownerName: [''],
       ownerEmail: ['', [Validators.required, Validators.email]],
       restaurantName: ['', [Validators.minLength(3)]],
@@ -36,63 +42,108 @@ export class UpdateDetails {
     })
 }
 
-  id: number=1;
   ngOnInit(){
-    this.serviceData.getData(this.id).subscribe(data=>{
-      this.settingsdata = data.restaurantdata;
-      console.log(this.settingsdata);
-      const record = this.settingsdata[0];
-      if (record) {
-          this.settingsForm.patchValue({
-            ownerName: record.ownerName,
-            ownerEmail: record.ownerEmail,
-            restaurantName: record.name,
-            phone: record.phone,
-            email: record.email,
-            location: record.location,
-            zipcode: record.zipcode,
-            password: ''
-          });
-        }
-      this.isLoading = false;
-      this.cdr.detectChanges();
+    forkJoin({
+      user: this.serviceData.getUserProfile(),
+      restaurant: this.serviceData.getRestaurantInfo()
+    }).subscribe({
+      next: (res) => {
+        const userData = res.user.data || res.user;
+        console.log(userData);
+        const restaurantData = res.restaurant.data || res.restaurant;
+        
+        this.approvalStatus = restaurantData.approvalStatus || 'PENDING';
+        this.approvalNote = restaurantData.approvalNote || '';
+
+        this.settingsForm.patchValue({
+          ownerName: userData.fullName || '', // Backend typically omits FullName on standard profile
+          ownerEmail: userData.email || '',
+          restaurantName: restaurantData.name || '',
+          phone: restaurantData.phone || '',
+          email: userData.email || '',
+          restEmail: restaurantData.email || '',
+          location: restaurantData.address || '',
+          zipcode: restaurantData.zipcode || '',
+          password: ''
+        });
+        
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Failed to load settings data', err);
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      }
     });
   }
 
   changePassword(){
-    const newPass=this.settingsForm.get("newpassword")?.value;
-    const confirmPass=this.settingsForm.get("confirmpassword")?.value;
-    const pass=this.settingsForm.get("password")?.value;
-    if(pass!==this.settingsdata[0].password)
-    {
-      this.changePass=false;
+    const newPass = this.settingsForm.get("newpassword")?.value;
+    const confirmPass = this.settingsForm.get("confirmpassword")?.value;
+    const pass = this.settingsForm.get("password")?.value;
+    
+    // Clear initial flags
+    this.newPasswordChange = true;
+    this.changePass = true;
+
+    if (!pass) {
+      this.changePass = false;
+      return;
     }
-    else
-    {
-      this.changePass=true;
+
+    if (newPass !== confirmPass || !newPass) {
+      this.newPasswordChange = false;
+      return;
     }
-    if(newPass!==confirmPass)
-    {
-      this.newPasswordChange=false;
-    }
-    else
-    {
-      this.newPasswordChange=true;
-    }
-    if(pass===this.settingsdata[0].password && newPass===confirmPass)
-    {
-      this.newPasswordChange=true;
-      this.changePass=true;
-      this.settingsForm.get('password')?.setValue(newPass);
-    }
+    
+    // Fire the PUT API
+    this.serviceData.updatePassword(pass, newPass).subscribe({
+      next: (res) => {
+        alert("Password updated successfully!");
+        this.settingsForm.patchValue({
+          password: '',
+          newpassword: '',
+          confirmpassword: ''
+        });
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error("Failed to update password:", err);
+        // Invalid old password or backend error
+        this.changePass = false; 
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   saveSettings() {
     if (this.settingsForm.valid) {
+      this.isUpdatingDetails = true;
       const finalData = this.settingsForm.value;
-      console.log('Sending to API:', finalData);
-          } 
-    else {
+      
+      const payload = {
+        name: finalData.restaurantName,
+        phone: finalData.phone,
+        email: finalData.email,
+        address: finalData.location,
+        zipcode: finalData.zipcode
+      };
+
+      this.serviceData.updateRestaurantInfo(payload).subscribe({
+        next: (res) => {
+          this.isUpdatingDetails = false;
+          alert("Restaurant details updated successfully!");
+          this.cdr.detectChanges();
+        },
+        error: (err) => {
+          console.error('Failed to update restaurant:', err);
+          alert("Failed to update restaurant details. Please try again.");
+          this.isUpdatingDetails = false;
+          this.cdr.detectChanges();
+        }
+      });
+    } else {
       console.error('Form is invalid. Please check the errors.');
     }
   }

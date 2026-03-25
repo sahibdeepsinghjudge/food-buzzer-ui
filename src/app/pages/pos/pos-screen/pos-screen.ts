@@ -51,7 +51,7 @@ export class PosScreen implements OnInit {
   ) {
     this.checkoutForm = this.fb.group({
       customerName: ['', [Validators.required]],
-      customerPhone: ['', [Validators.required]],
+      customerPhone: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
       tableId: [''],
       discount: [0, [Validators.min(0), Validators.max(100)]]
     });

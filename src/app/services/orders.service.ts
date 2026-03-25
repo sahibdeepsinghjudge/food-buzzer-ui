@@ -33,9 +33,9 @@ export interface OrderResponse {
   tableId: string;
   status: string;
   cartItems: CartItemDTO[];
-  totalAmount: number;
+  cartTotal: number;
   discount: number;
-  finalAmount: number;
+  grandTotal: number;
   createdAt: string;
   updatedAt: string;
 }

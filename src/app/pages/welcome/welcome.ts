@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { Button } from '../../ui/button/button';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-welcome',
-  imports: [Button],
+  imports: [Button, RouterModule],
   templateUrl: './welcome.html',
   styleUrl: './welcome.css',
 })

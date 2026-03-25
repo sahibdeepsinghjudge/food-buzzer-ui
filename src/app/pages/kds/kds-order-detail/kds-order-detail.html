@@ -91,9 +91,13 @@
             <span>Discount</span>
             <span>-₹{{ order.discount }}</span>
           </div>
-          <div class="flex justify-between text-lg font-bold">
-            <span>Total</span>
-            <span>₹{{ order.finalAmount || order.totalAmount || getCartTotal() }}</span>
+          <div class="flex justify-between text-sm text-neutral-500">
+            <span>Total Amount</span>
+            <span>₹{{ order.cartTotal }}</span>
+          </div>
+          <div class="flex justify-between text-lg font-bold mt-2 border-t border-neutral-200 py-2">
+            <span>Grand Total</span>
+            <span>₹{{ order.grandTotal }}</span>
           </div>
         </div>
       </div>
