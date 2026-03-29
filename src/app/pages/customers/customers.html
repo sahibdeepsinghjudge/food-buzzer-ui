@@ -1,0 +1,234 @@
+<div class="px-4 lg:px-6 py-6">
+  <!-- Header -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+    <div>
+      <h2 class="text-3xl font-bold text-neutral-800">Customers</h2>
+      <p class="text-neutral-500 mt-1">View and manage your restaurant's customer base.</p>
+    </div>
+
+    <!-- Search -->
+    <div class="relative w-full sm:w-80">
+      <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+        <mat-icon class="text-neutral-400 w-auto h-auto">search</mat-icon>
+      </div>
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="onSearch($event)"
+        placeholder="Search name or phone..."
+        class="w-full pl-11 pr-4 py-3 bg-neutral-50 border border-neutral-200 rounded-2xl text-neutral-700 font-medium placeholder-neutral-400 outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all"
+      />
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading()" class="flex justify-center items-center py-24">
+    <mat-icon class="animate-spin text-neutral-400 text-4xl">autorenew</mat-icon>
+  </div>
+
+  <!-- Empty State -->
+  <div
+    *ngIf="!isLoading() && filteredCustomers().length === 0"
+    class="flex flex-col items-center justify-center py-24 text-center bg-white rounded-4xl border border-neutral-100"
+  >
+    <div class="w-20 h-20 rounded-full bg-neutral-100 flex items-center justify-center mb-4">
+      <mat-icon class="text-neutral-300 w-auto h-auto" style="font-size: 2rem"
+        >people_outline</mat-icon
+      >
+    </div>
+    <h3 class="text-lg font-bold text-neutral-700">No customers found</h3>
+    <p class="text-neutral-400 text-sm mt-1">Try a different search query.</p>
+  </div>
+
+  <!-- Table -->
+  <div
+    *ngIf="!isLoading() && filteredCustomers().length > 0"
+    class="bg-white rounded-4xl border border-neutral-100 shadow-sm overflow-hidden"
+  >
+    <table class="w-full text-sm">
+      <thead class="bg-neutral-50 border-b border-neutral-100">
+        <tr>
+          <th
+            class="text-left px-6 py-4 text-xs font-bold text-neutral-500 uppercase tracking-widest"
+          >
+            #
+          </th>
+          <th
+            class="text-left px-6 py-4 text-xs font-bold text-neutral-500 uppercase tracking-widest"
+          >
+            Name
+          </th>
+          <th
+            class="text-left px-6 py-4 text-xs font-bold text-neutral-500 uppercase tracking-widest hidden sm:table-cell"
+          >
+            Phone
+          </th>
+          <th
+            class="text-left px-6 py-4 text-xs font-bold text-neutral-500 uppercase tracking-widest hidden md:table-cell"
+          >
+            Loyalty Points
+          </th>
+          <th
+            class="text-left px-6 py-4 text-xs font-bold text-neutral-500 uppercase tracking-widest hidden lg:table-cell"
+          >
+            Since
+          </th>
+          <th
+            class="text-right px-6 py-4 text-xs font-bold text-neutral-500 uppercase tracking-widest"
+          ></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-neutral-100">
+        <tr
+          *ngFor="let customer of filteredCustomers(); let i = index"
+          class="hover:bg-neutral-50 transition-colors cursor-pointer group"
+          (click)="openCustomer(customer)"
+        >
+          <td class="px-6 py-4 text-neutral-400 font-mono text-xs">{{ i + 1 }}</td>
+          <td class="px-6 py-4">
+            <div class="flex items-center gap-3">
+              <div
+                class="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center shrink-0"
+              >
+                <span class="text-blue-600 font-bold text-sm">{{
+                  customer.name.charAt(0).toUpperCase()
+                }}</span>
+              </div>
+              <div>
+                <p class="font-bold text-neutral-800">{{ customer.name }}</p>
+                <p class="text-neutral-400 text-xs sm:hidden">{{ customer.phone }}</p>
+              </div>
+            </div>
+          </td>
+          <td class="px-6 py-4 text-neutral-600 font-medium hidden sm:table-cell">
+            {{ customer.phone }}
+          </td>
+          <td class="px-6 py-4 hidden md:table-cell">
+            <span
+              class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-600 border border-amber-100"
+            >
+              <mat-icon class="w-auto h-auto" style="font-size: 12px">star</mat-icon>
+              {{ customer.loyaltyPoints }} pts
+            </span>
+          </td>
+          <td class="px-6 py-4 text-neutral-500 text-xs hidden lg:table-cell">
+            {{ formatDate(customer.createdAt) }}
+          </td>
+          <td class="px-6 py-4 text-right">
+            <mat-icon
+              class="text-neutral-300 group-hover:text-neutral-600 transition-colors w-auto h-auto"
+              >chevron_right</mat-icon
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Footer Count -->
+    <div class="px-6 py-3 border-t border-neutral-100 text-xs text-neutral-400 font-medium">
+      {{ filteredCustomers().length }} customer{{ filteredCustomers().length !== 1 ? 's' : '' }}
+    </div>
+  </div>
+</div>
+
+<!-- Customer Detail Drawer / Panel -->
+<div
+  *ngIf="selectedCustomer"
+  class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4"
+  (click)="closeDetail()"
+>
+  <!-- Backdrop -->
+  <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"></div>
+
+  <!-- Panel -->
+  <div
+    class="relative bg-white w-full sm:w-96 rounded-t-4xl sm:rounded-4xl shadow-2xl p-6 sm:p-8 animate-[slideUp_0.3s_ease-out] z-10 max-h-[90vh] overflow-y-auto"
+    (click)="$event.stopPropagation()"
+  >
+    <!-- Close button -->
+    <button
+      (click)="closeDetail()"
+      class="absolute top-5 right-5 w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-500 hover:bg-neutral-200 transition-colors"
+    >
+      <mat-icon class="w-auto h-auto text-base">close</mat-icon>
+    </button>
+
+    <!-- Avatar -->
+    <div class="flex flex-col items-center text-center mb-8">
+      <div
+        class="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center mb-3 shadow-inner"
+      >
+        <span class="text-3xl font-black text-blue-600">{{
+          selectedCustomer.name.charAt(0).toUpperCase()
+        }}</span>
+      </div>
+      <h3 class="text-2xl font-extrabold text-neutral-800">{{ selectedCustomer.name }}</h3>
+      <p class="text-neutral-500 font-medium text-sm mt-1">Customer #{{ selectedCustomer.id }}</p>
+    </div>
+
+    <!-- Loyalty Badge -->
+    <div
+      class="flex items-center justify-center gap-2 mb-8 bg-amber-50 border border-amber-100 rounded-2xl py-4"
+    >
+      <mat-icon class="text-amber-500 w-auto h-auto">star</mat-icon>
+      <span class="font-extrabold text-amber-700 text-xl">{{
+        selectedCustomer.loyaltyPoints
+      }}</span>
+      <span class="text-amber-600 font-medium text-sm">Loyalty Points</span>
+    </div>
+
+    <!-- Info Grid -->
+    <div class="space-y-4">
+      <div class="flex items-center gap-4 p-4 bg-neutral-50 rounded-2xl border border-neutral-100">
+        <div
+          class="w-9 h-9 rounded-full bg-white border border-neutral-200 flex items-center justify-center shrink-0"
+        >
+          <mat-icon class="text-neutral-500 w-auto h-auto text-base">phone</mat-icon>
+        </div>
+        <div>
+          <p class="text-xs font-bold text-neutral-400 uppercase tracking-widest">Phone</p>
+          <p class="font-bold text-neutral-800 mt-0.5">{{ selectedCustomer.phone }}</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4 p-4 bg-neutral-50 rounded-2xl border border-neutral-100">
+        <div
+          class="w-9 h-9 rounded-full bg-white border border-neutral-200 flex items-center justify-center shrink-0"
+        >
+          <mat-icon class="text-neutral-500 w-auto h-auto text-base">email</mat-icon>
+        </div>
+        <div>
+          <p class="text-xs font-bold text-neutral-400 uppercase tracking-widest">Email</p>
+          <p class="font-bold text-neutral-800 mt-0.5">{{ selectedCustomer.emailId || '—' }}</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4 p-4 bg-neutral-50 rounded-2xl border border-neutral-100">
+        <div
+          class="w-9 h-9 rounded-full bg-white border border-neutral-200 flex items-center justify-center shrink-0"
+        >
+          <mat-icon class="text-neutral-500 w-auto h-auto text-base">calendar_today</mat-icon>
+        </div>
+        <div>
+          <p class="text-xs font-bold text-neutral-400 uppercase tracking-widest">Customer Since</p>
+          <p class="font-bold text-neutral-800 mt-0.5">
+            {{ formatDate(selectedCustomer.createdAt) }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes slideUp {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+</style>

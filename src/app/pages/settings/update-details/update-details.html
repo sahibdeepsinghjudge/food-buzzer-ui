@@ -10,7 +10,7 @@
     <mat-icon class="animate-spin text-neutral-400 text-4xl">autorenew</mat-icon>
   </div>
 
-  <form [formGroup]="settingsForm" *ngIf="!isLoading">
+  <form [formGroup]="settingsForm" *ngIf="!isLoading" (submit)="$event.preventDefault()">
     <div class="bg-white p-8 rounded-[32px] border border-neutral-200 shadow-sm space-y-6 mb-5">
       <div class="flex items-center gap-2 mb-2">
         <mat-icon class="text-neutral-400">person</mat-icon>
@@ -28,12 +28,14 @@
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-neutral-500 mb-2">Email Address</label>
-        <input
-          type="text"
-          formControlName="ownerEmail"
+        <label class="block text-sm font-medium text-neutral-500 mb-2"
+          >Registered Email Address</label
+        >
+        <p
           class="w-full p-3 bg-neutral-50 border border-neutral-100 rounded-2xl outline-none focus:ring-2 focus:ring-blue-400 transition-all"
-        />
+        >
+          {{ settingsForm.get('ownerEmail')?.value }}
+        </p>
       </div>
 
       <div>
@@ -75,7 +77,7 @@
       </div>
 
       <div class="mt-4">
-        <button class="bg-black text-white p-3 rounded-2xl" (click)="changePassword()">
+        <button type="button" class="bg-black text-white p-3 rounded-2xl" (click)="changePassword()">
           Change Password
         </button>
       </div>
@@ -124,6 +126,24 @@
             />
           </div>
 
+          <!-- isLive Toggle -->
+          <div
+            class="flex items-center justify-between p-4 bg-neutral-50 rounded-2xl border border-neutral-100"
+          >
+            <div>
+              <p class="text-sm font-bold text-neutral-800">Live Status</p>
+              <p class="text-xs text-neutral-500">
+                Toggle whether your restaurant is currently accepting online orders.
+              </p>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" formControlName="isLive" class="sr-only peer" />
+              <div
+                class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"
+              ></div>
+            </label>
+          </div>
+
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-neutral-500 mb-2">Phone</label>
@@ -139,7 +159,7 @@
             <label class="block text-sm font-medium text-neutral-500 mb-2">Email Address</label>
             <input
               type="email"
-              formControlName="restEmail"
+              formControlName="email"
               class="w-full p-3 bg-neutral-50 border border-neutral-100 rounded-2xl outline-none focus:ring-2 focus:ring-blue-400"
             />
             <p

@@ -36,6 +36,7 @@ export class UpdateDetails {
       email: ['', [Validators.required, Validators.email]],
       location: [''],
       zipcode: [''],
+      isLive: [false],
       password: [''],
       newpassword: [''],
       confirmpassword: ['']
@@ -60,10 +61,10 @@ export class UpdateDetails {
           ownerEmail: userData.email || '',
           restaurantName: restaurantData.name || '',
           phone: restaurantData.phone || '',
-          email: userData.email || '',
-          restEmail: restaurantData.email || '',
+          email: restaurantData.email || '',
           location: restaurantData.address || '',
           zipcode: restaurantData.zipcode || '',
+          isLive: restaurantData.isLive !== undefined ? restaurantData.isLive : false,
           password: ''
         });
         
@@ -127,12 +128,16 @@ export class UpdateDetails {
         phone: finalData.phone,
         email: finalData.email,
         address: finalData.location,
-        zipcode: finalData.zipcode
+        zipcode: finalData.zipcode,
+        isLive: finalData.isLive
       };
+
+      console.log(payload)
 
       this.serviceData.updateRestaurantInfo(payload).subscribe({
         next: (res) => {
           this.isUpdatingDetails = false;
+          console.log(res)
           alert("Restaurant details updated successfully!");
           this.cdr.detectChanges();
         },

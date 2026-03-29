@@ -34,8 +34,8 @@ export class MenuProductService {
     const userId = localStorage.getItem("userId");
     if (userId) {
       headers = headers.append("X-User-Id", userId);
-      headers = headers.append('ngrok-skip-browser-warning', 'true');
     }
+    headers = headers.append('ngrok-skip-browser-warning', 'true');
     return headers;
   }
 
@@ -71,6 +71,19 @@ export class MenuProductService {
   getProductById(id: number): Observable<MenuProduct | undefined> {
     return this.http.get<any>(baseUrl + `/products/${id}`, { headers: this.getHeaders() }).pipe(
       map(res => this.mapToFrontendProduct(res.data || res))
+    );
+  }
+
+  getPublicMenuByRestaurantSlug(slug: string): Observable<{ products: MenuProduct[], restaurant: any }> {
+    return this.http.get<any>(baseUrl + `/products/public/restaurants/${slug}/menu`, { headers: this.getHeaders() }).pipe(
+      map(res => {
+        const payload = res.data || {};
+        const productList = payload.products || [];
+        return {
+          products: (Array.isArray(productList) ? productList : []).map((p: any) => this.mapToFrontendProduct(p)),
+          restaurant: payload.restaurant || null
+        };
+      })
     );
   }
 

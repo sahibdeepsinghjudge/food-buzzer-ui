@@ -26,8 +26,8 @@ export class Tableservice {
     const userId = localStorage.getItem("userId");
     if (userId) {
       headers = headers.append("X-User-Id", userId);
-      headers = headers.append('ngrok-skip-browser-warning', 'true');
     }
+    headers = headers.append('ngrok-skip-browser-warning', 'true');
     return headers;
   }
 
@@ -39,6 +39,16 @@ export class Tableservice {
 
     return this.http.get<any>(url, { headers: this.getHeaders() }).pipe(
       map(res => { console.log(res); return res.data || res; })
+    );
+  }
+
+  getTablesBySlug(slug: string): Observable<TableData[]> {
+    let headers = new HttpHeaders().append('ngrok-skip-browser-warning', 'true');
+    return this.http.get<any>(baseUrl + '/restaurant-tables/active', {
+      headers,
+      params: { restaurantSlug: slug }
+    }).pipe(
+      map(res => res.data || res || [])
     );
   }
 

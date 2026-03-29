@@ -63,6 +63,10 @@ export const authGuard: CanActivateFn = (route, state) => {
       visibleTo : [0,1,2,3],
       fallbackRoute: "/accounts/login"
     },
+    "customers":{
+      visibleTo : [2,3],
+      fallbackRoute: "/accounts/login"
+    },
   }
 
   const currentAccess = accessMaps[state.url.split("/")[1]];

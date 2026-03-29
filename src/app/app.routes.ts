@@ -7,6 +7,11 @@ import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
     { path: '', component: Welcome, pathMatch: 'full' },
+    {
+        path: 'm/:slug',
+        loadComponent: () => import('./pages/public-menu/public-menu').then(m => m.PublicMenuComponent),
+        canActivate: [guestGuard]
+    },
     { 
         path: 'accounts', 
         loadChildren: () => import('./pages/accounts/accounts-main/accounts-main-module').then(m => m.AccountsMainModule),
@@ -30,6 +35,7 @@ export const routes: Routes = [
             { path: 'settings', loadChildren: () => import('./pages/settings/setting/setting-module').then(m => m.SettingModule) },
             { path: 'orders', loadChildren: () => import('./pages/orders/orders/orders-module').then(m => m.OrdersModule) },
             { path: 'table-manager', loadChildren: () => import('./pages/tableorders/tableorder/tableorder-module').then(m => m.TableorderModule) },
+            { path: 'customers', loadComponent: () => import('./pages/customers/customers').then(m => m.CustomersComponent) },
         ]
     },
     { path: 'pos', loadChildren: () => import('./pages/pos/pos/pos-module').then(m => m.PosModule) },
@@ -48,5 +54,17 @@ export const routes: Routes = [
         path: 'print/order/:id',
         loadComponent: () => import('./pages/orders/print-bill/print-bill').then(m => m.PrintBill),
         canActivate: [authGuard]
+    },
+    {
+        path: '403',
+        loadComponent: () => import('./pages/errors/error-403').then(m => m.Error403)
+    },
+    {
+        path: '500',
+        loadComponent: () => import('./pages/errors/error-500').then(m => m.Error500)
+    },
+    {
+        path: '**',
+        loadComponent: () => import('./pages/errors/error-404').then(m => m.Error404)
     }
 ];

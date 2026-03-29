@@ -164,23 +164,7 @@
             Table {{ table.tableNo }} {{ table.isOccupied ? '(Occupied)' : '' }}
           </option>
         </select>
-        <div class="flex flex-col gap-1 w-24">
-          <input
-            formControlName="discount"
-            type="number"
-            placeholder="Discount %"
-            min="0"
-            max="100"
-            class="w-full bg-neutral-50 border border-neutral-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-          />
-        </div>
       </div>
-      <p
-        *ngIf="checkoutForm.get('discount')?.invalid && checkoutForm.get('discount')?.touched"
-        class="text-xs text-red-500 ml-1"
-      >
-        Discount must be 0-100%.
-      </p>
 
       <!-- Totals -->
       <div class="space-y-1 pt-2 border-t border-neutral-100">

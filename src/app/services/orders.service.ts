@@ -17,6 +17,7 @@ export interface OrderRequest {
   customerPhone: string;
   customerEmail?: string;
   restaurantId?: number;
+  restaurantSlug?: string;
   tableId?: string;
   userId?: number;
   cartItems: CartItemDTO[];
@@ -51,8 +52,8 @@ export class OrdersService {
     const userId = localStorage.getItem("userId");
     if (userId) {
       headers = headers.append("X-User-Id", userId);
-      headers = headers.append('ngrok-skip-browser-warning', 'true');
     }
+    headers = headers.append('ngrok-skip-browser-warning', 'true');
     return headers;
   }
 
