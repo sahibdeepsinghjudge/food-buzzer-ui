@@ -158,7 +158,7 @@
           <option value="" disabled selected>Select Table (Optional)</option>
           <option
             *ngFor="let table of tables"
-            [value]="table.tableNo"
+            [value]="table.id"
             [disabled]="table.isOccupied"
           >
             Table {{ table.tableNo }} {{ table.isOccupied ? '(Occupied)' : '' }}
